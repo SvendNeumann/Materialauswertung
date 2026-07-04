@@ -3,18 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102235" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Material" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>Orisus Materialpreis-Controlling</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
     <div class="app-shell">
       <aside class="sidebar" aria-label="Hauptnavigation">
         <div class="brand">
-          <span class="brand-mark">O</span>
+          <button class="brand-mark" id="sidebarToggle" title="Menü einklappen" aria-label="Menü einklappen">O</button>
           <div>
             <strong>Orisus</strong>
             <small>Material-Controlling</small>
           </div>
+          <button class="sidebar-close" id="sidebarClose" title="Menü schließen" aria-label="Menü schließen">×</button>
         </div>
         <nav id="nav" class="nav"></nav>
         <div class="role-card">
@@ -30,9 +37,12 @@
 
       <main class="main">
         <header class="topbar">
-          <div>
+          <div class="top-title">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menü öffnen" aria-label="Menü öffnen">☰</button>
+            <div>
             <p class="eyebrow" id="viewEyebrow">Management-Dashboard</p>
             <h1 id="viewTitle">Materialpreis-Controlling</h1>
+            </div>
           </div>
           <div class="top-actions">
             <button class="icon-btn" id="exportPdf" title="Report als PDF vorbereiten">PDF</button>
@@ -40,6 +50,7 @@
           </div>
         </header>
         <section id="view" class="view"></section>
+        <nav id="bottomNav" class="bottom-nav" aria-label="Mobile Navigation"></nav>
       </main>
     </div>
     <script src="./app.js"></script>

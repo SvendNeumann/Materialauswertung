@@ -1,5 +1,6 @@
 const eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
 const pct = new Intl.NumberFormat("de-DE", { style: "percent", maximumFractionDigits: 1 });
+const sidebarStorageKey = "orisus-material-sidebar-collapsed";
 
 const state = {
   view: "dashboard",
@@ -10,6 +11,8 @@ const state = {
   locationFilter: "Alle",
   categoryFilter: "Alle",
   sampleImports: [],
+  sidebarCollapsed: localStorage.getItem(sidebarStorageKey) === "true",
+  mobileNavOpen: false,
 };
 
 const navItems = [
@@ -223,7 +226,9 @@ function basketSimulation(locationName = state.location) {
 }
 
 function render() {
+  syncShellState();
   renderNav();
+  renderBottomNav();
   document.getElementById("viewTitle").textContent = titleFor(state.view);
   document.getElementById("viewEyebrow").textContent = state.role === "location" ? `Standort ${state.location}` : "Materialpreis-Controlling";
   const view = document.getElementById("view");
@@ -233,11 +238,65 @@ function render() {
 
 function renderNav() {
   const nav = document.getElementById("nav");
-  nav.innerHTML = navItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}"><span class="nav-icon">${icon}</span>${label}</button>`).join("");
+  nav.innerHTML = navItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span class="nav-label">${label}</span></button>`).join("");
   nav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
     state.view = btn.dataset.view;
+    closeMobileNav();
     render();
   }));
+}
+
+function renderBottomNav() {
+  const bottomNav = document.getElementById("bottomNav");
+  const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "prices", "recommendations", "mobile"].includes(id));
+  bottomNav.innerHTML = bottomItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span>${shortNavLabel(label)}</span></button>`).join("");
+  bottomNav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
+    state.view = btn.dataset.view;
+    closeMobileNav();
+    render();
+  }));
+}
+
+function shortNavLabel(label) {
+  return ({
+    "Dashboard": "Home",
+    "Rechnungen": "Import",
+    "Preisvergleich": "Preise",
+    "Empfehlungen": "Tipps",
+    "Standortleiter": "Mobil",
+  })[label] || label;
+}
+
+function syncShellState() {
+  document.body.classList.toggle("sidebar-collapsed", state.sidebarCollapsed);
+  document.body.classList.toggle("mobile-nav-open", state.mobileNavOpen);
+  const overlay = document.getElementById("sidebarOverlay");
+  if (overlay) overlay.hidden = !state.mobileNavOpen;
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  if (sidebarToggle) {
+    sidebarToggle.setAttribute("aria-label", state.sidebarCollapsed ? "Menü ausklappen" : "Menü einklappen");
+    sidebarToggle.setAttribute("title", state.sidebarCollapsed ? "Menü ausklappen" : "Menü einklappen");
+  }
+}
+
+function toggleSidebar() {
+  if (window.matchMedia("(max-width: 860px)").matches) {
+    state.mobileNavOpen = !state.mobileNavOpen;
+  } else {
+    state.sidebarCollapsed = !state.sidebarCollapsed;
+    localStorage.setItem(sidebarStorageKey, String(state.sidebarCollapsed));
+  }
+  syncShellState();
+}
+
+function openMobileNav() {
+  state.mobileNavOpen = true;
+  syncShellState();
+}
+
+function closeMobileNav() {
+  state.mobileNavOpen = false;
+  syncShellState();
 }
 
 function titleFor(id) {
@@ -533,7 +592,23 @@ function exportCsv() {
 function init() {
   const roleSelect = document.getElementById("roleSelect");
   const locationSelect = document.getElementById("locationSelect");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+  const sidebarClose = document.getElementById("sidebarClose");
+  const sidebarOverlay = document.getElementById("sidebarOverlay");
   locationSelect.innerHTML = locations.map(l => `<option>${l.name}</option>`).join("");
+  sidebarToggle.addEventListener("click", toggleSidebar);
+  mobileMenuBtn.addEventListener("click", openMobileNav);
+  sidebarClose.addEventListener("click", closeMobileNav);
+  sidebarOverlay.addEventListener("click", closeMobileNav);
+  window.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeMobileNav();
+  });
+  window.addEventListener("resize", () => {
+    if (!window.matchMedia("(max-width: 860px)").matches && state.mobileNavOpen) {
+      closeMobileNav();
+    }
+  });
   roleSelect.addEventListener("change", event => {
     state.role = event.target.value;
     if (state.role === "location") state.view = "mobile";
