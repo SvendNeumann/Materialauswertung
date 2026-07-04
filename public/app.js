@@ -19,57 +19,51 @@ const state = {
 const navSections = [
   {
     id: "overview",
-    icon: "◼",
     label: "Überblick",
     items: [
-      ["dashboard", "◼", "Management"],
-      ["mobile", "▥", "Standortleiter"],
+      ["dashboard", "Management"],
+      ["mobile", "Standortleiter"],
     ],
   },
   {
     id: "import",
-    icon: "⇧",
     label: "Import & Prüfung",
     items: [
-      ["invoices", "⇧", "Rechnungen"],
-      ["review", "✓", "Prüfcenter"],
+      ["invoices", "Rechnungen"],
+      ["review", "Prüfcenter"],
     ],
   },
   {
     id: "masterdata",
-    icon: "□",
     label: "Stammdaten",
     items: [
-      ["products", "□", "Artikelstamm"],
-      ["suppliers", "◇", "Lieferanten"],
+      ["products", "Artikelstamm"],
+      ["suppliers", "Lieferanten"],
     ],
   },
   {
     id: "analytics",
-    icon: "↔",
     label: "Analysen",
     items: [
-      ["prices", "↔", "Preisvergleich"],
-      ["yearly", "↗", "Jahresvergleich"],
-      ["locations", "⌂", "Standorte"],
-      ["basket", "∑", "Warenkorb"],
+      ["prices", "Preisvergleich"],
+      ["yearly", "Jahresvergleich"],
+      ["locations", "Standorte"],
+      ["basket", "Warenkorb"],
     ],
   },
   {
     id: "actions",
-    icon: "!",
     label: "Steuerung",
     items: [
-      ["recommendations", "!", "Empfehlungen"],
-      ["reports", "▣", "Reports"],
+      ["recommendations", "Empfehlungen"],
+      ["reports", "Reports"],
     ],
   },
   {
     id: "admin",
-    icon: "⚙",
     label: "Administration",
     items: [
-      ["settings", "⚙", "Einstellungen"],
+      ["settings", "Einstellungen"],
     ],
   },
 ];
@@ -353,12 +347,11 @@ function renderNav() {
     return `
       <section class="nav-section ${open ? "open" : ""} ${active ? "active" : ""}">
         <button class="nav-section-trigger" data-section="${section.id}" title="${section.label}" aria-expanded="${open}">
-          <span class="nav-icon">${section.icon}</span>
           <span class="nav-label">${section.label}</span>
           <span class="nav-chevron">⌄</span>
         </button>
         <div class="nav-subitems">
-          ${section.items.map(([id, icon, label]) => `<button class="nav-subitem ${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span class="nav-label">${label}</span></button>`).join("")}
+          ${section.items.map(([id, label]) => `<button class="nav-subitem ${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></button>`).join("")}
         </div>
       </section>
     `;
@@ -376,7 +369,7 @@ function renderNav() {
 function renderBottomNav() {
   const bottomNav = document.getElementById("bottomNav");
   const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "yearly", "recommendations", "mobile"].includes(id));
-  bottomNav.innerHTML = bottomItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span>${shortNavLabel(label)}</span></button>`).join("");
+  bottomNav.innerHTML = bottomItems.map(([id, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span>${shortNavLabel(label)}</span></button>`).join("");
   bottomNav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
     goToView(btn.dataset.view);
   }));

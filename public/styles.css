@@ -95,7 +95,6 @@ body.sidebar-collapsed .app-shell { grid-template-columns: 88px minmax(0, 1fr); 
   font-size: 13px;
 }
 .nav button:hover, .nav button.active { background: var(--sidebar-2); color: white; }
-.nav .nav-icon { width: 22px; text-align: center; opacity: .9; }
 .nav-label { overflow: hidden; text-overflow: ellipsis; }
 .role-card {
   margin-top: auto; display: grid; gap: 8px; padding: 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px;
@@ -111,11 +110,20 @@ body.sidebar-collapsed .sidebar { padding-inline: 14px; }
 body.sidebar-collapsed .brand { grid-template-columns: 42px; justify-content: center; padding-inline: 2px; }
 body.sidebar-collapsed .brand > div,
 body.sidebar-collapsed .sidebar-close,
-body.sidebar-collapsed .nav-label,
 body.sidebar-collapsed .role-card label,
 body.sidebar-collapsed .role-card select { display: none; }
 body.sidebar-collapsed .nav button { justify-content: center; padding-inline: 8px; }
-body.sidebar-collapsed .nav .nav-icon { width: auto; font-size: 18px; }
+body.sidebar-collapsed .nav-label {
+  display: block;
+  max-width: 58px;
+  white-space: normal;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.15;
+}
+body.sidebar-collapsed .nav-section-trigger {
+  min-height: 44px;
+}
 body.sidebar-collapsed .nav-chevron,
 body.sidebar-collapsed .nav-subitems { display: none; }
 body.sidebar-collapsed .role-card { padding: 8px; min-height: 44px; }
@@ -270,7 +278,6 @@ tr:last-child td { border-bottom: 0; }
     border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 800;
   }
   .bottom-nav button.active { background: #e9f2ff; color: var(--blue); }
-  .bottom-nav .nav-icon { font-size: 17px; line-height: 1; }
 }
 
 @media (max-width: 640px) {
