@@ -8,8 +8,8 @@
     <meta name="apple-mobile-web-app-title" content="Material" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>Orisus Materialpreis-Controlling</title>
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="manifest" href="./manifest.webmanifest?v=20260705-02" />
+    <link rel="stylesheet" href="./styles.css?v=20260705-02" />
   </head>
   <body>
     <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
@@ -26,14 +26,10 @@
           <button class="sidebar-close" id="sidebarClose" title="Menü schließen" aria-label="Menü schließen">×</button>
         </div>
         <nav id="nav" class="nav"></nav>
-        <div class="role-card">
-          <label for="roleSelect">Rolle</label>
-          <select id="roleSelect">
-            <option value="superadmin">Superadmin</option>
-            <option value="admin">Admin / Zentrale</option>
-            <option value="location">Standortleiter</option>
-          </select>
-          <select id="locationSelect" aria-label="Standortauswahl"></select>
+        <div class="role-card access-card">
+          <label>Zugang</label>
+          <strong>Admin / Zentrale</strong>
+          <small>Alle Standorte sichtbar</small>
         </div>
       </aside>
 
@@ -51,6 +47,6 @@
         <nav id="bottomNav" class="bottom-nav" aria-label="Mobile Navigation"></nav>
       </main>
     </div>
-    <script src="./app.js"></script>
+    <script src="./app.js?v=20260705-02"></script>
   </body>
 </html>

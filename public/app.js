@@ -4,7 +4,7 @@ const sidebarStorageKey = "orisus-material-sidebar-collapsed";
 
 const state = {
   view: "dashboard",
-  role: "superadmin",
+  role: "admin",
   location: "Kehl",
   query: "",
   supplierFilter: "Alle",
@@ -792,13 +792,10 @@ function bindViewEvents() {
 }
 
 function init() {
-  const roleSelect = document.getElementById("roleSelect");
-  const locationSelect = document.getElementById("locationSelect");
   const sidebarToggle = document.getElementById("sidebarToggle");
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const sidebarClose = document.getElementById("sidebarClose");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
-  locationSelect.innerHTML = locations.map(l => `<option>${l.name}</option>`).join("");
   sidebarToggle.addEventListener("click", toggleSidebar);
   mobileMenuBtn.addEventListener("click", openMobileNav);
   sidebarClose.addEventListener("click", closeMobileNav);
@@ -810,15 +807,6 @@ function init() {
     if (!window.matchMedia("(max-width: 860px)").matches && state.mobileNavOpen) {
       closeMobileNav();
     }
-  });
-  roleSelect.addEventListener("change", event => {
-    state.role = event.target.value;
-    if (state.role === "location") state.view = "mobile";
-    render();
-  });
-  locationSelect.addEventListener("change", event => {
-    state.location = event.target.value;
-    render();
   });
   render();
   fetch("./sample-invoice-imports.json")
