@@ -1,0 +1,11 @@
+{
+  "name": "materialauswertung",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Klickbarer MVP-Prototyp fuer Materialpreis-Controlling, Rechnungsanalyse und Einkaufsempfehlungen.",
+  "scripts": {
+    "dev": "python3 -m http.server 4173 -d public",
+    "build": "echo \"Static app in public/\"",
+    "vercel-build": "echo \"Static app in public/\""
+  }
+}

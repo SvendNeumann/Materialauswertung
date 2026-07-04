@@ -1,0 +1,914 @@
+[
+  {
+    "file": "Rechnung_231053578.PDF",
+    "supplier": "Henry Schein",
+    "document_type": "Rechnung",
+    "invoice_no": "231053578",
+    "invoice_date": "29.05.2026",
+    "customer_no": "10054041",
+    "location_name": "Kehl",
+    "location_address": "Zahnmedizinisches Versorgungszentrum, Seite 1 von 5, Kehl, Rheinstr. 46",
+    "net_total": 5516.56,
+    "vat_total": 1048.15,
+    "gross_total": 6564.71,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 5,
+    "extracted_items": 86,
+    "sample_items": [
+      {
+        "article_no": "1094888",
+        "description": "Mira Clin hap Polierpaste, Pa",
+        "quantity": 6.0,
+        "unit_price": 10.5,
+        "line_total": 46.62,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9002991",
+        "description": "HS-Sterifolie 50mm Sterireel R",
+        "quantity": 1.0,
+        "unit_price": 24.3,
+        "line_total": 15.79,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "325983",
+        "description": "Melag Seal Check Pa 100 Stck",
+        "quantity": 1.0,
+        "unit_price": 66.95,
+        "line_total": 49.54,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "455626",
+        "description": "RISKONTROL NV Einwegansätze we",
+        "quantity": 2.0,
+        "unit_price": 55.95,
+        "line_total": 82.81,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9002992",
+        "description": "HS-Sterifolie 75mm Sterireel R",
+        "quantity": 1.0,
+        "unit_price": 34.9,
+        "line_total": 22.68,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "535332",
+        "description": "CanalPro farbige Spritzen blau",
+        "quantity": 1.0,
+        "unit_price": 13.9,
+        "line_total": 10.29,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "535329",
+        "description": "CanalPro farbige Spritzen rot",
+        "quantity": 1.0,
+        "unit_price": 13.9,
+        "line_total": 10.29,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "312736",
+        "description": "Se Cushion Pa 100 Stck",
+        "quantity": 1.0,
+        "unit_price": 28.6,
+        "line_total": 28.6,
+        "confidence": 0.78
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "Rechnung_231053610.PDF",
+    "supplier": "Henry Schein",
+    "document_type": "Rechnung",
+    "invoice_no": "231053610",
+    "invoice_date": "29.05.2026",
+    "customer_no": "10035281",
+    "location_name": "Kirchberg",
+    "location_address": "Paroimplantologie, Seite 1 von 4, Dres. Kallweit & Kollegen, Auerbacher Str. 13",
+    "net_total": 4992.43,
+    "vat_total": 948.56,
+    "gross_total": 5940.99,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 4,
+    "extracted_items": 46,
+    "sample_items": [
+      {
+        "article_no": "5370890",
+        "description": "Profile 04 31 mm 25 Pa 6St",
+        "quantity": 4.0,
+        "unit_price": 78.71,
+        "line_total": 314.84,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "5725142",
+        "description": "HS-Pappbecher 180ml recycelbar",
+        "quantity": 2.0,
+        "unit_price": 25.9,
+        "line_total": 33.67,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9883113",
+        "description": "HS-Speichelsauger pink/rot 13c",
+        "quantity": 1.0,
+        "unit_price": 2.17,
+        "line_total": 2.17,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "7847197",
+        "description": "Sof Lex Finierstreifen gr/mi b",
+        "quantity": 3.0,
+        "unit_price": 35.45,
+        "line_total": 78.7,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "230349",
+        "description": "Fender Wedge x-small, purple P",
+        "quantity": 1.0,
+        "unit_price": 42.0,
+        "line_total": 31.08,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "230346",
+        "description": "Fender Wedge small, orange P 3",
+        "quantity": 1.0,
+        "unit_price": 42.0,
+        "line_total": 31.08,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "346980",
+        "description": "WL Clean Klinikpackung Pack 4x",
+        "quantity": 2.0,
+        "unit_price": 62.9,
+        "line_total": 125.8,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9208849",
+        "description": "Ligosan Pa 4x0,26g",
+        "quantity": 1.0,
+        "unit_price": 347.0,
+        "line_total": 256.78,
+        "confidence": 0.78
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "Rechnung_231053773.PDF",
+    "supplier": "Henry Schein",
+    "document_type": "Rechnung",
+    "invoice_no": "231053773",
+    "invoice_date": "29.05.2026",
+    "customer_no": "10036284",
+    "location_name": "Kirchberg",
+    "location_address": "Dres. Kallweit & Kollegen, Seite 1 von 3, Praxislabor, Auerbacher Str. 13",
+    "net_total": 2824.72,
+    "vat_total": 538.58,
+    "gross_total": 3373.2,
+    "freight_total": 9.9,
+    "surcharge_total": null,
+    "pages": 3,
+    "extracted_items": 35,
+    "sample_items": [
+      {
+        "article_no": "598898",
+        "description": "Filterbeutel Pa 2 St",
+        "quantity": 1.0,
+        "unit_price": 74.2,
+        "line_total": 74.2,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "4933615",
+        "description": "Paladur Flüssigkeit Pa 500 ml",
+        "quantity": 1.0,
+        "unit_price": 54.2,
+        "line_total": 40.11,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9006280",
+        "description": "HS-Destilliertes Wasser unster",
+        "quantity": 2.0,
+        "unit_price": 18.5,
+        "line_total": 24.05,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "805460",
+        "description": "Arbeitsschale 130 180x130x079",
+        "quantity": 2.0,
+        "unit_price": 12.8,
+        "line_total": 25.6,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "124007",
+        "description": "SEITENSCHNEIDER 18CM",
+        "quantity": 1.0,
+        "unit_price": 17.3,
+        "line_total": 12.8,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "896296",
+        "description": "IPS emax ZirCAD MT Multi A3,5",
+        "quantity": 2.0,
+        "unit_price": 192.7,
+        "line_total": 385.4,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "164104",
+        "description": "Erkodur 0,50 120mm Pack 100Stc",
+        "quantity": 1.0,
+        "unit_price": 81.6,
+        "line_total": 60.38,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "639156",
+        "description": "Bur 1.0 Metal",
+        "quantity": 1.0,
+        "unit_price": 64.2,
+        "line_total": 47.51,
+        "confidence": 0.78
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "Rechnung_231082251.PDF",
+    "supplier": "Henry Schein",
+    "document_type": "Rechnung",
+    "invoice_no": "231082251",
+    "invoice_date": "26.06.2026",
+    "customer_no": "10054041",
+    "location_name": "Kehl",
+    "location_address": "Zahnmedizinisches Versorgungszentrum, Seite 1 von 4, Kehl, Rheinstr. 46",
+    "net_total": 3373.4,
+    "vat_total": 646.59,
+    "gross_total": 4049.69,
+    "freight_total": 29.7,
+    "surcharge_total": null,
+    "pages": 4,
+    "extracted_items": 52,
+    "sample_items": [
+      {
+        "article_no": "9118041",
+        "description": "Dryz Unit-Dose Gingival Retrac",
+        "quantity": 1.0,
+        "unit_price": 86.8,
+        "line_total": 64.23,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "90024792",
+        "description": "HS-Maxima Injektionskan 30G",
+        "quantity": 1.0,
+        "unit_price": 14.8,
+        "line_total": 9.62,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9155127",
+        "description": "Septoject XL Nadeln 27G 35mm",
+        "quantity": 1.0,
+        "unit_price": 17.55,
+        "line_total": 12.99,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9138418",
+        "description": "Flairesse Gel Erdbeere",
+        "quantity": 2.0,
+        "unit_price": 76.1,
+        "line_total": 112.63,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "465031",
+        "description": "Ah Temp Kit Set kompl",
+        "quantity": 1.0,
+        "unit_price": 55.97,
+        "line_total": 55.97,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "5393405",
+        "description": "Transcodent Injektionskanülen",
+        "quantity": 4.0,
+        "unit_price": 16.2,
+        "line_total": 47.95,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9001318",
+        "description": "HS-Trayeinlagen weiss 18x28, T",
+        "quantity": 6.0,
+        "unit_price": 4.2,
+        "line_total": 25.2,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "456282",
+        "description": "Tork Advanced Handtuch weiß 2l",
+        "quantity": 1.0,
+        "unit_price": 84.3,
+        "line_total": 62.38,
+        "confidence": 0.78
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "Rechnung_231082265.PDF",
+    "supplier": "Henry Schein",
+    "document_type": "Rechnung",
+    "invoice_no": "231082265",
+    "invoice_date": "26.06.2026",
+    "customer_no": "10035281",
+    "location_name": "Kirchberg",
+    "location_address": "Paroimplantologie, Seite 1 von 4, Dres. Kallweit & Kollegen, Auerbacher Str. 13",
+    "net_total": 6319.54,
+    "vat_total": 1200.71,
+    "gross_total": 7520.25,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 4,
+    "extracted_items": 67,
+    "sample_items": [
+      {
+        "article_no": "9203461",
+        "description": "Oral-B Satin Tape 50m",
+        "quantity": 10.0,
+        "unit_price": 2.7,
+        "line_total": 19.98,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "4538240",
+        "description": "HUWA SAN DENT P KART 6FL",
+        "quantity": 1.0,
+        "unit_price": 58.9,
+        "line_total": 43.59,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "1114401",
+        "description": "Mani K Feilen 25mm 15 P 6St",
+        "quantity": 8.0,
+        "unit_price": 8.65,
+        "line_total": 51.21,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9002991",
+        "description": "HS-Sterifolie 50mm Sterireel R",
+        "quantity": 1.0,
+        "unit_price": 24.3,
+        "line_total": 15.79,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "646512",
+        "description": "SDR Flow Plus Refill Univ. Pa",
+        "quantity": 4.0,
+        "unit_price": 53.46,
+        "line_total": 213.84,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "456283",
+        "description": "Tork Advanced Handtuch grün 2l",
+        "quantity": 1.0,
+        "unit_price": 52.75,
+        "line_total": 39.03,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "825514",
+        "description": "Night Cleaner 800ml",
+        "quantity": 2.0,
+        "unit_price": 15.35,
+        "line_total": 30.7,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "203536",
+        "description": "Mtwo Taper 06 25 Mm/25 Ab 16 M",
+        "quantity": 6.0,
+        "unit_price": 54.48,
+        "line_total": 326.88,
+        "confidence": 0.78
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "Rechnung_231083648.PDF",
+    "supplier": "Henry Schein",
+    "document_type": "Rechnung",
+    "invoice_no": "231083648",
+    "invoice_date": "26.06.2026",
+    "customer_no": "10036284",
+    "location_name": "Kirchberg",
+    "location_address": "Dres. Kallweit & Kollegen, Seite 1 von 3, Praxislabor, Auerbacher Str. 13",
+    "net_total": 1212.19,
+    "vat_total": 232.2,
+    "gross_total": 1454.29,
+    "freight_total": 9.9,
+    "surcharge_total": null,
+    "pages": 3,
+    "extracted_items": 27,
+    "sample_items": [
+      {
+        "article_no": "211912",
+        "description": "Staubbeutelset vollsynthetisch",
+        "quantity": 1.0,
+        "unit_price": 68.5,
+        "line_total": 68.5,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "5317453",
+        "description": "Fujivest Super Flüssigkeit Fla",
+        "quantity": 1.0,
+        "unit_price": 30.95,
+        "line_total": 22.9,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "578605",
+        "description": "IPS Ivocolor Glaze Paste FLUO",
+        "quantity": 1.0,
+        "unit_price": 157.5,
+        "line_total": 116.55,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "9006280",
+        "description": "HS-Destilliertes Wasser unster",
+        "quantity": 2.0,
+        "unit_price": 18.5,
+        "line_total": 24.05,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "538305",
+        "description": "Bur 2,5 PMMA ST",
+        "quantity": 2.0,
+        "unit_price": 69.7,
+        "line_total": 103.16,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "538308",
+        "description": "Bur 0,5 PMMA ST",
+        "quantity": 1.0,
+        "unit_price": 72.0,
+        "line_total": 53.28,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "538307",
+        "description": "Bur 1,0 PMMA ST",
+        "quantity": 1.0,
+        "unit_price": 66.9,
+        "line_total": 49.51,
+        "confidence": 0.78
+      },
+      {
+        "article_no": "609574",
+        "description": "Bur 2,5 ZrO2 DC ST",
+        "quantity": 1.0,
+        "unit_price": 125.65,
+        "line_total": 92.98,
+        "confidence": 0.78
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "SalesInvoice__001_119529_7285970_20260615_220717.PDF",
+    "supplier": "Plandent",
+    "document_type": "Gutschrift",
+    "invoice_no": "7285970",
+    "invoice_date": "15.06.2026",
+    "customer_no": "119529",
+    "location_name": "Hüttenberg",
+    "location_address": "Kunden-Nr.: 119529, Orisus Zahnmedizin MVZ GmbH Niederlassung: Plandent Essen, Zahnärztezentrum Hüttenberg MVZ Tel: 0201 278994 0, Langgönser Str. 29",
+    "net_total": -416.08,
+    "vat_total": -79.06,
+    "gross_total": -495.14,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 1,
+    "extracted_items": 1,
+    "sample_items": [
+      {
+        "article_no": "317288",
+        "description": "Filtek Easy Match Universal Natural",
+        "quantity": -8.0,
+        "unit_price": 52.01,
+        "line_total": -416.08,
+        "confidence": 0.88
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "SalesInvoice__001_119529_7298107_20260621_232536.PDF",
+    "supplier": "Plandent",
+    "document_type": "Rechnung",
+    "invoice_no": "7298107",
+    "invoice_date": "21.06.2026",
+    "customer_no": "119529",
+    "location_name": "Hüttenberg",
+    "location_address": "Kunden-Nr.: 119529, Orisus Zahnmedizin MVZ GmbH Niederlassung: Plandent Essen, Zahnärztezentrum Hüttenberg MVZ Tel: 0201 278994 0, Langgönser Str. 29",
+    "net_total": 2156.82,
+    "vat_total": 409.8,
+    "gross_total": 2566.62,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 6,
+    "extracted_items": 27,
+    "sample_items": [
+      {
+        "article_no": "144741",
+        "description": "ORBIject Kanülen grün 13mm G30",
+        "quantity": 2.0,
+        "unit_price": 10.21,
+        "line_total": 20.41,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "087792",
+        "description": "Interdentalkeile 822.10 orange",
+        "quantity": 2.0,
+        "unit_price": 13.09,
+        "line_total": 26.18,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "301850",
+        "description": "Chlorhexamed Praxis Gel 1% 50g",
+        "quantity": 1.0,
+        "unit_price": 7.47,
+        "line_total": 7.47,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "179956",
+        "description": "Interdentalbürsten gelb Gr. 0,7mm",
+        "quantity": 3.0,
+        "unit_price": 9.62,
+        "line_total": 28.86,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "244381",
+        "description": "Eddy Spülkanülen 5x2St.",
+        "quantity": 2.0,
+        "unit_price": 46.97,
+        "line_total": 93.94,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "216028",
+        "description": "Reciproc Feilen 21 mm R40 6 St.",
+        "quantity": 3.0,
+        "unit_price": 87.5,
+        "line_total": 262.5,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "185279",
+        "description": "Calcinase 500 ml",
+        "quantity": 1.0,
+        "unit_price": 119.67,
+        "line_total": 119.67,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "244323",
+        "description": "Penta Mischkanülen 50St.",
+        "quantity": 2.0,
+        "unit_price": 43.95,
+        "line_total": 87.9,
+        "confidence": 0.88
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "SalesInvoice__001_119529_7309817_20260628_231314.PDF",
+    "supplier": "Plandent",
+    "document_type": "Rechnung",
+    "invoice_no": "7309817",
+    "invoice_date": "28.06.2026",
+    "customer_no": "119529",
+    "location_name": "Hüttenberg",
+    "location_address": "Kunden-Nr.: 119529, Orisus Zahnmedizin MVZ GmbH Niederlassung: Plandent Essen, Zahnärztezentrum Hüttenberg MVZ Tel: 0201 278994 0, Langgönser Str. 29",
+    "net_total": 783.2,
+    "vat_total": 150.04,
+    "gross_total": 939.74,
+    "freight_total": null,
+    "surcharge_total": 6.5,
+    "pages": 2,
+    "extracted_items": 8,
+    "sample_items": [
+      {
+        "article_no": "215523",
+        "description": "Ti-Max X55 Prophy-Winkelstück 4:1",
+        "quantity": 1.0,
+        "unit_price": 409.0,
+        "line_total": 409.0,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "180013",
+        "description": "ORBIS Schaumstoffpellets 8mm",
+        "quantity": 2.0,
+        "unit_price": 11.53,
+        "line_total": 23.05,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "199300",
+        "description": "Einmalhandtücher 2-lagig hochweiß",
+        "quantity": 1.0,
+        "unit_price": 34.55,
+        "line_total": 34.55,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "244286",
+        "description": "Endo Absaugkanülen Luer 30G",
+        "quantity": 4.0,
+        "unit_price": 26.84,
+        "line_total": 107.36,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "160294",
+        "description": "Mischbettharz für Meladem 40 2St.",
+        "quantity": 1.0,
+        "unit_price": 53.9,
+        "line_total": 53.9,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "301761",
+        "description": "ORBI-Sept Wet Wipes Sensitive",
+        "quantity": 18.0,
+        "unit_price": 7.88,
+        "line_total": 141.84,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "106981",
+        "description": "FW 90 Grad Bogen",
+        "quantity": 2.0,
+        "unit_price": 5.4,
+        "line_total": 10.8,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "119594",
+        "description": "FW Sicherungsring",
+        "quantity": 2.0,
+        "unit_price": 1.35,
+        "line_total": 2.7,
+        "confidence": 0.88
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "SalesInvoice__001_119627_7309826_20260628_231341.PDF",
+    "supplier": "Plandent",
+    "document_type": "Rechnung",
+    "invoice_no": "7309826",
+    "invoice_date": "28.06.2026",
+    "customer_no": "119627",
+    "location_name": "Hüttenberg",
+    "location_address": "Kunden-Nr.: 119627, Orisus Zahnmedizin MVZ GmbH Niederlassung: Plandent Essen, Zahnärzte / Praxislabor Tel: 0201 278994 0, Langgönser Str. 29",
+    "net_total": 248.19,
+    "vat_total": 47.16,
+    "gross_total": 295.35,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 2,
+    "extracted_items": 3,
+    "sample_items": [
+      {
+        "article_no": "139523",
+        "description": "Rundmagnete Splitcast 100 St.",
+        "quantity": 1.0,
+        "unit_price": 52.8,
+        "line_total": 52.8,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "246104",
+        "description": "Durasplint LC 3er-Riegel",
+        "quantity": 3.0,
+        "unit_price": 33.27,
+        "line_total": 99.81,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "033855",
+        "description": "Durasoft pd 1,8x125mm 10St.",
+        "quantity": 2.0,
+        "unit_price": 47.79,
+        "line_total": 95.58,
+        "confidence": 0.88
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "312075-Ihre_GERL-Rechnung_1026136155.pdf",
+    "supplier": "GERL",
+    "document_type": "Monatsrechnung",
+    "invoice_no": "1026136155",
+    "invoice_date": "31.05.2026",
+    "customer_no": "312075",
+    "location_name": "Essen Zollverein",
+    "location_address": "Praxis ----------------------------------------, Orisus Zahnmedizin MVZ GmbH Nummer 1026136155, Zahnmedizinisches Versorgungszentrum an Datum 31.05.2026, der Zeche Zollverein Kundennummer 312075",
+    "net_total": 3792.14,
+    "vat_total": 720.51,
+    "gross_total": 4512.65,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 7,
+    "extracted_items": 52,
+    "sample_items": [
+      {
+        "article_no": "16424",
+        "description": "Prophy-Mate neo Handstück m.60°",
+        "quantity": 1.0,
+        "unit_price": 258.58,
+        "line_total": 258.58,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "202127",
+        "description": "KATANA Zirconia Block STML 12Z A3",
+        "quantity": 2.0,
+        "unit_price": 115.92,
+        "line_total": 231.84,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "12641",
+        "description": "Impregum Penta 2x300ml",
+        "quantity": 2.0,
+        "unit_price": 210.94,
+        "line_total": 421.88,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "118533",
+        "description": "Ketac Univ.Aplicap weiß",
+        "quantity": 1.0,
+        "unit_price": 115.72,
+        "line_total": 115.72,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "73997",
+        "description": "Clip Spritze Pa 2x4g",
+        "quantity": 1.0,
+        "unit_price": 39.22,
+        "line_total": 39.22,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "117435",
+        "description": "PANAVIA V5 universal A2",
+        "quantity": 2.0,
+        "unit_price": 109.97,
+        "line_total": 219.94,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "122347",
+        "description": "Omnibite Vanilla",
+        "quantity": 4.0,
+        "unit_price": 27.99,
+        "line_total": 111.96,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "105356",
+        "description": "Sopira Free Flow 0,3/12 kurz ansch",
+        "quantity": 5.0,
+        "unit_price": 16.65,
+        "line_total": 83.25,
+        "confidence": 0.88
+      }
+    ],
+    "warnings": []
+  },
+  {
+    "file": "312075-Ihre_GERL-Rechnung_1026167513.pdf",
+    "supplier": "GERL",
+    "document_type": "Monatsrechnung",
+    "invoice_no": "1026167513",
+    "invoice_date": "30.06.2026",
+    "customer_no": "312075",
+    "location_name": "Essen Zollverein",
+    "location_address": "Praxis ----------------------------------------, Orisus Zahnmedizin MVZ GmbH Nummer 1026167513, Zahnmedizinisches Versorgungszentrum an Datum 30.06.2026, der Zeche Zollverein Kundennummer 312075",
+    "net_total": 2855.92,
+    "vat_total": 542.62,
+    "gross_total": 3398.54,
+    "freight_total": null,
+    "surcharge_total": null,
+    "pages": 6,
+    "extracted_items": 50,
+    "sample_items": [
+      {
+        "article_no": "128302",
+        "description": "Eltra 40 Extra Pa 8,3kg",
+        "quantity": -1.0,
+        "unit_price": 90.26,
+        "line_total": -90.26,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "896162",
+        "description": "Bearbeitungsgebühr",
+        "quantity": 1.0,
+        "unit_price": 2.71,
+        "line_total": 2.71,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "10337",
+        "description": "Omnidrill Bohrerbad Kanister 10l",
+        "quantity": 1.0,
+        "unit_price": 36.26,
+        "line_total": 36.26,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "51577",
+        "description": "Tetric EvoCeram Composite A3",
+        "quantity": 2.0,
+        "unit_price": 69.15,
+        "line_total": 138.3,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "43673",
+        "description": "ProphyCare Paste rot RDA 120",
+        "quantity": 3.0,
+        "unit_price": 15.82,
+        "line_total": 47.46,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "43672",
+        "description": "ProphyCare Paste grün RDA 170",
+        "quantity": 3.0,
+        "unit_price": 15.82,
+        "line_total": 47.46,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "214666",
+        "description": "Dontisolon D Zylinderampullen",
+        "quantity": 1.0,
+        "unit_price": 49.77,
+        "line_total": 49.77,
+        "confidence": 0.88
+      },
+      {
+        "article_no": "211344",
+        "description": "GuttaFlow2 o.Silber ROEKO Refillpa",
+        "quantity": 3.0,
+        "unit_price": 58.71,
+        "line_total": 176.13,
+        "confidence": 0.88
+      }
+    ],
+    "warnings": []
+  }
+]

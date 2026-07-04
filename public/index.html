@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Orisus Materialpreis-Controlling</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Hauptnavigation">
+        <div class="brand">
+          <span class="brand-mark">O</span>
+          <div>
+            <strong>Orisus</strong>
+            <small>Material-Controlling</small>
+          </div>
+        </div>
+        <nav id="nav" class="nav"></nav>
+        <div class="role-card">
+          <label for="roleSelect">Rolle</label>
+          <select id="roleSelect">
+            <option value="superadmin">Superadmin</option>
+            <option value="admin">Admin / Zentrale</option>
+            <option value="location">Standortleiter</option>
+          </select>
+          <select id="locationSelect" aria-label="Standortauswahl"></select>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="viewEyebrow">Management-Dashboard</p>
+            <h1 id="viewTitle">Materialpreis-Controlling</h1>
+          </div>
+          <div class="top-actions">
+            <button class="icon-btn" id="exportPdf" title="Report als PDF vorbereiten">PDF</button>
+            <button class="icon-btn" id="exportExcel" title="Excel/CSV exportieren">XLS</button>
+          </div>
+        </header>
+        <section id="view" class="view"></section>
+      </main>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>
