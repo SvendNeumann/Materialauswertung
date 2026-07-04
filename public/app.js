@@ -791,18 +791,6 @@ function bindViewEvents() {
   document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
 }
 
-function exportCsv() {
-  const rows = recommendations().map(r => [r.className, r.product.name, r.inv.location, r.inv.supplier, r.recommendedSupplier, r.saving.toFixed(2)]);
-  const csv = ["Priorität;Artikel;Standort;Aktuell;Empfohlen;Ersparnis", ...rows.map(r => r.join(";"))].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "materialauswertung-empfehlungen.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 function init() {
   const roleSelect = document.getElementById("roleSelect");
   const locationSelect = document.getElementById("locationSelect");
@@ -832,8 +820,6 @@ function init() {
     state.location = event.target.value;
     render();
   });
-  document.getElementById("exportExcel").addEventListener("click", exportCsv);
-  document.getElementById("exportPdf").addEventListener("click", () => window.print());
   render();
   fetch("./sample-invoice-imports.json")
     .then(response => response.ok ? response.json() : [])
