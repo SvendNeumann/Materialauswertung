@@ -450,7 +450,7 @@ function titleFor(id) {
     basket: "Warenkorbanalyse",
     recommendations: "Einkaufsempfehlungen",
     reports: "Report-Center",
-    settings: "Einstellungen & Datenmodell",
+    settings: "Zugänge & Rechte",
     mobile: "Mobile Standortleiter-Ansicht",
   })[id];
 }
@@ -610,7 +610,7 @@ function reportsView() {
 }
 
 function settingsView() {
-  return `<div class="grid cols-2"><section class="panel"><h2>Rollen & Rechte</h2>${roleTable()}</section><section class="panel"><h2>Audit-Log</h2><div class="audit"><div><strong>Heute 00:21</strong><br><span class="muted">Vercel-Projekt verknüpft</span></div><div><strong>Heute 00:24</strong><br><span class="muted">GitHub-Remote gesetzt</span></div><div><strong>Demo</strong><br><span class="muted">Rechnung PL-190442 in Prüfung geöffnet</span></div></div></section><section class="panel" style="grid-column:1/-1"><h2>Vorbereitetes Datenmodell</h2>${dataModelTable()}</section></div>`;
+  return `<section class="panel"><h2>Zugänge & Rechte</h2>${roleTable()}</section>`;
 }
 
 function mobileView() {
@@ -742,10 +742,6 @@ function roleTable() {
     ["Admin / Zentrale", "ja", "ja", "ja", "ja"],
     ["Standortleiter", "nein", "nein", "nur eigener", "eingeschränkt"],
   ]);
-}
-
-function dataModelTable() {
-  return table(["Tabelle", "Zweck"], ["users", "roles", "locations", "suppliers", "supplier_location_accounts", "invoices", "invoice_items", "invoice_adjustments", "products", "supplier_products", "product_matches", "price_calculations", "recommendations", "recommendation_actions", "reports", "audit_logs"].map(t => [t, "für Datenbank-MVP vorbereitet"]));
 }
 
 function table(headers, rows) {

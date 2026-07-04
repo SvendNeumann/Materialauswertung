@@ -214,8 +214,6 @@ tr:last-child td { border-bottom: 0; }
 .workflow span.active { color: white; background: var(--blue); border-color: var(--blue); }
 .mobile-card { display: grid; gap: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: white; }
 .mobile-card .price-row { display: flex; justify-content: space-between; gap: 12px; }
-.audit { display: grid; gap: 10px; }
-.audit div { padding-left: 12px; border-left: 3px solid var(--line); }
 .bottom-nav { display: none; }
 
 @media (max-width: 1180px) {
@@ -509,8 +507,7 @@ h3 {
 }
 
 .chart-bars,
-.calc-box,
-.audit {
+.calc-box {
   border-radius: 14px;
   border: 1px solid rgba(178, 226, 229, 0.16);
   background:
