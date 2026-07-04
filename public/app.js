@@ -317,7 +317,18 @@ function titleFor(id) {
 }
 
 function metric(label, value, sub = "") {
-  return `<article class="panel metric"><label>${label}</label><strong>${value}</strong><small>${sub}</small></article>`;
+  return `<article class="panel metric modern-kpi-card"><span class="modern-icon-tile">${metricIcon(label)}</span><label>${label}</label><strong>${value}</strong><small>${sub}</small></article>`;
+}
+
+function metricIcon(label) {
+  if (label.includes("Rechnung")) return "▤";
+  if (label.includes("Volumen")) return "€";
+  if (label.includes("Potenzial")) return "↗";
+  if (label.includes("A-Fälle")) return "!";
+  if (label.includes("Artikel")) return "□";
+  if (label.includes("Lieferanten")) return "◇";
+  if (label.includes("Abweichung")) return "%";
+  return "✓";
 }
 
 function dashboard() {
@@ -535,7 +546,7 @@ function dataModelTable() {
 }
 
 function table(headers, rows) {
-  return `<div class="table-wrap"><table><thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(row => `<tr>${row.map((cell, i) => `<td class="${String(cell).startsWith("€") || i > 4 ? "num" : ""}">${cell}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  return `<div class="table-wrap table-scroll-frame"><table class="data-table"><thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(row => `<tr>${row.map((cell, i) => `<td class="${String(cell).startsWith("€") || i > 4 ? "num" : ""}">${cell}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 
 function status(value) {
