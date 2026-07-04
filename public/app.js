@@ -11,24 +11,69 @@ const state = {
   locationFilter: "Alle",
   categoryFilter: "Alle",
   sampleImports: [],
+  openNavSection: "overview",
   sidebarCollapsed: localStorage.getItem(sidebarStorageKey) === "true",
   mobileNavOpen: false,
 };
 
-const navItems = [
-  ["dashboard", "◼", "Dashboard"],
-  ["invoices", "⇧", "Rechnungen"],
-  ["review", "✓", "Prüfcenter"],
-  ["products", "□", "Artikelstamm"],
-  ["suppliers", "◇", "Lieferanten"],
-  ["prices", "↔", "Preisvergleich"],
-  ["locations", "⌂", "Standortanalyse"],
-  ["basket", "∑", "Warenkorb"],
-  ["recommendations", "!", "Empfehlungen"],
-  ["reports", "▣", "Reports"],
-  ["settings", "⚙", "Einstellungen"],
-  ["mobile", "▥", "Standortleiter"],
+const navSections = [
+  {
+    id: "overview",
+    icon: "◼",
+    label: "Überblick",
+    items: [
+      ["dashboard", "◼", "Management"],
+      ["mobile", "▥", "Standortleiter"],
+    ],
+  },
+  {
+    id: "import",
+    icon: "⇧",
+    label: "Import & Prüfung",
+    items: [
+      ["invoices", "⇧", "Rechnungen"],
+      ["review", "✓", "Prüfcenter"],
+    ],
+  },
+  {
+    id: "masterdata",
+    icon: "□",
+    label: "Stammdaten",
+    items: [
+      ["products", "□", "Artikelstamm"],
+      ["suppliers", "◇", "Lieferanten"],
+    ],
+  },
+  {
+    id: "analytics",
+    icon: "↔",
+    label: "Analysen",
+    items: [
+      ["prices", "↔", "Preisvergleich"],
+      ["locations", "⌂", "Standorte"],
+      ["basket", "∑", "Warenkorb"],
+    ],
+  },
+  {
+    id: "actions",
+    icon: "!",
+    label: "Steuerung",
+    items: [
+      ["recommendations", "!", "Empfehlungen"],
+      ["reports", "▣", "Reports"],
+    ],
+  },
+  {
+    id: "admin",
+    icon: "⚙",
+    label: "Administration",
+    items: [
+      ["settings", "⚙", "Einstellungen"],
+    ],
+  },
 ];
+
+const navItems = navSections.flatMap(section => section.items);
 
 const locations = [
   { id: "kehl", name: "Kehl", manager: "M. Schneider", invoices: 42, address: "Hauptstr. 18, Kehl" },
@@ -238,11 +283,32 @@ function render() {
 
 function renderNav() {
   const nav = document.getElementById("nav");
-  nav.innerHTML = navItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span class="nav-label">${label}</span></button>`).join("");
-  nav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
-    state.view = btn.dataset.view;
-    closeMobileNav();
+  if (!state.openNavSection) {
+    state.openNavSection = sectionForView(state.view)?.id || "overview";
+  }
+  nav.innerHTML = navSections.map(section => {
+    const open = state.openNavSection === section.id;
+    const active = section.items.some(([id]) => id === state.view);
+    return `
+      <section class="nav-section ${open ? "open" : ""} ${active ? "active" : ""}">
+        <button class="nav-section-trigger" data-section="${section.id}" title="${section.label}" aria-expanded="${open}">
+          <span class="nav-icon">${section.icon}</span>
+          <span class="nav-label">${section.label}</span>
+          <span class="nav-chevron">⌄</span>
+        </button>
+        <div class="nav-subitems">
+          ${section.items.map(([id, icon, label]) => `<button class="nav-subitem ${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span class="nav-label">${label}</span></button>`).join("")}
+        </div>
+      </section>
+    `;
+  }).join("");
+  nav.querySelectorAll("[data-section]").forEach(btn => btn.addEventListener("click", () => {
+    const nextSection = btn.dataset.section;
+    state.openNavSection = state.openNavSection === nextSection ? "" : nextSection;
     render();
+  }));
+  nav.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("click", () => {
+    goToView(btn.dataset.view);
   }));
 }
 
@@ -251,10 +317,20 @@ function renderBottomNav() {
   const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "prices", "recommendations", "mobile"].includes(id));
   bottomNav.innerHTML = bottomItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span>${shortNavLabel(label)}</span></button>`).join("");
   bottomNav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
-    state.view = btn.dataset.view;
-    closeMobileNav();
-    render();
+    goToView(btn.dataset.view);
   }));
+}
+
+function sectionForView(viewId) {
+  return navSections.find(section => section.items.some(([id]) => id === viewId));
+}
+
+function goToView(viewId) {
+  state.view = viewId;
+  const nextSection = sectionForView(viewId);
+  state.openNavSection = nextSection?.id || state.openNavSection;
+  closeMobileNav();
+  render();
 }
 
 function shortNavLabel(label) {

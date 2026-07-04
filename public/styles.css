@@ -59,10 +59,40 @@ body.sidebar-collapsed .app-shell { grid-template-columns: 88px minmax(0, 1fr); 
   display: none; width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.16); border-radius: 8px;
   background: rgba(255,255,255,.08); color: white; font-size: 22px; line-height: 1;
 }
-.nav { display: grid; gap: 4px; }
+.nav { display: grid; gap: 8px; }
+.nav-section { display: grid; gap: 4px; }
 .nav button {
   width: 100%; min-height: 40px; display: flex; align-items: center; gap: 10px;
   border: 0; border-radius: 8px; color: #d9e3f5; background: transparent; padding: 10px 12px; text-align: left; white-space: nowrap;
+}
+.nav-section-trigger {
+  font-weight: 850;
+}
+.nav-section.active .nav-section-trigger {
+  background: rgba(48, 213, 200, 0.08);
+}
+.nav-chevron {
+  margin-left: auto;
+  color: rgba(217, 227, 245, 0.72);
+  transition: transform 160ms ease;
+}
+.nav-section.open .nav-chevron {
+  transform: rotate(180deg);
+}
+.nav-subitems {
+  display: none;
+  gap: 3px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(178, 226, 229, 0.16);
+  margin-left: 22px;
+}
+.nav-section.open .nav-subitems {
+  display: grid;
+}
+.nav-subitem {
+  min-height: 36px !important;
+  padding-block: 8px !important;
+  font-size: 13px;
 }
 .nav button:hover, .nav button.active { background: var(--sidebar-2); color: white; }
 .nav .nav-icon { width: 22px; text-align: center; opacity: .9; }
@@ -84,6 +114,8 @@ body.sidebar-collapsed .role-card label,
 body.sidebar-collapsed .role-card select { display: none; }
 body.sidebar-collapsed .nav button { justify-content: center; padding-inline: 8px; }
 body.sidebar-collapsed .nav .nav-icon { width: auto; font-size: 18px; }
+body.sidebar-collapsed .nav-chevron,
+body.sidebar-collapsed .nav-subitems { display: none; }
 body.sidebar-collapsed .role-card { padding: 8px; min-height: 44px; }
 body.sidebar-collapsed .role-card::before {
   content: "⚙";
@@ -212,6 +244,8 @@ tr:last-child td { border-bottom: 0; }
   body.sidebar-collapsed .role-card label,
   body.sidebar-collapsed .role-card select { display: initial; }
   body.sidebar-collapsed .nav button { justify-content: flex-start; padding-inline: 12px; }
+  body.sidebar-collapsed .nav-chevron { display: inline; }
+  body.sidebar-collapsed .nav-section.open .nav-subitems { display: grid; }
   body.sidebar-collapsed .role-card { padding: 12px; }
   body.sidebar-collapsed .role-card::before { display: none; }
   .sidebar-close { display: grid; place-items: center; }
@@ -360,6 +394,31 @@ h3 {
 .nav button.active {
   background: rgba(48, 213, 200, 0.12);
   color: #79eee7;
+}
+
+.nav-section-trigger {
+  border: 1px solid rgba(178, 226, 229, 0.08) !important;
+}
+
+.nav-section.active .nav-section-trigger,
+.nav-section.open .nav-section-trigger {
+  border-color: rgba(121, 238, 231, 0.18) !important;
+  background: rgba(48, 213, 200, 0.1);
+  color: #79eee7;
+}
+
+.nav-subitems {
+  border-left-color: rgba(121, 238, 231, 0.18);
+}
+
+.nav-subitem {
+  color: #b5cbd1 !important;
+}
+
+.nav-subitem.active,
+.nav-subitem:hover {
+  color: #79eee7 !important;
+  background: rgba(48, 213, 200, 0.12) !important;
 }
 
 .topbar {
