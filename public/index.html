@@ -8,8 +8,8 @@
     <meta name="apple-mobile-web-app-title" content="Material" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>Orisus Materialpreis-Controlling</title>
-    <link rel="manifest" href="./manifest.webmanifest?v=20260705-05" />
-    <link rel="stylesheet" href="./styles.css?v=20260705-05" />
+    <link rel="manifest" href="./manifest.webmanifest?v=20260705-06" />
+    <link rel="stylesheet" href="./styles.css?v=20260705-06" />
   </head>
   <body>
     <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
@@ -35,18 +35,25 @@
 
       <main class="main app-main">
         <header class="topbar">
+          <div class="mobile-header-brand" aria-label="Orisus Zahnmedizin">
+            <img src="./orisus-logo.png" alt="Orisus Zahnmedizin" />
+          </div>
           <div class="top-title">
-            <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menü öffnen" aria-label="Menü öffnen">☰</button>
             <div>
             <p class="eyebrow" id="viewEyebrow">Management-Dashboard</p>
             <h1 id="viewTitle">Materialpreis-Controlling</h1>
             </div>
           </div>
+          <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menü öffnen" aria-label="Menü öffnen">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </header>
         <section id="view" class="view"></section>
         <nav id="bottomNav" class="bottom-nav" aria-label="Mobile Navigation"></nav>
       </main>
     </div>
-    <script src="./app.js?v=20260705-05"></script>
+    <script src="./app.js?v=20260705-06"></script>
   </body>
 </html>
