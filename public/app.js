@@ -50,6 +50,7 @@ const navSections = [
     label: "Analysen",
     items: [
       ["prices", "↔", "Preisvergleich"],
+      ["yearly", "↗", "Jahresvergleich"],
       ["locations", "⌂", "Standorte"],
       ["basket", "∑", "Warenkorb"],
     ],
@@ -142,6 +143,28 @@ const invoiceItems = [
 ].map(([invoiceId, productId, qty, listPrice, itemDiscount, supplierName, match]) => ({
   invoiceId, productId, qty, listPrice, itemDiscount, supplierName, match
 }));
+
+const historicalPriceFactors = {
+  "P-100": { 2024: 0.88, 2025: 0.94, 2026: 1.00 },
+  "P-110": { 2024: 0.91, 2025: 0.96, 2026: 1.00 },
+  "P-120": { 2024: 0.87, 2025: 0.93, 2026: 1.00 },
+  "P-130": { 2024: 0.82, 2025: 0.91, 2026: 1.00 },
+  "P-140": { 2024: 0.78, 2025: 0.89, 2026: 1.00 },
+  "P-150": { 2024: 0.84, 2025: 0.92, 2026: 1.00 },
+  "P-160": { 2024: 0.89, 2025: 0.95, 2026: 1.00 },
+  "P-170": { 2024: 0.92, 2025: 0.97, 2026: 1.00 },
+};
+
+const historicalVolumes = {
+  "P-100": { 2024: 11600, 2025: 13900, 2026: 16200 },
+  "P-110": { 2024: 8200, 2025: 9300, 2026: 10400 },
+  "P-120": { 2024: 7100, 2025: 8600, 2026: 9900 },
+  "P-130": { 2024: 520, 2025: 610, 2026: 740 },
+  "P-140": { 2024: 410, 2025: 470, 2026: 540 },
+  "P-150": { 2024: 290, 2025: 330, 2026: 390 },
+  "P-160": { 2024: 130, 2025: 165, 2026: 180 },
+  "P-170": { 2024: 680, 2025: 720, 2026: 810 },
+};
 
 function invoiceTotalBeforeAdjustments(invoiceId) {
   return invoiceItems.filter(i => i.invoiceId === invoiceId).reduce((sum, i) => sum + i.qty * i.listPrice * (1 - i.itemDiscount), 0);
@@ -254,6 +277,44 @@ function locationStats() {
   });
 }
 
+function yearlyPriceRows() {
+  return products.map(product => {
+    const current = groupAverage(product.id);
+    const factors = historicalPriceFactors[product.id];
+    const price2024 = current * factors[2024];
+    const price2025 = current * factors[2025];
+    const price2026 = current * factors[2026];
+    const volume2026 = historicalVolumes[product.id][2026];
+    const yoy = price2026 / price2025 - 1;
+    const since2024 = price2026 / price2024 - 1;
+    const annualImpact = Math.max(0, price2026 - price2025) * volume2026;
+    const status = annualImpact > 900 || yoy > 0.09 ? "A-Fall" : annualImpact > 350 || yoy > 0.055 ? "B-Fall" : "C-Fall";
+    const mainSupplier = cheapestSupplier(product.id);
+    return { product, price2024, price2025, price2026, yoy, since2024, volume2026, annualImpact, status, mainSupplier };
+  }).sort((a, b) => b.annualImpact - a.annualImpact);
+}
+
+function yearlySummary() {
+  const rows = yearlyPriceRows();
+  const weighted2025 = rows.reduce((sum, row) => sum + row.price2025 * row.volume2026, 0);
+  const weighted2026 = rows.reduce((sum, row) => sum + row.price2026 * row.volume2026, 0);
+  const annualImpact = rows.reduce((sum, row) => sum + row.annualImpact, 0);
+  return {
+    avgIncrease: weighted2026 / weighted2025 - 1,
+    annualImpact,
+    aCases: rows.filter(row => row.status === "A-Fall").length,
+    strongest: rows[0],
+  };
+}
+
+function invoiceYears() {
+  const years = new Set(invoices.map(invoice => invoice.date.slice(0, 4)));
+  state.sampleImports.forEach(invoice => {
+    if (invoice.invoice_date) years.add(invoice.invoice_date.slice(-4));
+  });
+  return Array.from(years).sort();
+}
+
 function basketSimulation(locationName = state.location) {
   const rows = calculatedItems().filter(i => i.inv.location === locationName);
   return suppliers.map(supplier => {
@@ -314,7 +375,7 @@ function renderNav() {
 
 function renderBottomNav() {
   const bottomNav = document.getElementById("bottomNav");
-  const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "prices", "recommendations", "mobile"].includes(id));
+  const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "yearly", "recommendations", "mobile"].includes(id));
   bottomNav.innerHTML = bottomItems.map(([id, icon, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-icon">${icon}</span><span>${shortNavLabel(label)}</span></button>`).join("");
   bottomNav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
     goToView(btn.dataset.view);
@@ -338,6 +399,7 @@ function shortNavLabel(label) {
     "Dashboard": "Home",
     "Rechnungen": "Import",
     "Preisvergleich": "Preise",
+    "Jahresvergleich": "Trend",
     "Empfehlungen": "Tipps",
     "Standortleiter": "Mobil",
   })[label] || label;
@@ -383,6 +445,7 @@ function titleFor(id) {
     products: "Artikelstamm & Matching",
     suppliers: "Lieferantenbewertung",
     prices: "Artikelpreisvergleich",
+    yearly: "Jahresvergleich & Preissteigerungen",
     locations: "Standortanalyse",
     basket: "Warenkorbanalyse",
     recommendations: "Einkaufsempfehlungen",
@@ -491,6 +554,37 @@ function pricesView() {
   return `<section class="panel"><div class="toolbar"><h2>Artikelpreisvergleich</h2>${filters()}</div>${priceTable(locationScopeRows(calculatedItems()))}</section>`;
 }
 
+function yearlyView() {
+  const rows = yearlyPriceRows();
+  const summary = yearlySummary();
+  const years = invoiceYears();
+  return `
+    <div class="grid cols-4">
+      ${metric("Ø Preissteigerung", pct.format(summary.avgIncrease), "gewichtet mit 2026-Mengen")}
+      ${metric("Jahreseffekt", eur.format(summary.annualImpact), "Mehrkosten vs. Vorjahr")}
+      ${metric("A-Fälle Preis", summary.aCases, "sofort verhandeln")}
+      ${metric("Importjahre", years.join(", "), "aus Rechnungsdaten erkannt")}
+    </div>
+    <div class="grid cols-2" style="margin-top:16px">
+      <section class="panel">
+        <h2>Preissteigerung nach Artikel</h2>
+        ${barChart(rows.slice(0, 6).map(row => ({ name: row.product.name, potential: row.annualImpact })), "name", "potential", 1200)}
+      </section>
+      <section class="panel">
+        <h2>Jahresentwicklung Top-Artikel</h2>
+        ${yearTrendBox(summary.strongest)}
+      </section>
+    </div>
+    <section class="panel" style="margin-top:16px">
+      <div class="toolbar">
+        <h2>Mehrjahresvergleich je Gruppenartikel</h2>
+        <span class="tag blue">2024 bis 2026 vorbereitet</span>
+      </div>
+      ${yearlyTable(rows)}
+    </section>
+  `;
+}
+
 function locationsView() {
   return `<div class="grid cols-2"><section class="panel"><h2>Standort-Benchmark</h2>${locationTable(locationStats())}</section><section class="panel"><h2>Preisabweichung je Standort</h2>${barChart(locationStats(), "name", "potential", 160)}</section></div>`;
 }
@@ -524,7 +618,7 @@ function mobileView() {
   return `<div class="grid"><section class="panel"><h2>${state.location}: Maßnahmen</h2><p class="muted">Mobile, reduzierte Standortleiter-Sicht ohne fremde Rechnungsdetails.</p></section>${rows.map(r => `<article class="mobile-card"><strong>${r.product.name}</strong><div class="price-row"><span>Aktuell: ${r.inv.supplier}</span><strong>${eur.format(r.comparisonPrice)} / ${r.product.unit}</strong></div><div class="price-row"><span>Empfohlen: ${r.recommendedLabel}</span><strong>${eur.format(r.best)} / ${r.product.unit}</strong></div><span class="tag ${r.className === "A-Fall" ? "red" : "amber"}">${r.className} · ${eur.format(r.saving * 12)} jährlich</span><div><button class="btn primary small">Übernehmen</button> <button class="btn small">Ignorieren</button> <button class="btn small">Begründen</button></div></article>`).join("")}</div>`;
 }
 
-const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
+const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, yearly: yearlyView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
 
 function filters() {
   return `<div class="filters"><input id="search" placeholder="Suchen" value="${state.query}"><select id="locationFilter"><option>Alle</option>${locations.map(l => `<option ${state.locationFilter === l.name ? "selected" : ""}>${l.name}</option>`)}</select><select id="supplierFilter"><option>Alle</option>${suppliers.map(s => `<option ${state.supplierFilter === s.name ? "selected" : ""}>${s.name}</option>`)}</select></div>`;
@@ -583,6 +677,39 @@ function priceTable(rows) {
   return table(["Artikel", "Standort", "Lieferant", "Effektiv", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], filtered(rows).map(r => [
     r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(r.comparisonPrice / groupAverage(r.productId) - 1), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
   ]));
+}
+
+function yearlyTable(rows) {
+  return table(["Priorität", "Gruppenartikel", "Hauptlieferant", "2024", "2025", "2026", "ggü. Vorjahr", "seit 2024", "Menge 2026", "Jahreseffekt"], rows.map(row => [
+    `<span class="tag ${row.status === "A-Fall" ? "red" : row.status === "B-Fall" ? "amber" : "blue"}">${row.status}</span>`,
+    row.product.name,
+    row.mainSupplier,
+    eur.format(row.price2024),
+    eur.format(row.price2025),
+    eur.format(row.price2026),
+    pct.format(row.yoy),
+    pct.format(row.since2024),
+    row.volume2026.toLocaleString("de-DE"),
+    eur.format(row.annualImpact),
+  ]));
+}
+
+function yearTrendBox(row) {
+  if (!row) return `<p class="muted">Noch keine Jahresdaten vorhanden.</p>`;
+  const max = Math.max(row.price2024, row.price2025, row.price2026);
+  const points = [
+    ["2024", row.price2024],
+    ["2025", row.price2025],
+    ["2026", row.price2026],
+  ];
+  return `
+    <h3>${row.product.name}</h3>
+    <p class="muted">Stärkster Jahreskosteneffekt: ${eur.format(row.annualImpact)} bei ${row.volume2026.toLocaleString("de-DE")} Vergleichseinheiten.</p>
+    <div class="chart-bars">
+      ${points.map(([year, value]) => `<div class="bar-row"><strong>${year}</strong><div class="bar-track"><div class="bar-fill" style="width:${Math.max(6, value / max * 100)}%"></div></div><span class="num">${eur.format(value)}</span></div>`).join("")}
+    </div>
+    <p><span class="tag ${row.status === "A-Fall" ? "red" : "amber"}">${row.status}</span> <span class="muted">Preissteigerung seit 2024: ${pct.format(row.since2024)}</span></p>
+  `;
 }
 
 function recommendationTable(rows) {
