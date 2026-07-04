@@ -249,8 +249,15 @@ tr:last-child td { border-bottom: 0; }
   body.sidebar-collapsed .role-card::before { display: none; }
   .sidebar-close { display: grid; place-items: center; }
   .mobile-menu-btn { display: grid; place-items: center; }
-  .topbar { min-height: 74px; padding: max(12px, env(safe-area-inset-top)) 18px 12px; }
-  .view { padding: 18px 18px 92px; }
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-height: 74px;
+    padding: max(12px, env(safe-area-inset-top)) 18px 12px;
+  }
+  .view { padding: calc(92px + env(safe-area-inset-top)) 18px 92px; }
   .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
   .bottom-nav {
     position: fixed; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom));
@@ -272,7 +279,7 @@ tr:last-child td { border-bottom: 0; }
   h1 { font-size: 22px; line-height: 1.1; }
   .eyebrow { font-size: 10px; }
   .icon-btn { padding: 9px 10px; }
-  .view { padding: 14px 14px 90px; }
+  .view { padding: calc(88px + env(safe-area-inset-top)) 14px 90px; }
   .form-grid { grid-template-columns: 1fr; }
   .panel { padding: 14px; }
   .toolbar { align-items: stretch; }
