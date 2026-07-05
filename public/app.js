@@ -743,6 +743,11 @@ function invoiceTotalBeforeAdjustments(invoiceId) {
   return invoiceItems.filter(i => i.invoiceId === invoiceId).reduce((sum, i) => sum + i.qty * i.listPrice * (1 - i.itemDiscount), 0);
 }
 
+function supplierSkontoRate(supplierName, supplierByName = null) {
+  const supplier = supplierByName?.get?.(supplierName) || suppliers.find(s => s.name === supplierName);
+  return Number(supplier?.skonto || 0);
+}
+
 function calcItem(item) {
   const inv = invoices.find(i => i.id === item.invoiceId);
   const product = products.find(p => p.id === item.productId);
@@ -752,7 +757,7 @@ function calcItem(item) {
   const invoiceBase = invoiceTotalBeforeAdjustments(inv.id) || 1;
   const share = afterItemDiscount / invoiceBase;
   const invoiceDiscount = inv.discount * share;
-  const skonto = inv.skontoUsed ? afterItemDiscount * (suppliers.find(s => s.name === inv.supplier)?.skonto || 0) : 0;
+  const skonto = afterItemDiscount * supplierSkontoRate(inv.supplier);
   const freight = inv.freight * share;
   const surcharge = inv.surcharge * share;
   const effectiveNet = afterItemDiscount - invoiceDiscount - skonto + freight + surcharge;
@@ -779,7 +784,7 @@ function calculatedItems() {
     const invoiceBase = invoiceBaseById[inv.id] || 1;
     const share = afterItemDiscount / invoiceBase;
     const invoiceDiscount = inv.discount * share;
-    const skonto = inv.skontoUsed ? afterItemDiscount * (supplierByName.get(inv.supplier)?.skonto || 0) : 0;
+    const skonto = afterItemDiscount * supplierSkontoRate(inv.supplier, supplierByName);
     const freight = inv.freight * share;
     const surcharge = inv.surcharge * share;
     const effectiveNet = afterItemDiscount - invoiceDiscount - skonto + freight + surcharge;
@@ -957,17 +962,23 @@ function recommendations() {
   derivedCache.recommendations = comparableItems().map(row => {
     const best = bestPrice(row.productId);
     const average = groupAverage(row.productId);
+    const bestRow = bestInternalRow(row.productId);
     const saving = Math.max(0, row.comparisonPrice - best) * row.qty * row.product.pack;
     const deviation = average ? row.comparisonPrice / average - 1 : 0;
     const className = saving > 20 && deviation > 0.04 ? "A-Fall" : saving > 8 ? "B-Fall" : "C-Fall";
-    const recommendedSupplier = cheapestSupplier(row.productId);
-    const recommendedLabel = recommendedSupplier === row.inv.supplier ? `${recommendedSupplier} Rahmenpreis` : recommendedSupplier;
-    return { ...row, best, saving, deviation, className, recommendedSupplier, recommendedLabel };
+    const recommendedSupplier = bestRow?.inv.supplier || cheapestSupplier(row.productId);
+    const recommendedLocation = bestRow?.inv.location || "";
+    const recommendedLabel = bestRow
+      ? `${bestRow.inv.location} · ${bestRow.inv.supplier}`
+      : recommendedSupplier;
+    return { ...row, best, bestRow, saving, deviation, className, recommendedSupplier, recommendedLocation, recommendedLabel };
   }).filter(r => r.saving > 1).sort((a, b) => b.saving - a.saving);
   return derivedCache.recommendations;
 }
 
 function cheapestSupplier(productId) {
+  const bestRow = bestInternalRow(productId);
+  if (bestRow?.inv?.supplier) return bestRow.inv.supplier;
   const ranked = (supplierPriceByProduct[productId] || []).slice().sort((a, b) => a[1] - b[1]);
   return ranked[0]?.[0] || "offen";
 }
@@ -1305,7 +1316,7 @@ function pageIntro(id) {
     ],
     prices: [
       "Artikelpreisvergleich",
-      "Dieser Tab vergleicht normalisierte Artikelpreise über Lieferanten und Standorte, inklusive Packungsinhalten und Bestpreis-Abweichungen.",
+      "Dieser Tab vergleicht effektive Nettopreise über Lieferanten und Standorte, inklusive Rabatten, Skonto, Versand, Zuschlägen, Packungsinhalten und Vergleichseinheiten.",
     ],
     priceTrend: [
       "Preisverlauf",
@@ -1337,7 +1348,7 @@ function pageIntro(id) {
     ],
     mobile: [
       "Potenzialanalyse",
-      "Je Standort: aktueller Einkaufspreis, gewichteter Gruppenschnitt, günstigste Quelle und rechnerisches Jahrespotenzial.",
+      "Je Standort: effektiver Nettopreis, gewichteter Gruppenschnitt, günstigste interne Quelle, positive Abweichungen und rechnerisches Jahrespotenzial.",
     ],
   };
   const [title, description] = copy[id] || [titleFor(id) || "Auswertung", "Dieser Bereich zeigt die relevante Auswertung für den gewählten Arbeitsbereich."];
@@ -1667,14 +1678,17 @@ function suppliersView() {
 function pricesView() {
   const rows = locationScopeRows(comparableItems());
   const recs = locationScopeRows(recommendations());
+  const benchmark = locationBenchmark(rows);
   return tabShell({
     metrics: [
       { label: "Preispositionen", value: rows.length, sub: "freigegeben analysierbar" },
       { label: "A-Fälle", value: recs.filter(row => row.className === "A-Fall").length, sub: "sofort verhandeln" },
       { label: "Potenzial / Monat", value: eur.format(recs.reduce((sum, row) => sum + row.saving, 0)), sub: "aus Positionen" },
-      { label: "Ø Abweichung", value: pct.format(kpis().deviation), sub: "vs. Gruppe" },
+      { label: "Mehrkosten vs. Gruppe", value: eur.format(benchmark.moreCost), sub: "teurer als Schnitt" },
+      { label: "Vorteil vs. Gruppe", value: eur.format(benchmark.advantage), sub: "günstiger als Schnitt" },
+      { label: "Ø Abweichung", value: pct.format(benchmark.weightedDeviation), sub: "gewichtet vs. Gruppe" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Der Artikelpreisvergleich zeigt den internen Orisus-Vergleich je erkanntem Artikel oder Variantenartikel. Du siehst direkt, welcher Standort denselben Artikel aktuell am günstigsten eingekauft hat und wie groß die Differenz zum gefilterten Standort ist.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Der Artikelpreisvergleich nutzt immer den effektiven Nettopreis je Vergleichseinheit: Positionsrabatte, Rechnungsrabatte, Skontomöglichkeit, Versandkosten, Mindermengenzuschläge und sonstige Zuschläge werden anteilig auf die Position gerechnet und danach über Packungsgröße und Einheit normalisiert. Die Tabelle zeigt deshalb sowohl Mehrkosten als auch positive Abweichungen, bei denen ein Standort günstiger als der Gruppenstandard einkauft.</p>`),
     charts: [
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
       panel("Volumen nach Lieferant", barChart(supplierStats(), "name", "volume", 1)),
@@ -2001,9 +2015,9 @@ function potentialReason(row) {
   const basis = `${(row.qty * row.product.pack).toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`;
   const matchText = variantArticleComparable(row) && row.match < 0.9 ? "eigener Variantenartikel aus Artikelnummer/Beschreibung" : `${Math.round(row.match * 100)}% Match`;
   const supplierText = row.recommendedSupplier === row.inv.supplier
-    ? "beste Kondition beim gleichen Lieferanten"
-    : `günstigste Quelle: ${row.recommendedSupplier}`;
-  return `Freigegebenes Gruppenprodukt, ${matchText}, normalisiert auf ${basis}, ${comparisons.length} Vergleichspreise, ${supplierText}.`;
+    ? `beste interne Kondition beim gleichen Lieferanten (${row.recommendedLabel})`
+    : `günstigste interne Quelle: ${row.recommendedLabel}`;
+  return `Freigegebenes Gruppenprodukt, ${matchText}, effektiver Nettopreis aus Positionsrabatt, Rechnungsrabatt, Skonto, Versand und Zuschlägen, normalisiert auf ${basis}, ${comparisons.length} Vergleichspreise, ${supplierText}.`;
 }
 
 function safePotentialToggle() {
@@ -2067,7 +2081,7 @@ function mobileView() {
       { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchste Priorität" },
       { label: "Betroffene Artikel", value: affectedProducts, sub: topArticle ? `Top: ${topArticle.product.name}` : "keine Potenziale" },
     ],
-    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}${safePotentialToggle()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus. Die Jahreshochrechnung wird aus dem erkannten Rechnungszeitraum berechnet: ${info.monthCount} Monat(e), ${info.label}.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}${safePotentialToggle()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Nettopreis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel intern aktuell am günstigsten und welches Jahrespotenzial entsteht daraus. Positionsrabatte, Rechnungsrabatte, Skontomöglichkeit, Versandkosten, Mindermengenzuschläge, sonstige Zuschläge, Packungsgröße und Vergleichseinheit sind in der Vergleichsbasis enthalten. Die Jahreshochrechnung wird aus dem erkannten Rechnungszeitraum berechnet: ${info.monthCount} Monat(e), ${info.label}.</p><div class="grid">${cards}</div>`),
     charts: [
       panel("Potenzial je Standort", barChart(locationRows, "name", "monthly", 1)),
       panel("A-Fälle je Standort", barChartCount(locationRows, "name", "aCases")),
