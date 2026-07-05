@@ -799,20 +799,31 @@ function supplierArticleFingerprint(row) {
   return `${row.inv.supplier}|${row.productId}|${row.product.name}|${row.product.unit}`.toLowerCase();
 }
 
-function repeatedExactSupplierArticle(row) {
-  if (!derivedCache.repeatedArticleCounts) {
-    const counts = new Map();
+function supplierArticleStats() {
+  if (!derivedCache.supplierArticleStats) {
+    const stats = new Map();
     calculatedItems().forEach(item => {
       const key = supplierArticleFingerprint(item);
-      counts.set(key, (counts.get(key) || 0) + 1);
+      const current = stats.get(key) || { count: 0, locations: new Set(), invoices: new Set(), prices: [] };
+      current.count += 1;
+      current.locations.add(item.inv.location);
+      current.invoices.add(item.invoiceId);
+      current.prices.push(item.comparisonPrice);
+      stats.set(key, current);
     });
-    derivedCache.repeatedArticleCounts = counts;
+    derivedCache.supplierArticleStats = stats;
   }
-  return (derivedCache.repeatedArticleCounts.get(supplierArticleFingerprint(row)) || 0) >= 2;
+  return derivedCache.supplierArticleStats;
+}
+
+function variantArticleComparable(row) {
+  const stat = supplierArticleStats().get(supplierArticleFingerprint(row));
+  if (!stat) return false;
+  return stat.count >= 2 || stat.locations.size >= 2 || stat.invoices.size >= 2;
 }
 
 function itemIsComparable(row) {
-  return (row.product.approved && row.match >= 0.9) || repeatedExactSupplierArticle(row);
+  return (row.product.approved && row.match >= 0.9) || variantArticleComparable(row);
 }
 
 function comparableItems() {
@@ -1576,7 +1587,7 @@ function reviewView() {
         <h2>Einheit / Variante nicht automatisch sicher</h2>
         <span class="tag amber">${reviewRows.length} zurückgestellt</span>
       </div>
-      <p class="muted panel-sub">Das sind meist gleiche Produktfamilien, aber mit anderer Einheit, Packungsgröße, Farbe, Größe, Körnung oder Materialvariante. Sobald die Basis eindeutig ist, vergleicht die App automatisch auf Stück, ml oder g. Wenn die Einheit nicht sicher genug ist, bleibt die Position vorsichtshalber aus Potenzialen und Standortvergleichen raus.</p>
+      <p class="muted panel-sub">Varianten werden als eigene Artikel geführt, sobald gleiche Artikelnummer/Beschreibung oder eine wiederkehrende Basis erkennbar ist. In dieser Liste bleiben nur Positionen, die noch nicht konsistent genug für einen automatischen Vergleich vorkommen.</p>
       ${reviewReasonStats(reviewRows)}
       ${matchingReviewTable(reviewRows)}
     </section>`;
@@ -1960,7 +1971,7 @@ function isSafePotential(row) {
 function potentialReason(row) {
   const comparisons = potentialComparisonRows(row.productId);
   const basis = `${(row.qty * row.product.pack).toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`;
-  const matchText = repeatedExactSupplierArticle(row) && row.match < 0.9 ? "exakte Lieferantenartikel-Wiederholung" : `${Math.round(row.match * 100)}% Match`;
+  const matchText = variantArticleComparable(row) && row.match < 0.9 ? "eigener Variantenartikel aus gleicher ArtNr/Beschreibung" : `${Math.round(row.match * 100)}% Match`;
   const supplierText = row.recommendedSupplier === row.inv.supplier
     ? "beste Kondition beim gleichen Lieferanten"
     : `günstigste Quelle: ${row.recommendedSupplier}`;
