@@ -16,6 +16,8 @@ const state = {
   categoryFilter: "Alle",
   sampleImports: [],
   uploadStatus: "",
+  dataLoaded: false,
+  dataError: "",
   openNavSection: "overview",
   sidebarCollapsed: localStorage.getItem(sidebarStorageKey) === "true",
   mobileNavOpen: false,
@@ -75,95 +77,14 @@ const navSections = [
 
 const navItems = navSections.flatMap(section => section.items);
 
-let locations = [
-  { id: "kehl", name: "Kehl", manager: "M. Schneider", invoices: 42, address: "Hauptstr. 18, Kehl" },
-  { id: "essen-zollverein", name: "Essen Zollverein", manager: "T. Wagner", invoices: 31, address: "Viktoriastraße 41a, 45327 Essen" },
-  { id: "huettenberg", name: "Hüttenberg", manager: "S. Hofmann", invoices: 18, address: "Langgönser Str. 29, 35625 Hüttenberg" },
-  { id: "essen", name: "Essen", manager: "T. Wagner", invoices: 39, address: "Rüttenscheider Str. 91, Essen" },
-  { id: "kirchberg", name: "Kirchberg", manager: "A. Roth", invoices: 28, address: "Markt 4, Kirchberg" },
-  { id: "ulmet", name: "Ulmet", manager: "J. Keller", invoices: 22, address: "Praxisweg 2, Ulmet" },
-  { id: "kassel", name: "Kassel", manager: "N. Bauer", invoices: 35, address: "Wilhelmshöher Allee 76, Kassel" },
-];
-
-let suppliers = [
-  { name: "Henry Schein", skonto: 0.02, freightFree: 350, terms: "14 Tage 2%, 30 Tage netto", contact: "meyer@henryschein.example" },
-  { name: "Plandent", skonto: 0.00, freightFree: 400, terms: "Zahlung ohne Abzug", contact: "essen@plandent.example" },
-  { name: "GERL", skonto: 0.00, freightFree: 300, terms: "Bankeinzug nach Monatsrechnung", contact: "material@gerl.example" },
-  { name: "Pluradent", skonto: 0.015, freightFree: 400, terms: "10 Tage 1,5%, 30 Tage netto", contact: "team@pluradent.example" },
-  { name: "Dental-Union", skonto: 0.02, freightFree: 300, terms: "8 Tage 2%, 21 Tage netto", contact: "vertrieb@dental-union.example" },
-  { name: "Dentaurum", skonto: 0.01, freightFree: 500, terms: "14 Tage 1%, 30 Tage netto", contact: "service@dentaurum.example" },
-];
-
-let products = [
-  { id: "P-100", name: "Nitrilhandschuhe M, blau", category: "Praxisbedarf", unit: "Stück", pack: 100, standard: true, critical: false, approved: true },
-  { id: "P-110", name: "Mundschutz Typ II", category: "Hygiene", unit: "Stück", pack: 50, standard: true, critical: false, approved: true },
-  { id: "P-120", name: "Absaugkanülen 16 mm", category: "Verbrauchsmaterial", unit: "Stück", pack: 100, standard: true, critical: false, approved: true },
-  { id: "P-130", name: "Flächendesinfektion 1 Liter", category: "Hygiene", unit: "Liter", pack: 1, standard: true, critical: true, approved: true },
-  { id: "P-140", name: "Komposit Universal A2", category: "Füllung", unit: "g", pack: 4, standard: true, critical: true, approved: true },
-  { id: "P-150", name: "Bonding 5 ml", category: "Füllung", unit: "ml", pack: 5, standard: true, critical: true, approved: true },
-  { id: "P-160", name: "Abformmaterial Heavy Body", category: "Prothetik", unit: "ml", pack: 380, standard: false, critical: false, approved: false },
-  { id: "P-170", name: "Prophylaxepaste Mint", category: "Prophylaxe", unit: "g", pack: 100, standard: true, critical: false, approved: true },
-];
-
-let supplierPriceIndex = {
-  "Henry Schein": [5.9, 4.3, 8.4, 9.7, 31.8, 58.5, 94.0, 12.5],
-  Plandent: [5.7, 4.5, 8.1, 9.4, 32.6, 56.8, 92.4, 12.2],
-  GERL: [6.0, 4.2, 8.6, 9.2, 31.2, 57.9, 90.6, 12.0],
-  Pluradent: [6.4, 4.1, 7.9, 10.3, 33.2, 55.8, 89.5, 13.1],
-  "Dental-Union": [5.5, 4.6, 8.2, 9.1, 30.9, 57.4, 91.2, 11.7],
-  Dentaurum: [6.1, 4.8, 8.8, 9.9, 29.6, 53.9, 96.8, 12.8],
-};
-
-let invoices = [
-  { id: "INV-24091", no: "HS-883102", date: "2026-06-03", supplier: "Henry Schein", location: "Kehl", status: "Freigegeben", net: 1486, freight: 18, surcharge: 0, discount: 52, skontoUsed: true },
-  { id: "INV-24107", no: "DU-553901", date: "2026-06-05", supplier: "Dental-Union", location: "Essen", status: "In Prüfung", net: 964, freight: 0, surcharge: 0, discount: 24, skontoUsed: true },
-  { id: "INV-24118", no: "PL-190442", date: "2026-06-09", supplier: "Pluradent", location: "Kirchberg", status: "Ausgelesen", net: 612, freight: 24, surcharge: 9, discount: 0, skontoUsed: false },
-  { id: "INV-24131", no: "DT-774201", date: "2026-06-12", supplier: "Dentaurum", location: "Ulmet", status: "Neu", net: 458, freight: 29, surcharge: 12, discount: 0, skontoUsed: false },
-  { id: "INV-24143", no: "HS-883255", date: "2026-06-18", supplier: "Henry Schein", location: "Kassel", status: "Dublette", net: 1192, freight: 18, surcharge: 0, discount: 18, skontoUsed: true },
-  { id: "INV-24158", no: "DU-554108", date: "2026-06-24", supplier: "Dental-Union", location: "Kehl", status: "Freigegeben", net: 1320, freight: 0, surcharge: 0, discount: 39, skontoUsed: true },
-];
-
-let invoiceItems = [
-  ["INV-24091", "P-100", 18, 5.9, 0.04, "Nitrile Gloves Medium Blue", 0.93],
-  ["INV-24091", "P-130", 22, 9.7, 0.02, "FD 312 Flächendesinfektion 1L", 0.88],
-  ["INV-24091", "P-150", 8, 58.5, 0.05, "Bond Universal 5ml", 0.91],
-  ["INV-24107", "P-100", 14, 5.5, 0.03, "Einmalhandschuhe Nitril Gr. M", 0.96],
-  ["INV-24107", "P-120", 22, 8.2, 0.04, "Absaugkanülen 16 mm blau", 0.97],
-  ["INV-24107", "P-170", 12, 11.7, 0.02, "Prophy Paste Mint 100g", 0.86],
-  ["INV-24118", "P-110", 28, 4.1, 0.00, "Mundschutz Typ II blau", 0.92],
-  ["INV-24118", "P-160", 5, 89.5, 0.02, "Abformmat. Heavy Body 380ml", 0.68],
-  ["INV-24131", "P-140", 6, 29.6, 0.00, "Komposit Universal A2 4g", 0.94],
-  ["INV-24131", "P-150", 4, 53.9, 0.00, "Bonding Primer 5 ml", 0.79],
-  ["INV-24143", "P-100", 20, 6.1, 0.02, "Nitrilhandschuhe blau M", 0.98],
-  ["INV-24143", "P-130", 18, 9.9, 0.00, "Flächendesinfektion 1 Liter", 0.93],
-  ["INV-24158", "P-120", 31, 8.2, 0.06, "Absaugkanülen 16mm", 0.99],
-  ["INV-24158", "P-140", 12, 30.9, 0.04, "Universal Komposit A2", 0.95],
-  ["INV-24158", "P-170", 16, 11.7, 0.03, "Prophylaxe Paste Mint", 0.91],
-].map(([invoiceId, productId, qty, listPrice, itemDiscount, supplierName, match]) => ({
-  invoiceId, productId, qty, listPrice, itemDiscount, supplierName, match
-}));
-
-const historicalPriceFactors = {
-  "P-100": { 2024: 0.88, 2025: 0.94, 2026: 1.00 },
-  "P-110": { 2024: 0.91, 2025: 0.96, 2026: 1.00 },
-  "P-120": { 2024: 0.87, 2025: 0.93, 2026: 1.00 },
-  "P-130": { 2024: 0.82, 2025: 0.91, 2026: 1.00 },
-  "P-140": { 2024: 0.78, 2025: 0.89, 2026: 1.00 },
-  "P-150": { 2024: 0.84, 2025: 0.92, 2026: 1.00 },
-  "P-160": { 2024: 0.89, 2025: 0.95, 2026: 1.00 },
-  "P-170": { 2024: 0.92, 2025: 0.97, 2026: 1.00 },
-};
-
-const historicalVolumes = {
-  "P-100": { 2024: 11600, 2025: 13900, 2026: 16200 },
-  "P-110": { 2024: 8200, 2025: 9300, 2026: 10400 },
-  "P-120": { 2024: 7100, 2025: 8600, 2026: 9900 },
-  "P-130": { 2024: 520, 2025: 610, 2026: 740 },
-  "P-140": { 2024: 410, 2025: 470, 2026: 540 },
-  "P-150": { 2024: 290, 2025: 330, 2026: 390 },
-  "P-160": { 2024: 130, 2025: 165, 2026: 180 },
-  "P-170": { 2024: 680, 2025: 720, 2026: 810 },
-};
+let locations = [];
+let suppliers = [];
+let products = [];
+let supplierPriceIndex = {};
+let invoices = [];
+let invoiceItems = [];
+const historicalPriceFactors = {};
+const historicalVolumes = {};
 
 async function supabaseTable(table, query = "select=*") {
   const response = await fetch(`${supabaseUrl}/rest/v1/${table}?${query}`, {
@@ -225,7 +146,7 @@ async function loadSupabaseData() {
     supabaseTable("sample_imports", "select=file,document_type,supplier,location_name,invoice_no,invoice_date,gross_total,extracted_items,warnings,sample_items&order=created_at.desc"),
   ]);
 
-  if (!locationRows.length || !supplierRows.length || !productRows.length) return false;
+  if (!locationRows.length && !supplierRows.length && !importRows.length) return false;
 
   locations = locationRows.map(row => ({
     id: row.id,
@@ -280,6 +201,8 @@ async function loadSupabaseData() {
     return index;
   }, {});
   state.sampleImports = importRows.map(importRowFromDb);
+  state.dataLoaded = true;
+  state.dataError = "";
   return true;
 }
 
@@ -341,6 +264,7 @@ function invoiceTotalBeforeAdjustments(invoiceId) {
 function calcItem(item) {
   const inv = invoices.find(i => i.id === item.invoiceId);
   const product = products.find(p => p.id === item.productId);
+  if (!inv || !product) return null;
   const base = item.qty * item.listPrice;
   const afterItemDiscount = base * (1 - item.itemDiscount);
   const invoiceBase = invoiceTotalBeforeAdjustments(inv.id) || 1;
@@ -354,24 +278,26 @@ function calcItem(item) {
   return { ...item, inv, product, base, effectiveNet, comparisonPrice, invoiceDiscount, skonto, freight, surcharge };
 }
 
-const calculatedItems = () => invoiceItems.map(calcItem);
+const calculatedItems = () => invoiceItems.map(calcItem).filter(Boolean);
 
 function bestPrice(productId) {
   const prices = calculatedItems().filter(i => i.productId === productId).map(i => i.comparisonPrice);
+  if (!prices.length) return 0;
   return Math.min(...prices);
 }
 
 function groupAverage(productId) {
   const prices = calculatedItems().filter(i => i.productId === productId).map(i => i.comparisonPrice);
+  if (!prices.length) return 0;
   return prices.reduce((a, b) => a + b, 0) / prices.length;
 }
 
 function locationScopeRows(rows) {
-  return state.role === "location" ? rows.filter(row => (row.inv?.location || row.location) === activeLocationName()) : rows;
+  return state.role === "location" ? rows.filter(row => (row.inv?.location || row.location || row.location_name) === activeLocationName()) : rows;
 }
 
 function activeLocationName() {
-  return state.location || locations[0].name;
+  return state.location || locations[0]?.name || "";
 }
 
 function scopeLabel() {
@@ -380,20 +306,26 @@ function scopeLabel() {
 
 function kpis() {
   const rows = locationScopeRows(calculatedItems());
+  const importedRows = locationScopeRows(state.sampleImports);
+  const scopedInvoices = state.role === "location" ? invoices.filter(i => i.location === activeLocationName()) : invoices;
+  const importedGross = importedRows.reduce((sum, row) => sum + Number(row.gross_total || 0), 0);
   const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
   const potential = rows.reduce((sum, row) => sum + Math.max(0, row.comparisonPrice - bestPrice(row.productId)) * row.qty * row.product.pack, 0);
-  const avgDeviation = rows.reduce((sum, row) => sum + ((row.comparisonPrice / groupAverage(row.productId)) - 1), 0) / rows.length;
-  const scopedInvoices = state.role === "location" ? invoices.filter(i => i.location === activeLocationName()) : invoices;
+  const avgDeviation = rows.length ? rows.reduce((sum, row) => {
+    const average = groupAverage(row.productId);
+    return sum + (average ? row.comparisonPrice / average - 1 : 0);
+  }, 0) / rows.length : 0;
+  const netBase = scopedInvoices.reduce((s, i) => s + i.net, 0);
   return {
-    invoices: scopedInvoices.length,
+    invoices: scopedInvoices.length || importedRows.length,
     products: products.length,
     suppliers: suppliers.length,
-    volume,
+    volume: volume || importedGross,
     monthly: potential,
     yearly: potential * 12,
     deviation: avgDeviation,
-    skonto: scopedInvoices.filter(i => i.skontoUsed).length / scopedInvoices.length,
-    freight: scopedInvoices.reduce((s, i) => s + i.freight, 0) / scopedInvoices.reduce((s, i) => s + i.net, 0),
+    skonto: scopedInvoices.length ? scopedInvoices.filter(i => i.skontoUsed).length / scopedInvoices.length : 0,
+    freight: netBase ? scopedInvoices.reduce((s, i) => s + i.freight, 0) / netBase : 0,
     aCases: recommendations().filter(r => r.className === "A-Fall").length,
   };
 }
@@ -401,8 +333,9 @@ function kpis() {
 function recommendations() {
   return calculatedItems().map(row => {
     const best = bestPrice(row.productId);
+    const average = groupAverage(row.productId);
     const saving = Math.max(0, row.comparisonPrice - best) * row.qty * row.product.pack;
-    const deviation = row.comparisonPrice / groupAverage(row.productId) - 1;
+    const deviation = average ? row.comparisonPrice / average - 1 : 0;
     const className = saving > 20 && deviation > 0.04 ? "A-Fall" : saving > 8 ? "B-Fall" : "C-Fall";
     const recommendedSupplier = cheapestSupplier(row.productId);
     const recommendedLabel = recommendedSupplier === row.inv.supplier ? `${recommendedSupplier} Rahmenpreis` : recommendedSupplier;
@@ -412,7 +345,11 @@ function recommendations() {
 
 function cheapestSupplier(productId) {
   const productIndex = products.findIndex(p => p.id === productId);
-  return Object.entries(supplierPriceIndex).sort((a, b) => a[1][productIndex] - b[1][productIndex])[0][0];
+  const ranked = Object.entries(supplierPriceIndex)
+    .map(([supplier, prices]) => [supplier, Number(prices?.[productIndex] || 0)])
+    .filter(([, price]) => price > 0)
+    .sort((a, b) => a[1] - b[1]);
+  return ranked[0]?.[0] || "offen";
 }
 
 function supplierStats() {
@@ -426,11 +363,14 @@ function supplierStats() {
       ...supplier,
       volume,
       articleCount: new Set(rows.map(r => r.productId)).size,
-      deviation: rows.reduce((s, r) => s + (r.comparisonPrice / groupAverage(r.productId) - 1), 0) / rows.length,
+      deviation: rows.length ? rows.reduce((s, r) => {
+        const average = groupAverage(r.productId);
+        return s + (average ? r.comparisonPrice / average - 1 : 0);
+      }, 0) / rows.length : 0,
       discountRate: supplierInvoices.reduce((s, i) => s + i.discount, 0) / Math.max(1, supplierInvoices.reduce((s, i) => s + i.net, 0)),
       freightRate: freight / Math.max(1, supplierInvoices.reduce((s, i) => s + i.net, 0)),
       potential,
-      stability: 82 - potential / 8,
+      stability: Math.max(0, 82 - potential / 8),
     };
   });
 }
@@ -454,9 +394,10 @@ function locationStats() {
 }
 
 function yearlyPriceRows() {
-  return products.map(product => {
+  return products.filter(product => historicalPriceFactors[product.id] && historicalVolumes[product.id]).map(product => {
     const current = groupAverage(product.id);
     const factors = historicalPriceFactors[product.id];
+    if (!current) return null;
     const price2024 = current * factors[2024];
     const price2025 = current * factors[2025];
     const price2026 = current * factors[2026];
@@ -467,7 +408,7 @@ function yearlyPriceRows() {
     const status = annualImpact > 900 || yoy > 0.09 ? "A-Fall" : annualImpact > 350 || yoy > 0.055 ? "B-Fall" : "C-Fall";
     const mainSupplier = cheapestSupplier(product.id);
     return { product, price2024, price2025, price2026, yoy, since2024, volume2026, annualImpact, status, mainSupplier };
-  }).sort((a, b) => b.annualImpact - a.annualImpact);
+  }).filter(Boolean).sort((a, b) => b.annualImpact - a.annualImpact);
 }
 
 function yearlySummary() {
@@ -476,7 +417,7 @@ function yearlySummary() {
   const weighted2026 = rows.reduce((sum, row) => sum + row.price2026 * row.volume2026, 0);
   const annualImpact = rows.reduce((sum, row) => sum + row.annualImpact, 0);
   return {
-    avgIncrease: weighted2026 / weighted2025 - 1,
+    avgIncrease: weighted2025 ? weighted2026 / weighted2025 - 1 : 0,
     annualImpact,
     aCases: rows.filter(row => row.status === "A-Fall").length,
     strongest: rows[0],
@@ -493,11 +434,12 @@ function invoiceYears() {
 
 function basketSimulation(locationName = state.role === "location" ? activeLocationName() : null) {
   const rows = calculatedItems().filter(i => !locationName || i.inv.location === locationName);
+  if (!rows.length) return [];
   return suppliers.map(supplier => {
     let missing = 0;
     const productCost = rows.reduce((sum, row) => {
       const productIndex = products.findIndex(p => p.id === row.productId);
-      const supplierPrice = supplierPriceIndex[supplier.name][productIndex];
+      const supplierPrice = supplierPriceIndex[supplier.name]?.[productIndex] || 0;
       if (!supplierPrice) missing += 1;
       return sum + (supplierPrice || row.listPrice) * row.qty * (1 - row.itemDiscount);
     }, 0);
@@ -514,6 +456,14 @@ function render() {
   document.getElementById("viewTitle").textContent = titleFor(state.view);
   document.getElementById("viewEyebrow").textContent = state.role === "location" ? `Standort ${activeLocationName()}` : "Materialpreis-Controlling";
   const view = document.getElementById("view");
+  if (!state.dataLoaded) {
+    view.innerHTML = `<section class="panel"><h2>Daten werden geladen</h2><p class="muted">Die App verbindet sich mit Supabase und lädt die freigegebenen Rechnungs- und Stammdaten.</p></section>`;
+    return;
+  }
+  if (state.dataError) {
+    view.innerHTML = `<section class="panel"><h2>Datenverbindung prüfen</h2><p class="muted">${state.dataError}</p></section>`;
+    return;
+  }
   view.innerHTML = routes[state.view]();
   bindViewEvents();
 }
@@ -704,6 +654,9 @@ function invoicesView() {
 
 function reviewView() {
   const inv = invoices[2];
+  if (!inv) {
+    return `<section class="panel"><h2>Prüfcenter</h2><p class="muted">Noch keine vollständig ausgelesene Rechnung mit Positionsdaten vorhanden. Die importierten PDFs liegen im Rechnungsupload bereit.</p></section>`;
+  }
   const rows = calculatedItems().filter(i => i.invoiceId === inv.id);
   return `
     <div class="split">
@@ -764,7 +717,7 @@ function yearlyView() {
     <section class="panel" style="margin-top:16px">
       <div class="toolbar">
         <h2>Mehrjahresvergleich je Gruppenartikel</h2>
-        <span class="tag blue">2024 bis 2026 vorbereitet</span>
+        <span class="tag blue">aus Rechnungs- und Preisverlauf</span>
       </div>
       ${yearlyTable(rows)}
     </section>
@@ -778,7 +731,10 @@ function locationsView() {
 function basketView() {
   const locationName = state.role === "location" ? activeLocationName() : null;
   const sim = basketSimulation(locationName);
-  return `<div class="grid cols-2"><section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Simulation: Was hätte derselbe Artikelkorb bei Lieferant A, B, C gekostet?</p>${basketTable(sim)}</section><section class="panel"><h2>Realistische Empfehlung</h2><div class="calc-box">${sim.map((s, i) => `<div class="calc-row ${i === 0 ? "total" : ""}"><span>${s.supplier}${i === 0 ? " · bevorzugt" : ""}</span><strong>${eur.format(s.total)}</strong></div>`).join("")}</div><p class="muted">Fehlende Artikel, Mindestbestellwerte, Skonto und Versandkosten sind in der Simulation markiert.</p></section></div>`;
+  if (!sim.length) {
+    return `<section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Noch keine freigegebenen Artikelpositionen vorhanden. Sobald Rechnungen vollständig ausgelesen sind, erscheint hier der Lieferantenvergleich.</p></section>`;
+  }
+  return `<div class="grid cols-2"><section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Vergleich des aktuellen Artikelkorbs über die verfügbaren Lieferanten.</p>${basketTable(sim)}</section><section class="panel"><h2>Realistische Empfehlung</h2><div class="calc-box">${sim.map((s, i) => `<div class="calc-row ${i === 0 ? "total" : ""}"><span>${s.supplier}${i === 0 ? " · bevorzugt" : ""}</span><strong>${eur.format(s.total)}</strong></div>`).join("")}</div><p class="muted">Fehlende Artikel, Mindestbestellwerte, Skonto und Versandkosten werden im Vergleich berücksichtigt.</p></section></div>`;
 }
 
 function recommendationsView() {
@@ -790,7 +746,7 @@ function reportsView() {
     ["Lieferantenreport", "Verhandlungsliste, Rahmenpreis-Vorschlag, Top-Abweichungen"],
     ["Artikel-Abweichungsreport", "Standorte, Lieferanten, Preisentwicklung, Potenzial"],
     ["Standort-Benchmark-Report", "Lieferantenmix, Bestellverhalten, Maßnahmenliste"],
-    ["Warenkorb-Report", "Simulation, fehlende Artikel, realistisches Umstellungspotenzial"],
+    ["Warenkorb-Report", "Artikelkorb, fehlende Artikel, realistisches Umstellungspotenzial"],
     ["Management-Dashboard-Report", "Top 10 Potenziale, Ranking, Preissteigerungen"],
   ];
   return `<div class="grid cols-3">${reports.map(r => `<article class="panel"><h2>${r[0]}</h2><p class="muted">${r[1]}</p><button class="btn primary export-action">PDF vorbereiten</button> <button class="btn export-action">Excel</button></article>`).join("")}</div>`;
@@ -862,7 +818,7 @@ function productTable(rows) {
 
 function priceTable(rows) {
   return table(["Artikel", "Standort", "Lieferant", "Effektiv", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], filtered(rows).map(r => [
-    r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(r.comparisonPrice / groupAverage(r.productId) - 1), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
+    r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(groupAverage(r.productId) ? r.comparisonPrice / groupAverage(r.productId) - 1 : 0), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
   ]));
 }
 
@@ -932,6 +888,9 @@ function roleTable() {
 }
 
 function table(headers, rows) {
+  if (!rows.length) {
+    return `<p class="muted">Noch keine Daten vorhanden.</p>`;
+  }
   return `<div class="table-wrap table-scroll-frame"><table class="data-table"><thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(row => `<tr>${row.map((cell, i) => `<td class="${String(cell).startsWith("€") || i > 4 ? "num" : ""}">${cell}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 
@@ -955,12 +914,14 @@ function barChart(rows, labelKey, valueKey, fallbackMax) {
 }
 
 function warnings() {
-  const entries = [
-    ["Preissteigerung über Schwelle", "Komposit Universal A2 bei Kassel +11,8%", "bad"],
-    ["Skonto nicht genutzt", "Kirchberg und Ulmet mit offenem Potenzial", "warn"],
-    ["Neue Artikel ohne sicheres Matching", "Abformmaterial Heavy Body 68%", "warn"],
-    ["Kleinstbestellungen", "Ulmet unterschreitet Mindestbestellwert", "info"],
-  ];
+  const entries = [];
+  const pending = state.sampleImports.filter(row => !row.invoice_no || !row.invoice_date || !row.gross_total);
+  const hinted = state.sampleImports.filter(row => row.warnings?.length);
+  const duplicates = state.sampleImports.filter((row, index, all) => row.invoice_no && all.findIndex(other => other.invoice_no === row.invoice_no) !== index);
+  if (pending.length) entries.push(["Auslesung offen", `${pending.length} PDF${pending.length === 1 ? "" : "s"} warten auf vollständige Rechnungsdaten`, "warn"]);
+  if (hinted.length) entries.push(["Importhinweise", `${hinted.length} Import${hinted.length === 1 ? "" : "e"} mit Hinweis im Status`, "info"]);
+  if (duplicates.length) entries.push(["Mögliche Dubletten", `${duplicates.length} Rechnungsnummer${duplicates.length === 1 ? "" : "n"} doppelt erkannt`, "bad"]);
+  if (!entries.length) return `<p class="muted">Keine offenen Warnungen.</p>`;
   return entries.map(e => `<p><span class="tag ${e[2] === "bad" ? "red" : e[2] === "warn" ? "amber" : "blue"}">${e[0]}</span><br><span class="muted">${e[1]}</span></p>`).join("");
 }
 
@@ -1019,10 +980,15 @@ function init() {
   render();
   loadSupabaseData()
     .then(loaded => {
-      if (loaded) render();
+      state.dataLoaded = true;
+      state.dataError = loaded ? "" : "Es wurden noch keine freigegebenen Supabase-Daten gefunden.";
+      render();
     })
     .catch(error => {
       console.warn("Supabase-Daten konnten nicht geladen werden.", error);
+      state.dataLoaded = true;
+      state.dataError = "Supabase konnte nicht geladen werden. Bitte Verbindung und Projektfreigaben prüfen.";
+      render();
     });
 }
 
