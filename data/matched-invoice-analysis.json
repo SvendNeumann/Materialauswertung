@@ -1,4 +1,36 @@
 {
+  "catalog_sources": [
+    {
+      "name": "AERA Online",
+      "url": "https://www.aera-online.de/",
+      "role": "Offener Dental-Preisvergleich und Fallback für Bestellnummern, Packungsgrößen und Herstellerbezeichnungen.",
+      "access": "public_search"
+    },
+    {
+      "name": "Wawibox",
+      "url": "https://wawibox.de/",
+      "role": "Offener Praxisbedarf-Preisvergleich mit Suche nach Produkt, Bestell- oder Herstellernummer.",
+      "access": "public_search"
+    },
+    {
+      "name": "GERL Dental Shop",
+      "url": "https://de.shop.gerl-dental.com/de",
+      "role": "Lieferantenspezifische Quelle für GERL-Artikelnummern, Produktnamen, Hersteller und Packungsbasis.",
+      "access": "public_shop_search"
+    },
+    {
+      "name": "Plandent",
+      "url": "https://www.plandent.de/",
+      "role": "Lieferantenspezifische Quelle für Plandent-Artikelnummern und Hersteller-/Katalogbezeichnungen.",
+      "access": "public_or_catalog_search"
+    },
+    {
+      "name": "Henry Schein Dental",
+      "url": "https://www.henryschein-dental.de/",
+      "role": "Primäre Quelle für Henry-Schein-Artikelnummern; bei Zugriffsbeschränkung Gegenprüfung über AERA, Wawibox und Herstellerseiten.",
+      "access": "restricted_or_browser_search"
+    }
+  ],
   "summaries": [
     {
       "file": "Rechnung_231053578.PDF",

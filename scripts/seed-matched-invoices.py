@@ -44,6 +44,39 @@ CATEGORY_RULES = [
     ("Praxislabor", ["zirconia", "zircad", "emax", "block", "bohrer", "bur ", "fräser", "pmma", "zro2"]),
 ]
 
+CATALOG_RESEARCH_SOURCES = [
+    {
+        "name": "AERA Online",
+        "url": "https://www.aera-online.de/",
+        "role": "Offener Dental-Preisvergleich und Fallback für Bestellnummern, Packungsgrößen und Herstellerbezeichnungen.",
+        "access": "public_search",
+    },
+    {
+        "name": "Wawibox",
+        "url": "https://wawibox.de/",
+        "role": "Offener Praxisbedarf-Preisvergleich mit Suche nach Produkt, Bestell- oder Herstellernummer.",
+        "access": "public_search",
+    },
+    {
+        "name": "GERL Dental Shop",
+        "url": "https://de.shop.gerl-dental.com/de",
+        "role": "Lieferantenspezifische Quelle für GERL-Artikelnummern, Produktnamen, Hersteller und Packungsbasis.",
+        "access": "public_shop_search",
+    },
+    {
+        "name": "Plandent",
+        "url": "https://www.plandent.de/",
+        "role": "Lieferantenspezifische Quelle für Plandent-Artikelnummern und Hersteller-/Katalogbezeichnungen.",
+        "access": "public_or_catalog_search",
+    },
+    {
+        "name": "Henry Schein Dental",
+        "url": "https://www.henryschein-dental.de/",
+        "role": "Primäre Quelle für Henry-Schein-Artikelnummern; bei Zugriffsbeschränkung Gegenprüfung über AERA, Wawibox und Herstellerseiten.",
+        "access": "restricted_or_browser_search",
+    },
+]
+
 AUTO_MATCH_RULES = [
     {
         "key": "ledermix-paste-5g",
@@ -301,6 +334,7 @@ def build_payload(input_dir: Path) -> dict:
     } for summary in summaries]
 
     return {
+        "catalog_sources": CATALOG_RESEARCH_SOURCES,
         "summaries": summaries,
         "products": sorted(products_by_id.values(), key=lambda row: row["id"]),
         "invoices": invoice_rows,
