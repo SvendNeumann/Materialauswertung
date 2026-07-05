@@ -17,6 +17,7 @@ const state = {
   reportLocation: "Alle",
   reportSupplier: "Alle",
   reportProduct: "",
+  priceTrendProduct: "",
   categoryFilter: "Alle",
   sampleImports: [],
   uploadStatus: "",
@@ -43,6 +44,7 @@ const navSections = [
     items: [
       ["dashboard", "Management"],
       ["prices", "Preisvergleich"],
+      ["priceTrend", "Preisverlauf"],
       ["locations", "Standorte"],
       ["suppliers", "Lieferanten"],
       ["basket", "Warenkorb"],
@@ -1117,6 +1119,7 @@ function titleFor(id) {
     products: "Artikelstamm & Matching",
     suppliers: "Lieferantenbewertung",
     prices: "Artikelpreisvergleich",
+    priceTrend: "Preisverlauf",
     yearly: "Jahresvergleich & Preissteigerungen",
     locations: "Standortanalyse",
     basket: "Warenkorbanalyse",
@@ -1152,6 +1155,10 @@ function pageIntro(id) {
     prices: [
       "Artikelpreisvergleich",
       "Dieser Tab vergleicht normalisierte Artikelpreise über Lieferanten und Standorte, inklusive Packungsinhalten und Bestpreis-Abweichungen.",
+    ],
+    priceTrend: [
+      "Preisverlauf",
+      "Hier siehst du je Gruppenartikel, wie sich der normalisierte Preis über Rechnungsmonate, Standorte und Lieferanten entwickelt.",
     ],
     yearly: [
       "Jahresvergleich",
@@ -1533,6 +1540,107 @@ function pricesView() {
   });
 }
 
+function trendProductOptions() {
+  const ids = new Set(locationScopeRows(comparableItems()).map(row => row.productId));
+  return products.filter(product => ids.has(product.id));
+}
+
+function weightedPrice(rows) {
+  const totals = rows.reduce((acc, row) => {
+    const qty = Math.max(0, row.qty * row.product.pack);
+    acc.value += row.comparisonPrice * qty;
+    acc.qty += qty;
+    return acc;
+  }, { value: 0, qty: 0 });
+  return totals.qty ? totals.value / totals.qty : 0;
+}
+
+function selectedTrendProduct() {
+  const options = trendProductOptions();
+  if (!state.priceTrendProduct || !options.some(product => product.id === state.priceTrendProduct)) {
+    state.priceTrendProduct = options[0]?.id || "";
+  }
+  return options.find(product => product.id === state.priceTrendProduct) || null;
+}
+
+function priceTrendRows() {
+  const product = selectedTrendProduct();
+  if (!product) return [];
+  return locationScopeRows(comparableItems())
+    .filter(row => row.productId === product.id)
+    .sort((a, b) => String(a.inv.date || "").localeCompare(String(b.inv.date || "")) || a.inv.location.localeCompare(b.inv.location));
+}
+
+function priceTrendMonthRows(rows) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const month = invoiceMonthKey(row.inv.date) || "offen";
+    const current = groups.get(month) || { name: month, rows: [], qty: 0, count: 0, min: Infinity, max: 0 };
+    const qty = row.qty * row.product.pack;
+    current.rows.push(row);
+    current.qty += qty;
+    current.count += 1;
+    current.min = Math.min(current.min, row.comparisonPrice);
+    current.max = Math.max(current.max, row.comparisonPrice);
+    groups.set(month, current);
+  });
+  return Array.from(groups.values()).map(row => ({
+    ...row,
+    price: weightedPrice(row.rows),
+    min: row.min === Infinity ? 0 : row.min,
+  })).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+}
+
+function priceTrendSupplierRows(rows) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const name = row.inv.supplier || "offen";
+    const current = groups.get(name) || { name, rows: [], qty: 0, count: 0 };
+    current.rows.push(row);
+    current.qty += row.qty * row.product.pack;
+    current.count += 1;
+    groups.set(name, current);
+  });
+  return Array.from(groups.values()).map(row => ({
+    ...row,
+    price: weightedPrice(row.rows),
+  })).sort((a, b) => a.price - b.price);
+}
+
+function priceTrendProductSelect(options) {
+  return `<div class="filters"><select id="priceTrendProduct" aria-label="Artikel für Preisverlauf auswählen">${options.map(product => `<option value="${product.id}" ${state.priceTrendProduct === product.id ? "selected" : ""}>${product.name}</option>`).join("")}</select></div>`;
+}
+
+function priceTrendView() {
+  const options = trendProductOptions();
+  const product = selectedTrendProduct();
+  const rows = priceTrendRows();
+  const monthRows = priceTrendMonthRows(rows);
+  const supplierRows = priceTrendSupplierRows(rows);
+  const first = monthRows[0]?.price || 0;
+  const latest = monthRows[monthRows.length - 1]?.price || 0;
+  const change = first ? latest / first - 1 : 0;
+  const best = rows.length ? Math.min(...rows.map(row => row.comparisonPrice)) : 0;
+  const worst = rows.length ? Math.max(...rows.map(row => row.comparisonPrice)) : 0;
+  return tabShell({
+    metrics: [
+      { label: "Artikel", value: product ? product.name : "offen", sub: product ? `${product.unit}, freigegeben` : "keine Daten" },
+      { label: "Monate", value: monthRows.length, sub: periodInfo(rows).label },
+      { label: "Aktueller Ø Preis", value: eur.format(latest), sub: "gewichteter Monatswert" },
+      { label: "Veränderung", value: pct.format(change), sub: "erster zu letztem Monat" },
+      { label: "Bestpreis", value: eur.format(best), sub: "niedrigster Einzelpreis" },
+      { label: "Preisspanne", value: eur.format(Math.max(0, worst - best)), sub: "max. minus min." },
+    ],
+    analysis: panel("Auswertung", `${priceTrendProductSelect(options)}<p class="muted">Der Preisverlauf nutzt den effektiv normalisierten Preis je Rechnungsposten. Mehrere Positionen im gleichen Monat werden mengen-gewichtet zusammengefasst, damit große Bestellungen den Durchschnitt stärker prägen als kleine Nachkäufe.</p>`),
+    charts: [
+      panel("Ø Preis je Monat", barChart(monthRows, "name", "price", 1)),
+      panel("Ø Preis je Lieferant", barChart(supplierRows, "name", "price", 1)),
+    ],
+    tableTitle: "Preisverlauf je Rechnungsposten",
+    table: `<div class="bounded-table">${priceTrendTable(rows)}</div>`,
+  });
+}
+
 function yearlyView() {
   const rows = yearlyPriceRows();
   const summary = yearlySummary();
@@ -1817,7 +1925,7 @@ function mobileView() {
   });
 }
 
-const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, yearly: yearlyView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
+const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, priceTrend: priceTrendView, yearly: yearlyView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
 
 function filters() {
   return `<div class="filters"><input id="search" placeholder="Suchen" value="${state.query}"><select id="locationFilter"><option>Alle</option>${locations.map(l => `<option ${state.locationFilter === l.name ? "selected" : ""}>${l.name}</option>`)}</select><select id="supplierFilter"><option>Alle</option>${suppliers.map(s => `<option ${state.supplierFilter === s.name ? "selected" : ""}>${s.name}</option>`)}</select></div>`;
@@ -1925,6 +2033,24 @@ function priceTable(rows, applyFilters = true) {
   return table(["Artikel", "Standort", "Lieferant", "Standortpreis", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], visibleRows.map(r => [
     r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(groupAverage(r.productId) ? r.comparisonPrice / groupAverage(r.productId) - 1 : 0), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
   ]));
+}
+
+function priceTrendTable(rows) {
+  return table(["Monat", "Rechnung", "Datum", "Standort", "Lieferant", "Menge", "Normalpreis", "Gruppenschnitt", "Abweichung"], rows.map(row => {
+    const average = groupAverage(row.productId);
+    const qty = row.qty * row.product.pack;
+    return [
+      invoiceMonthKey(row.inv.date) || "offen",
+      row.inv.no,
+      row.inv.date || "offen",
+      row.inv.location,
+      row.inv.supplier,
+      `${qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`,
+      `${eur.format(row.comparisonPrice)} / ${row.product.unit}`,
+      `${eur.format(average)} / ${row.product.unit}`,
+      pct.format(average ? row.comparisonPrice / average - 1 : 0),
+    ];
+  }));
 }
 
 function potentialLocationTable(rows) {
@@ -2369,6 +2495,10 @@ function bindViewEvents() {
       state[event.target.id] = event.target.value;
       render();
     });
+  });
+  document.getElementById("priceTrendProduct")?.addEventListener("change", event => {
+    state.priceTrendProduct = event.target.value;
+    render();
   });
   document.querySelectorAll(".print-report-btn").forEach(btn => {
     btn.addEventListener("click", () => printReport(btn.dataset.report));
