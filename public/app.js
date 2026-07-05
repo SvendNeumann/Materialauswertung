@@ -14,6 +14,9 @@ const state = {
   supplierFilter: "Alle",
   locationFilter: "Alle",
   safePotentialOnly: true,
+  reportLocation: "Alle",
+  reportSupplier: "Alle",
+  reportProduct: "",
   categoryFilter: "Alle",
   sampleImports: [],
   uploadStatus: "",
@@ -1583,14 +1586,34 @@ function recommendationsView() {
 }
 
 function reportsView() {
-  const reports = [
-    ["Lieferantenreport", "Verhandlungsliste, Rahmenpreis-Vorschlag, Top-Abweichungen"],
-    ["Artikel-Abweichungsreport", "Standorte, Lieferanten, Preisentwicklung, Potenzial"],
-    ["Standort-Potenzialreport", "Standortpreis, Gruppenschnitt, Bestpreis und Jahrespotenzial"],
-    ["Warenkorb-Report", "Artikelkorb, fehlende Artikel, realistisches Umstellungspotenzial"],
-    ["Management-Dashboard-Report", "Top 10 Potenziale, Ranking, Preissteigerungen"],
+  const rows = securePotentialRows();
+  const selectedProduct = state.reportProduct || rows[0]?.productId || products[0]?.id || "";
+  state.reportProduct = selectedProduct;
+  const previewRows = reportRowsFor("management").slice(0, 12);
+  const reportCards = [
+    ["location", "Standortreport", "Ein Standort, alle sicheren Potenziale, Top-Artikel und Gesamtsumme."],
+    ["supplier", "Lieferantenreport", "Zeigt, bei welchen Positionen der aktuelle Lieferant oberhalb des Bestpreises liegt."],
+    ["article", "Artikelreport", "Ein Artikel über Standorte und Lieferanten: wer zahlt was, wer ist am günstigsten?"],
+    ["management", "Managementreport", "Gesamtüberblick über Top-Standorte, Top-Artikel und Gesamtpotenzial."],
   ];
-  return `<div class="grid cols-3">${reports.map(r => `<article class="panel"><h2>${r[0]}</h2><p class="muted">${r[1]}</p><span class="tag blue">Reportbereich</span></article>`).join("")}</div>`;
+  return `
+    <section class="panel">
+      <h2>Report-Center</h2>
+      <p class="muted">Alle Reports nutzen nur sichere Potenziale: freigegebene Gruppenartikel, hohe Matchsicherheit, erkannte Basiseinheit und mindestens zwei Vergleichspreise.</p>
+      <div class="report-control-grid">
+        <label>Standort<select id="reportLocation"><option>Alle</option>${locations.map(l => `<option ${state.reportLocation === l.name ? "selected" : ""}>${l.name}</option>`)}</select></label>
+        <label>Lieferant<select id="reportSupplier"><option>Alle</option>${suppliers.map(s => `<option ${state.reportSupplier === s.name ? "selected" : ""}>${s.name}</option>`)}</select></label>
+        <label>Artikel<select id="reportProduct">${products.map(p => `<option value="${p.id}" ${selectedProduct === p.id ? "selected" : ""}>${p.name}</option>`).join("")}</select></label>
+      </div>
+    </section>
+    <div class="grid cols-2 tab-section">
+      ${reportCards.map(card => `<article class="panel report-card"><h2>${card[1]}</h2><p class="muted">${card[2]}</p><button class="btn primary print-report-btn" type="button" data-report="${card[0]}">Drucken</button></article>`).join("")}
+    </div>
+    <section class="panel tab-section">
+      <div class="toolbar"><h2>Vorschau sichere Top-Potenziale</h2><span class="tag blue">${rows.length} sichere Positionen</span></div>
+      <div class="bounded-table">${reportPreviewTable(previewRows)}</div>
+    </section>
+  `;
 }
 
 function settingsView() {
@@ -1696,11 +1719,30 @@ function safePotentialToggle() {
   `;
 }
 
+function securePotentialRows() {
+  return locationScopeRows(recommendations()).filter(isSafePotential);
+}
+
 function selectedPotentialRows(limit = null) {
   const rows = locationScopeRows(recommendations());
   const filteredByLocation = state.locationFilter === "Alle" ? rows : rows.filter(row => row.inv.location === state.locationFilter);
   const selected = state.safePotentialOnly ? filteredByLocation.filter(isSafePotential) : filteredByLocation;
   return limit ? selected.slice(0, limit) : selected;
+}
+
+function reportRowsFor(type) {
+  const rows = securePotentialRows();
+  if (type === "location") {
+    return (state.reportLocation === "Alle" ? rows : rows.filter(row => row.inv.location === state.reportLocation)).sort((a, b) => b.saving - a.saving);
+  }
+  if (type === "supplier") {
+    return (state.reportSupplier === "Alle" ? rows : rows.filter(row => row.inv.supplier === state.reportSupplier)).sort((a, b) => b.saving - a.saving);
+  }
+  if (type === "article") {
+    const productId = state.reportProduct || rows[0]?.productId || "";
+    return rows.filter(row => row.productId === productId).sort((a, b) => b.saving - a.saving);
+  }
+  return rows.slice().sort((a, b) => b.saving - a.saving);
 }
 
 function mobileView() {
@@ -1971,6 +2013,151 @@ function potentialReportHtml(rows) {
     </html>`;
 }
 
+function reportTitle(type) {
+  if (type === "location") return state.reportLocation === "Alle" ? "Standortreport · Alle Standorte" : `Standortreport · ${state.reportLocation}`;
+  if (type === "supplier") return state.reportSupplier === "Alle" ? "Lieferantenreport · Alle Lieferanten" : `Lieferantenreport · ${state.reportSupplier}`;
+  if (type === "article") {
+    const product = products.find(p => p.id === state.reportProduct);
+    return `Artikelreport · ${product?.name || "Ausgewählter Artikel"}`;
+  }
+  return "Managementreport · Gesamtpotenziale";
+}
+
+function reportTotals(rows) {
+  const currentTotal = rows.reduce((sum, row) => sum + row.comparisonPrice * row.qty * row.product.pack, 0);
+  const bestTotal = rows.reduce((sum, row) => sum + bestPrice(row.productId) * row.qty * row.product.pack, 0);
+  const savingTotal = Math.max(0, currentTotal - bestTotal);
+  return {
+    currentTotal,
+    bestTotal,
+    savingTotal,
+    savingPct: currentTotal ? savingTotal / currentTotal : 0,
+    locations: new Set(rows.map(row => row.inv.location)).size,
+    products: new Set(rows.map(row => row.productId)).size,
+    suppliers: new Set(rows.map(row => row.inv.supplier)).size,
+  };
+}
+
+function reportPreviewTable(rows) {
+  return table(["Artikel", "Standort", "Aktueller Lieferant", "Günstigste Quelle", "Potenzial", "Potenzial %"], rows.map(row => {
+    const currentCost = row.comparisonPrice * row.qty * row.product.pack;
+    const savingPct = currentCost ? row.saving / currentCost : 0;
+    return [
+      escapeHtml(row.product.name),
+      escapeHtml(row.inv.location),
+      escapeHtml(row.inv.supplier),
+      escapeHtml(row.recommendedLabel),
+      eur.format(row.saving),
+      pct.format(savingPct),
+    ];
+  }));
+}
+
+function reportRowsHtml(rows, limit = 40) {
+  return rows.slice(0, limit).map((row, index) => {
+    const baseQuantity = row.qty * row.product.pack;
+    const currentCost = row.comparisonPrice * baseQuantity;
+    const best = bestPrice(row.productId);
+    const bestCost = best * baseQuantity;
+    const saving = Math.max(0, currentCost - bestCost);
+    const pctSaving = currentCost ? saving / currentCost : 0;
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(row.product.name)}</td>
+        <td>${escapeHtml(row.inv.location)}</td>
+        <td>${escapeHtml(row.inv.supplier)}</td>
+        <td>${baseQuantity.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${escapeHtml(row.product.unit)}</td>
+        <td>${eur.format(row.comparisonPrice)}</td>
+        <td>${escapeHtml(row.recommendedLabel)}</td>
+        <td>${eur.format(best)}</td>
+        <td>${eur.format(saving)}</td>
+        <td>${pct.format(pctSaving)}</td>
+        <td>${escapeHtml(potentialReason(row))}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function reportHtml(type, rows) {
+  const totals = reportTotals(rows);
+  const today = new Date().toLocaleDateString("de-DE");
+  const title = reportTitle(type);
+  const locationRows = potentialLocationRows(rows).slice(0, 8);
+  const locationSummary = locationRows.map(row => `<tr><td>${escapeHtml(row.name)}</td><td>${row.count}</td><td>${eur.format(row.monthly)}</td><td>${eur.format(row.potential)}</td><td>${escapeHtml(row.topArticle)}</td></tr>`).join("");
+  return `<!doctype html>
+    <html lang="de">
+      <head>
+        <meta charset="utf-8" />
+        <title>Orisus ${escapeHtml(title)}</title>
+        <style>
+          @page { size: A4 landscape; margin: 12mm; }
+          body { font-family: Arial, sans-serif; color: #102235; margin: 28px; }
+          header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; border-bottom: 3px solid #28c9c3; padding-bottom: 18px; margin-bottom: 22px; }
+          h1 { margin: 0 0 6px; font-size: 28px; }
+          h2 { margin: 24px 0 10px; font-size: 18px; }
+          p { margin: 4px 0; line-height: 1.45; }
+          .muted { color: #5d6f7d; }
+          .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0 22px; }
+          .kpi { border: 1px solid #cbdde1; border-left: 5px solid #28c9c3; border-radius: 8px; padding: 12px; }
+          .kpi span { display: block; color: #5d6f7d; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+          .kpi strong { display: block; margin-top: 7px; font-size: 20px; }
+          table { width: 100%; border-collapse: collapse; font-size: 10px; }
+          th { background: #0d3542; color: white; text-align: left; }
+          th, td { border: 1px solid #d8e5e8; padding: 7px; vertical-align: top; }
+          tbody tr:nth-child(even) { background: #f4f9fa; }
+          .note { margin-top: 16px; padding: 12px; background: #eef8f8; border-left: 4px solid #28c9c3; }
+          @media print {
+            body { margin: 14mm; }
+            header, .kpi, .note { break-inside: avoid; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+          }
+        </style>
+      </head>
+      <body>
+        <header>
+          <div>
+            <h1>${escapeHtml(title)}</h1>
+            <p class="muted">Erstellt am ${today} · sichere Potenziale</p>
+          </div>
+          <div><strong>ORISUS</strong><br><span class="muted">Materialpreis-Controlling</span></div>
+        </header>
+        <section class="kpis">
+          <div class="kpi"><span>Positionen</span><strong>${rows.length}</strong></div>
+          <div class="kpi"><span>Aktueller Einkauf</span><strong>${eur.format(totals.currentTotal)}</strong></div>
+          <div class="kpi"><span>Einsparpotenzial</span><strong>${eur.format(totals.savingTotal)} · ${pct.format(totals.savingPct)}</strong></div>
+          <div class="kpi"><span>Umfang</span><strong>${totals.locations} Standorte · ${totals.products} Artikel</strong></div>
+        </section>
+        <p>Dieser Report zeigt ausschließlich sichere Vergleichspositionen mit freigegebenem Artikelmatching, normalisierter Einheit und belastbarem Bestpreisvergleich.</p>
+        ${locationSummary ? `<h2>Standort-Zusammenfassung</h2><table><thead><tr><th>Standort</th><th>Positionen</th><th>Potenzial Bestellungen</th><th>Hochrechnung/Jahr</th><th>Größter Hebel</th></tr></thead><tbody>${locationSummary}</tbody></table>` : ""}
+        <h2>Detailpositionen</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Artikel</th><th>Standort</th><th>Aktueller Lieferant</th><th>Menge</th><th>Aktueller Preis</th><th>Günstigste Quelle</th><th>Bestpreis</th><th>Potenzial</th><th>Potenzial %</th><th>Begründung</th>
+            </tr>
+          </thead>
+          <tbody>${reportRowsHtml(rows) || `<tr><td colspan="11">Keine sicheren Potenziale im aktuellen Filter.</td></tr>`}</tbody>
+        </table>
+        <div class="note">Die ausgewiesenen Potenziale beziehen sich auf die eingelesenen Bestellmengen. Die Hochrechnung pro Jahr setzt voraus, dass sich diese Bestellstruktur vergleichbar wiederholt.</div>
+      </body>
+    </html>`;
+}
+
+function printReport(type) {
+  const rows = reportRowsFor(type);
+  const report = window.open("", "_blank", "noopener,noreferrer");
+  if (!report) {
+    alert("Der Report konnte nicht geöffnet werden. Bitte Pop-ups für diese Seite erlauben.");
+    return;
+  }
+  report.document.open();
+  report.document.write(reportHtml(type, rows));
+  report.document.close();
+  report.focus();
+  window.setTimeout(() => report.print(), 250);
+}
+
 function printPotentialReport() {
   const rows = selectedPotentialRows(20);
   const report = window.open("", "_blank", "noopener,noreferrer");
@@ -2133,6 +2320,15 @@ function bindViewEvents() {
     render();
   });
   document.getElementById("printPotentialReport")?.addEventListener("click", printPotentialReport);
+  document.querySelectorAll("#reportLocation, #reportSupplier, #reportProduct").forEach(el => {
+    el.addEventListener("change", event => {
+      state[event.target.id] = event.target.value;
+      render();
+    });
+  });
+  document.querySelectorAll(".print-report-btn").forEach(btn => {
+    btn.addEventListener("click", () => printReport(btn.dataset.report));
+  });
   const fileInput = document.getElementById("invoiceFileInput");
   const chooseFiles = document.getElementById("chooseInvoiceFiles");
   const dropzone = document.getElementById("dropzone");

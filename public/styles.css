@@ -228,6 +228,27 @@ p { line-height: 1.5; }
   height: 20px;
   accent-color: var(--teal);
 }
+.report-control-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.report-control-grid label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+.report-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.report-card .btn {
+  justify-self: start;
+}
 .filters input, .filters select, .form-grid input, .form-grid select {
   min-height: 38px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); padding: 8px 10px;
 }
@@ -1041,6 +1062,10 @@ h3 {
   }
 
   .grid.cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .report-control-grid {
     grid-template-columns: 1fr;
   }
 
