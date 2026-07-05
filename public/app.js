@@ -213,6 +213,25 @@ function importRowFromDb(row) {
   };
 }
 
+function invoiceDuplicate(payload) {
+  const invoiceNo = String(payload?.invoice?.invoice_no || "").trim();
+  const supplier = String(payload?.invoice?.supplier_name || "").trim();
+  if (!invoiceNo || !supplier) return null;
+  return invoices.find(inv =>
+    String(inv.no || "").trim() === invoiceNo
+    && String(inv.supplier || "").trim() === supplier
+  ) || null;
+}
+
+async function remoteInvoiceDuplicate(payload) {
+  const invoiceNo = String(payload?.invoice?.invoice_no || "").trim();
+  const supplier = String(payload?.invoice?.supplier_name || "").trim();
+  if (!invoiceNo || !supplier) return null;
+  const query = `select=id,invoice_no,supplier_name,location_name&invoice_no=eq.${encodeURIComponent(invoiceNo)}&supplier_name=eq.${encodeURIComponent(supplier)}&limit=1`;
+  const rows = await supabaseTable("invoices", query);
+  return rows[0] || null;
+}
+
 function invalidateDerivedData() {
   derivedCache = {};
 }
@@ -303,7 +322,31 @@ async function uploadInvoiceFiles(fileList) {
   render();
 
   try {
+    let importedCount = 0;
+    let skippedCount = 0;
     for (const file of files) {
+      state.uploadStatus = `${file.name}: PDF wird ausgelesen...`;
+      render();
+      const payload = await buildLiveInvoicePayload(file, { supplierName: "", locationName: "" });
+      const duplicate = invoiceDuplicate(payload) || await remoteInvoiceDuplicate(payload);
+      if (duplicate) {
+        state.sampleImports = [{
+          file: file.name,
+          document_type: payload.document_type,
+          supplier: payload.invoice.supplier_name,
+          location_name: payload.invoice.location_name,
+          invoice_no: payload.invoice.invoice_no,
+          invoice_date: payload.invoice.invoice_date,
+          gross_total: payload.gross_total,
+          extracted_items: payload.invoice_items.length,
+          warnings: [`Dublette erkannt: ${payload.invoice.supplier_name} Rechnung ${payload.invoice.invoice_no} ist bereits importiert.`],
+          sample_items: payload.sample_items,
+        }, ...state.sampleImports.filter(row => row.invoice_no !== payload.invoice.invoice_no || row.supplier !== payload.invoice.supplier_name)];
+        state.uploadStatus = `${file.name}: nicht importiert, weil diese Rechnung bereits vorhanden ist.`;
+        skippedCount += 1;
+        render();
+        continue;
+      }
       const safeName = file.name.replace(/[^\w. -]+/g, "_");
       const uploadId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
       const path = `uploads/${new Date().toISOString().slice(0, 10)}/${uploadId}-${safeName}`;
@@ -336,15 +379,15 @@ async function uploadInvoiceFiles(fileList) {
       state.sampleImports = [importRowFromDb(created), ...state.sampleImports.filter(row => row.file !== importFileKey)];
       state.uploadStatus = `${file.name}: PDF gespeichert, Auslesung läuft...`;
       render();
-      const payload = await buildLiveInvoicePayload(file, { supplierName: "", locationName: "" });
       payload.file = importFileKey;
       payload.invoice.source_file = importFileKey;
       await supabaseRpc("ingest_invoice_analysis", { p_payload: payload });
       state.uploadStatus = `${file.name}: ${payload.invoice_items.length} Positionen analysiert und in die Potenzialanalyse übernommen.`;
+      importedCount += 1;
       await loadSupabaseData();
       render();
     }
-    state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} erfolgreich hochgeladen, ausgelesen und analysiert.`;
+    state.uploadStatus = `${importedCount} PDF${importedCount === 1 ? "" : "s"} importiert, ${skippedCount} Dublette${skippedCount === 1 ? "" : "n"} übersprungen.`;
   } catch (error) {
     state.uploadStatus = error.message || "Upload fehlgeschlagen.";
   }
@@ -380,8 +423,11 @@ function lastAmount(text, pattern) {
 
 function supplierForText(text, fallback) {
   if (text.includes("Henry Schein Dental Deutschland")) return "Henry Schein";
+  if (/Henry\s+Schein/i.test(text)) return "Henry Schein";
   if (text.includes("Plandent GmbH")) return "Plandent";
+  if (/Plan\s*dent|Plandent/i.test(text)) return "Plandent";
   if (text.includes("Monatsrechnung Blatt") && text.includes("Kundennummer 312075")) return "GERL";
+  if (/\bGERL\b|Gerhard\s+Rösch/i.test(text)) return "GERL";
   return fallback || "offen";
 }
 
@@ -391,6 +437,8 @@ function locationForText(text, fallback) {
     ["Kirchberg", [/08107\s+Kirchberg/i, /Auerbacher\s+Str\.\s*13/i]],
     ["Essen", [/45327\s+Essen/i, /Viktoriastra(?:ße|sse)\s+41a/i, /Zeche\s+Zollverein/i]],
     ["Hüttenberg", [/35625\s+H[üu]ttenberg/i, /Langg[öo]nser\s+Str\.\s*29/i]],
+    ["Ulmet", [/\bUlmet\b/i, /66887\s+Ulmet/i]],
+    ["Kassel", [/\bKassel\b/i, /34\d{3}\s+Kassel/i]],
   ];
   return rules.find(([, patterns]) => patterns.some(pattern => pattern.test(text)))?.[0] || fallback || "offen";
 }
@@ -424,30 +472,39 @@ function invoiceHeaderFromText(text, supplier) {
 }
 
 function totalsFromText(text, supplier) {
+  const genericFreight = lastAmount(text, /(?:Versand|Fracht|Porto|Transport|Lieferkosten)[^\n\d-]*(-?[\d.]+,\d{2})/gi) || 0;
+  const genericSurcharge = lastAmount(text, /(?:Mindermenge|Mindermengenzuschlag|Zuschlag|Bearbeitung|Handling)[^\n\d-]*(-?[\d.]+,\d{2})/gi) || 0;
+  const genericDiscount = Math.abs(lastAmount(text, /(?:Rechnungsrabatt|Gesamtrabatt|Rabatt\s+gesamt|Bonus)[^\n\d-]*(-?[\d.]+,\d{2})/gi) || 0);
   if (supplier === "Plandent") {
     return {
       net: lastAmount(text, /Zwischensumme\s+(-?[\d.]+,\d{2})/gi),
       gross: lastAmount(text, /Gesamtsumme\s+(-?[\d.]+,\d{2})/gi),
-      freight: 0,
-      surcharge: lastAmount(text, /Mindermenge\s+Inland\s+(-?[\d.]+,\d{2})/gi) || 0,
+      freight: genericFreight,
+      surcharge: lastAmount(text, /Mindermenge\s+Inland\s+(-?[\d.]+,\d{2})/gi) || genericSurcharge,
+      discount: genericDiscount,
     };
   }
   if (supplier === "Henry Schein") {
     return {
       net: lastAmount(text, /Summe\s+Positionen\s+(-?[\d.]+,\d{2})/gi),
       gross: lastAmount(text, /Endbetrag\s+(-?[\d.]+,\d{2})/gi),
-      freight: lastAmount(text, /Versandkosten\s+\d*\s*(-?[\d.]+,\d{2})/gi) || 0,
-      surcharge: 0,
+      freight: lastAmount(text, /Versandkosten\s+\d*\s*(-?[\d.]+,\d{2})/gi) || genericFreight,
+      surcharge: genericSurcharge,
+      discount: genericDiscount,
     };
   }
   if (supplier === "GERL") {
     const matches = Array.from(text.matchAll(/Ne-Warenwert\s+MS\s+MwSt\s+%\s+MwSt\s+Re-Betrag\s+EUR\s+(-?[\d.]+,\d{2})\s+\d+\s+19,00\s+(-?[\d.]+,\d{2})\s+(-?[\d.]+,\d{2})/gi));
     if (matches.length) {
       const last = matches[matches.length - 1];
-      return { net: parseAmount(last[1]), gross: parseAmount(last[3]), freight: 0, surcharge: 0 };
+      return { net: parseAmount(last[1]), gross: parseAmount(last[3]), freight: genericFreight, surcharge: genericSurcharge, discount: genericDiscount };
     }
   }
-  return { net: null, gross: null, freight: 0, surcharge: 0 };
+  return { net: null, gross: null, freight: genericFreight, surcharge: genericSurcharge, discount: genericDiscount };
+}
+
+function skontoDetected(text) {
+  return /\bskonto\b/i.test(text);
 }
 
 function extractItemsFromText(text, supplier) {
@@ -588,7 +645,8 @@ function catalogPackOverride(item, pack) {
   return pack;
 }
 
-function needsReview(description) {
+function needsReview(description, articleNo = "", basis = [1, "Einheit"]) {
+  if (articleNo && basis[1] !== "Einheit") return false;
   const text = normalizedRuleText(description);
   return /\bketac\b.*\b(?:cem|univ|universal|aplicap)\b/i.test(text)
     || /\bmiraject\b.*\bluer\b/i.test(text)
@@ -625,6 +683,7 @@ async function buildLiveInvoicePayload(file, fallback) {
   const invoiceNo = header.invoiceNo || file.name.replace(/\.[^.]+$/, "");
   const invoiceDate = isoDateFromGerman(header.invoiceDate);
   const invoiceId = `INV-${invoiceNo.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+  const invoiceDiscount = Number(totals.discount || 0);
   const detailByKey = new Map();
   rawItems.forEach(item => {
     if (autoRule(item.description)) return;
@@ -649,7 +708,8 @@ async function buildLiveInvoicePayload(file, fallback) {
     let productKey = catalogKey(item.description);
     let productName = item.description.slice(0, 64);
     let category = categoryFor(item.description);
-    let score = needsReview(item.description) ? 0.82 : 0.94;
+    const basis = catalogPackOverride(item, packBasis(item.description));
+    let score = needsReview(item.description, item.article_no, basis) ? 0.82 : 0.94;
     let prefix = "P";
     const verified = {
       "9884844": ["hs-eurosept-xtra-e-handdesinfektion", "HS-EuroSept Xtra E Händedesinfektion", "Hygiene"],
@@ -669,10 +729,11 @@ async function buildLiveInvoicePayload(file, fallback) {
     } else if (ambiguous.has(productKey)) {
       productKey = `${productKey} artnr ${item.article_no}`;
       productName = `${item.description.slice(0, 52)} · ArtNr ${item.article_no}`;
-      score = 0.82;
+      score = basis[1] !== "Einheit" ? 0.91 : 0.84;
+    } else if (item.article_no && basis[1] !== "Einheit") {
+      score = Math.max(score, 0.91);
     }
     const productId = await shaId(prefix, productKey);
-    const basis = catalogPackOverride(item, packBasis(item.description));
     const normalizedQty = item.quantity * basis[0];
     const normalizedUnitPrice = basis[0] ? item.unit_price / basis[0] : item.unit_price;
     productsById.set(productId, {
@@ -695,7 +756,7 @@ async function buildLiveInvoicePayload(file, fallback) {
     });
     const priceKey = `${supplier}|||${productId}`;
     const bucket = priceBuckets.get(priceKey) || { supplier_name: supplier, product_id: productId, values: [] };
-    bucket.values.push(Math.abs(normalizedUnitPrice));
+    bucket.values.push(Math.abs(normalizedQty ? item.line_total / normalizedQty : normalizedUnitPrice));
     priceBuckets.set(priceKey, bucket);
   }
   const warnings = [];
@@ -725,8 +786,8 @@ async function buildLiveInvoicePayload(file, fallback) {
       net: totals.net || totals.gross || 0,
       freight: totals.freight || 0,
       surcharge: totals.surcharge || 0,
-      discount: 0,
-      skonto_used: false,
+      discount: invoiceDiscount,
+      skonto_used: skontoDetected(text),
       source_file: file.name,
     },
     products: Array.from(productsById.values()),
@@ -1901,6 +1962,7 @@ function reportsView() {
     ["location", "Standortreport", "Ein Standort, alle sicheren Potenziale, Top-Artikel und Gesamtsumme."],
     ["supplier", "Lieferantenreport", "Zeigt, bei welchen Positionen der aktuelle Lieferant oberhalb des Bestpreises liegt."],
     ["article", "Artikelreport", "Ein Artikel über Standorte und Lieferanten: wer zahlt was, wer ist am günstigsten?"],
+    ["bestPractice", "Best-Practice-Report", "Zeigt Artikel, bei denen Standorte günstiger als der Gruppenstandard einkaufen."],
     ["management", "Managementreport", "Gesamtüberblick über Top-Standorte, Top-Artikel und Gesamtpotenzial."],
   ];
   return `
@@ -2042,6 +2104,9 @@ function selectedPotentialRows(limit = null) {
 
 function reportRowsFor(type) {
   const rows = securePotentialRows();
+  if (type === "bestPractice") {
+    return bestPracticeRows();
+  }
   if (type === "location") {
     return (state.reportLocation === "Alle" ? rows : rows.filter(row => locationMatches(row.inv.location, state.reportLocation))).sort((a, b) => b.saving - a.saving);
   }
@@ -2053,6 +2118,16 @@ function reportRowsFor(type) {
     return rows.filter(row => row.productId === productId).sort((a, b) => b.saving - a.saving);
   }
   return rows.slice().sort((a, b) => b.saving - a.saving);
+}
+
+function bestPracticeRows() {
+  return locationScopeRows(comparableItems()).map(row => {
+    const average = groupAverage(row.productId);
+    const qty = row.qty * row.product.pack;
+    const advantage = average && row.comparisonPrice < average ? (average - row.comparisonPrice) * qty : 0;
+    const deviation = average ? row.comparisonPrice / average - 1 : 0;
+    return { ...row, average, advantage, deviation };
+  }).filter(row => row.advantage > 1).sort((a, b) => b.advantage - a.advantage);
 }
 
 function mobileView() {
@@ -2519,10 +2594,89 @@ function reportHtml(type, rows) {
     </html>`;
 }
 
+function bestPracticeReportHtml(rows) {
+  const today = new Date().toLocaleDateString("de-DE");
+  const totalAdvantage = rows.reduce((sum, row) => sum + row.advantage, 0);
+  const locationSummary = potentialLocationRows(rows.map(row => ({ ...row, saving: row.advantage, className: "Best Practice", recommendedLabel: row.inv.supplier }))).slice(0, 8);
+  const bodyRows = rows.slice(0, 60).map((row, index) => {
+    const qty = row.qty * row.product.pack;
+    const currentCost = row.comparisonPrice * qty;
+    const groupCost = row.average * qty;
+    const advantagePct = groupCost ? row.advantage / groupCost : 0;
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(row.product.name)}</td>
+        <td>${escapeHtml(row.inv.location)}</td>
+        <td>${escapeHtml(row.inv.supplier)}</td>
+        <td>${qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${escapeHtml(row.product.unit)}</td>
+        <td>${eur.format(row.comparisonPrice)}</td>
+        <td>${eur.format(row.average)}</td>
+        <td>${eur.format(currentCost)}</td>
+        <td>${eur.format(groupCost)}</td>
+        <td>${eur.format(row.advantage)} · ${pct.format(advantagePct)}</td>
+      </tr>
+    `;
+  }).join("");
+  return `<!doctype html>
+    <html lang="de">
+      <head>
+        <meta charset="utf-8" />
+        <title>Orisus Best-Practice-Report</title>
+        <style>
+          @page { size: A4 landscape; margin: 12mm; }
+          body { font-family: Arial, sans-serif; color: #102235; margin: 28px; }
+          header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; border-bottom: 3px solid #28c9c3; padding-bottom: 18px; margin-bottom: 22px; }
+          h1 { margin: 0 0 6px; font-size: 28px; }
+          h2 { margin: 24px 0 10px; font-size: 18px; }
+          p { margin: 4px 0; line-height: 1.45; }
+          .muted { color: #5d6f7d; }
+          .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0 22px; }
+          .kpi { border: 1px solid #cbdde1; border-left: 5px solid #28c9c3; border-radius: 8px; padding: 12px; }
+          .kpi span { display: block; color: #5d6f7d; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+          .kpi strong { display: block; margin-top: 7px; font-size: 20px; }
+          table { width: 100%; border-collapse: collapse; font-size: 10px; }
+          th { background: #0d3542; color: white; text-align: left; }
+          th, td { border: 1px solid #d8e5e8; padding: 7px; vertical-align: top; }
+          tbody tr:nth-child(even) { background: #f4f9fa; }
+          .note { margin-top: 16px; padding: 12px; background: #eef8f8; border-left: 4px solid #28c9c3; }
+          @media print { body { margin: 14mm; } tr { page-break-inside: avoid; page-break-after: auto; } }
+        </style>
+      </head>
+      <body>
+        <header>
+          <div>
+            <h1>Best-Practice-Report</h1>
+            <p class="muted">Günstiger als Gruppenstandard · erstellt am ${today}</p>
+          </div>
+          <div><strong>ORISUS</strong><br><span class="muted">Materialpreis-Controlling</span></div>
+        </header>
+        <section class="kpis">
+          <div class="kpi"><span>Positive Positionen</span><strong>${rows.length}</strong></div>
+          <div class="kpi"><span>Vorteil aus Bestellungen</span><strong>${eur.format(totalAdvantage)}</strong></div>
+          <div class="kpi"><span>Standorte</span><strong>${new Set(rows.map(row => row.inv.location)).size}</strong></div>
+          <div class="kpi"><span>Artikel</span><strong>${new Set(rows.map(row => row.productId)).size}</strong></div>
+        </section>
+        <p>Dieser Report zeigt Artikel, bei denen ein Standort auf Basis des effektiven Nettopreises günstiger als der gewichtete Gruppenstandard einkauft. Diese Positionen sind besonders relevant für zentrale Verhandlungen, Best-Practice-Empfehlungen und Rahmenpreisgespräche.</p>
+        ${locationSummary.length ? `<h2>Standorte mit positivem Einkaufsvorteil</h2><table><thead><tr><th>Standort</th><th>Positionen</th><th>Vorteil Bestellungen</th><th>Hochrechnung/Jahr</th><th>Stärkster Artikel</th></tr></thead><tbody>${locationSummary.map(row => `<tr><td>${escapeHtml(row.name)}</td><td>${row.count}</td><td>${eur.format(row.monthly)}</td><td>${eur.format(row.potential)}</td><td>${escapeHtml(row.topArticle)}</td></tr>`).join("")}</tbody></table>` : ""}
+        <h2>Detailpositionen</h2>
+        <table>
+          <thead><tr><th>#</th><th>Artikel</th><th>Standort</th><th>Lieferant</th><th>Menge</th><th>Standortpreis</th><th>Gruppenschnitt</th><th>Standortkosten</th><th>Gruppenkosten</th><th>Vorteil</th></tr></thead>
+          <tbody>${bodyRows || `<tr><td colspan="10">Keine positiven Abweichungen im aktuellen Filter.</td></tr>`}</tbody>
+        </table>
+        <div class="note">Berechnungsbasis: effektiver Nettopreis je Vergleichseinheit inklusive Positionsrabatt, Rechnungsrabatt, Skonto, Versand, Zuschlägen, Packungsgröße und Einheit.</div>
+      </body>
+    </html>`;
+}
+
 function printReport(type) {
   const rows = reportRowsFor(type);
   const status = document.getElementById("printStatus");
   if (status) status.textContent = "Druckreport wird vorbereitet ...";
+  if (type === "bestPractice") {
+    printHtml(bestPracticeReportHtml(rows));
+    return;
+  }
   printHtml(reportHtml(type, rows));
 }
 
