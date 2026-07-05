@@ -1222,6 +1222,10 @@ function reloadCurrentView() {
 }
 
 function syncShellState() {
+  if (!window.matchMedia("(max-width: 860px)").matches) {
+    state.sidebarCollapsed = false;
+    localStorage.setItem(sidebarStorageKey, "false");
+  }
   document.body.classList.toggle("sidebar-collapsed", state.sidebarCollapsed);
   document.body.classList.toggle("mobile-nav-open", state.mobileNavOpen);
   const overlay = document.getElementById("sidebarOverlay");
@@ -1237,8 +1241,8 @@ function toggleSidebar() {
   if (window.matchMedia("(max-width: 860px)").matches) {
     state.mobileNavOpen = !state.mobileNavOpen;
   } else {
-    state.sidebarCollapsed = !state.sidebarCollapsed;
-    localStorage.setItem(sidebarStorageKey, String(state.sidebarCollapsed));
+    state.sidebarCollapsed = false;
+    localStorage.setItem(sidebarStorageKey, "false");
   }
   syncShellState();
 }
