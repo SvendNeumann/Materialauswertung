@@ -1,6 +1,7 @@
 const eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
 const pct = new Intl.NumberFormat("de-DE", { style: "percent", maximumFractionDigits: 1 });
 const sidebarStorageKey = "orisus-material-sidebar-collapsed";
+const reloadViewStorageKey = "orisus-material-reload-view";
 
 const state = {
   view: "dashboard",
@@ -385,6 +386,11 @@ function goToView(viewId) {
   state.openNavSection = nextSection?.id || state.openNavSection;
   closeMobileNav();
   render();
+}
+
+function reloadCurrentView() {
+  sessionStorage.setItem(reloadViewStorageKey, state.view);
+  window.location.reload();
 }
 
 function shortNavLabel(label) {
@@ -785,10 +791,18 @@ function init() {
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const sidebarClose = document.getElementById("sidebarClose");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
+  const reloadAppBtn = document.getElementById("reloadAppBtn");
+  const reloadView = sessionStorage.getItem(reloadViewStorageKey);
+  if (reloadView && routes[reloadView]) {
+    state.view = reloadView;
+    state.openNavSection = sectionForView(reloadView)?.id || state.openNavSection;
+  }
+  sessionStorage.removeItem(reloadViewStorageKey);
   sidebarToggle.addEventListener("click", toggleSidebar);
   mobileMenuBtn.addEventListener("click", openMobileNav);
   sidebarClose.addEventListener("click", closeMobileNav);
   sidebarOverlay.addEventListener("click", closeMobileNav);
+  reloadAppBtn.addEventListener("click", reloadCurrentView);
   window.addEventListener("keydown", event => {
     if (event.key === "Escape") closeMobileNav();
   });

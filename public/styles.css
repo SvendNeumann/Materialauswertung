@@ -96,8 +96,26 @@ body.sidebar-collapsed .app-shell { grid-template-columns: 88px minmax(0, 1fr); 
 }
 .nav button:hover, .nav button.active { background: var(--sidebar-2); color: white; }
 .nav-label { overflow: hidden; text-overflow: ellipsis; }
+.sidebar-footer {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+}
+.reload-app-btn {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid rgba(178, 226, 229, 0.22);
+  border-radius: 8px;
+  background: rgba(48, 213, 200, 0.1);
+  color: #dffafa;
+  font-weight: 850;
+}
+.reload-app-btn:hover {
+  background: rgba(48, 213, 200, 0.16);
+  color: #ffffff;
+}
 .role-card {
-  margin-top: auto; display: grid; gap: 8px; padding: 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px;
+  display: grid; gap: 8px; padding: 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px;
   background: rgba(255,255,255,.06);
 }
 .role-card label { color: #b9c6d8; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
@@ -127,6 +145,7 @@ body.sidebar-collapsed .nav-section-trigger {
 body.sidebar-collapsed .nav-chevron,
 body.sidebar-collapsed .nav-subitems { display: none; }
 body.sidebar-collapsed .role-card { padding: 8px; min-height: 44px; }
+body.sidebar-collapsed .reload-app-btn { display: none; }
 body.sidebar-collapsed .role-card::before {
   content: "⚙";
   display: grid; place-items: center; width: 100%; min-height: 28px; color: #d9e3f5;
@@ -262,6 +281,7 @@ tr:last-child td { border-bottom: 0; }
   body.sidebar-collapsed .nav-chevron { display: inline; }
   body.sidebar-collapsed .nav-section.open .nav-subitems { display: grid; }
   body.sidebar-collapsed .role-card { padding: 12px; }
+  body.sidebar-collapsed .reload-app-btn { display: block; }
   body.sidebar-collapsed .role-card::before { display: none; }
   .sidebar-close { display: grid; place-items: center; }
   .mobile-menu-btn {
