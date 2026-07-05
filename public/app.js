@@ -874,7 +874,7 @@ function productsView() {
       { label: "Kritische Artikel", value: critical, sub: "prüfpflichtig" },
       { label: "Ø Matching", value: pct.format(avgMatch), sub: "Positionssicherheit" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Artikel werden erst nach vollständiger Positionsfreigabe in den Gruppenartikelstamm übernommen. Dadurch bleiben Preisvergleiche sauber und nachvollziehbar.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Die PDF-Positionen wurden in Gruppenartikel überführt. Direkte Gruppenmatches sind freigegeben, Einzelartikel bleiben sichtbar in Prüfung.</p>`),
     charts: [
       panel("Artikel nach Kategorie", barChartCount(importGroups(products, row => row.category), "name", "count")),
       panel("Matching-Status", barChartCount(importGroups(products, row => row.approved ? "Freigegeben" : "In Prüfung"), "name", "count")),
@@ -895,7 +895,7 @@ function suppliersView() {
       { label: "Positionen", value: sumImportItems().toLocaleString("de-DE"), sub: "aus PDF-Auslesung" },
       { label: "Ø Rechnung", value: eur.format(state.sampleImports.length ? sumImportGross() / state.sampleImports.length : 0), sub: "brutto je PDF" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Die Lieferantenbewertung startet mit echten Importvolumen. Konditionen, Preisabweichungen und Rahmenpreis-Potenziale werden sichtbar, sobald die Rechnungspositionen freigegeben sind.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Die Lieferantenbewertung nutzt echte Importvolumen und die gematchten Rechnungspositionen. Preisabweichungen und Potenziale kommen aus den freigegebenen Gruppenartikeln.</p>`),
     charts: [
       panel("Volumen je Lieferant", barChart(importStats, "name", "gross", 1)),
       panel("Positionen je Lieferant", barChartCount(importStats, "name", "items")),
@@ -978,7 +978,7 @@ function basketView() {
       { label: "Bester Korb", value: sim[0] ? eur.format(sim[0].total) : eur.format(0), sub: sim[0]?.supplier || "nach Freigabe" },
       { label: "Fehlende Artikel", value: sim.reduce((sum, row) => sum + row.missing, 0), sub: "im Lieferantenvergleich" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Noch keine freigegebenen Artikelpositionen vorhanden. Sobald Rechnungen vollständig ausgelesen sind, erscheint hier der Lieferantenvergleich.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Der Warenkorb simuliert die gematchten Rechnungspositionen über alle sichtbaren Standorte und zeigt, welcher Lieferant den aktuellen Korb rechnerisch am günstigsten abbildet.</p>`),
     charts: [
       panel("Warenkorb je Lieferant", barChart(sim, "supplier", "total", 1)),
       panel("Fehlende Artikel", barChartCount(sim, "supplier", "missing")),
@@ -997,7 +997,7 @@ function recommendationsView() {
       { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "hochgerechnet" },
       { label: "Betroffene Artikel", value: new Set(rows.map(row => row.productId)).size, sub: "Gruppenartikel" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Empfehlungen entstehen erst aus freigegebenen Artikelpositionen. Die Reihenfolge folgt Potenzial, Abweichung und Priorität.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Empfehlungen entstehen aus den gematchten Rechnungspositionen. Die Reihenfolge folgt Potenzial, Abweichung und Priorität.</p>`),
     charts: [
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
       panel("Priorität nach Klasse", barChartCount(importGroups(rows, row => row.className), "name", "count")),

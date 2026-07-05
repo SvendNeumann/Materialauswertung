@@ -43,6 +43,7 @@ class InvoiceSummary:
     surcharge_total: float | None
     pages: int
     extracted_items: int
+    items: list[InvoiceItem]
     sample_items: list[InvoiceItem]
     warnings: list[str]
 
@@ -230,6 +231,7 @@ def summarize(path: Path) -> InvoiceSummary:
         surcharge_total=surcharge_total,
         pages=pages,
         extracted_items=len(items),
+        items=items,
         sample_items=items[:8],
         warnings=warnings,
     )
