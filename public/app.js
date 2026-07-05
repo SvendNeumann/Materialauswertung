@@ -602,7 +602,7 @@ function metricIcon(label) {
 
 function metricGrid(items) {
   const cols = Math.min(4, Math.max(3, items.length));
-  return `<div class="grid cols-${cols}">${items.map(item => metric(item.label, item.value, item.sub)).join("")}</div>`;
+  return `<div class="grid cols-${cols} metric-grid">${items.map(item => metric(item.label, item.value, item.sub)).join("")}</div>`;
 }
 
 function panel(title, body, sub = "") {

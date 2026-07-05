@@ -171,7 +171,7 @@ body.sidebar-collapsed .role-card::before {
   background: currentColor;
 }
 .eyebrow { margin: 0 0 4px; color: var(--blue); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
-h1 { margin: 0; font-size: clamp(24px, 3vw, 36px); letter-spacing: 0; }
+h1 { margin: 0; font-size: 32px; letter-spacing: 0; }
 h2 { margin: 0 0 14px; font-size: 20px; letter-spacing: 0; }
 h3 { margin: 0 0 8px; font-size: 16px; letter-spacing: 0; }
 p { line-height: 1.5; }
@@ -384,7 +384,7 @@ tr:last-child td { border-bottom: 0; }
     line-height: 1.25;
   }
   .metric strong {
-    font-size: clamp(22px, 7vw, 30px);
+    font-size: 20px;
     line-height: 1;
     margin-top: 2px;
   }
@@ -776,5 +776,325 @@ h3 {
 @media (min-width: 1280px) {
   .app-shell::before {
     display: none;
+  }
+}
+
+/* Responsive sizing pass: keeps the CFO look, but scales controls and density per device class. */
+@media (max-width: 1180px) and (min-width: 861px) {
+  .view {
+    padding: 22px 22px 34px;
+  }
+
+  .topbar {
+    min-height: 78px;
+    padding: 14px 22px;
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.08;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .modern-kpi-card {
+    min-height: 136px;
+    padding: 14px;
+    gap: 6px;
+  }
+
+  .modern-icon-tile {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .metric strong {
+    font-size: 24px;
+    line-height: 1.05;
+  }
+
+  .metric label,
+  .metric small {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .chart-bars,
+  .calc-box {
+    padding: 12px;
+  }
+
+  .bar-row {
+    grid-template-columns: 112px minmax(90px, 1fr) 74px;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  th,
+  td {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    min-height: 74px;
+    padding: max(8px, env(safe-area-inset-top)) 16px 10px;
+  }
+
+  .mobile-header-brand img {
+    width: min(42vw, 154px);
+  }
+
+  .mobile-menu-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .view {
+    padding: calc(82px + env(safe-area-inset-top)) 12px 92px;
+  }
+
+  .grid {
+    gap: 10px;
+  }
+
+  .grid.cols-3,
+  .grid.cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid.cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-grid.grid.cols-3,
+  .metric-grid.grid.cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .panel {
+    padding: 13px;
+    border-radius: 8px;
+  }
+
+  .tab-section {
+    margin-top: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+    line-height: 1.1;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 17px;
+    line-height: 1.15;
+  }
+
+  h3 {
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  .modern-kpi-card {
+    min-height: 96px;
+    padding: 10px 8px;
+    gap: 4px;
+  }
+
+  .modern-icon-tile {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+
+  .metric label {
+    font-size: 10.5px;
+    line-height: 1.16;
+  }
+
+  .metric strong {
+    margin-top: 1px;
+    font-size: 18px;
+    line-height: 1.02;
+    overflow-wrap: anywhere;
+  }
+
+  .metric small {
+    font-size: 10px;
+    line-height: 1.18;
+  }
+
+  .chart-bars,
+  .calc-box {
+    padding: 10px;
+    border-radius: 10px;
+    gap: 8px;
+  }
+
+  .bar-row {
+    grid-template-columns: minmax(72px, 0.85fr) minmax(72px, 1fr) minmax(54px, auto);
+    gap: 7px;
+    font-size: 12px;
+  }
+
+  .bar-row strong,
+  .bar-row .num {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bar-track {
+    height: 10px;
+  }
+
+  .calc-row {
+    gap: 8px;
+    padding: 7px 0;
+    font-size: 13px;
+  }
+
+  .calc-row.total {
+    font-size: 15px;
+  }
+
+  .toolbar {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .filters {
+    width: 100%;
+  }
+
+  .filters input,
+  .filters select,
+  .form-grid input,
+  .form-grid select {
+    min-height: 34px;
+    padding: 7px 9px;
+    font-size: 13px;
+  }
+
+  .dropzone {
+    min-height: 150px;
+    padding: 14px;
+  }
+
+  .dropzone strong {
+    font-size: 16px;
+  }
+
+  .workflow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .workflow span {
+    min-height: 42px;
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .table-wrap {
+    margin-inline: -2px;
+    border-radius: 10px;
+  }
+
+  table {
+    min-width: 620px;
+  }
+
+  th,
+  td {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+
+  th {
+    font-size: 10px;
+  }
+
+  .status,
+  .tag {
+    padding: 4px 7px;
+    font-size: 10.5px;
+  }
+
+  .bottom-nav {
+    left: 10px;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    border-radius: 12px;
+  }
+
+  .bottom-nav button {
+    min-height: 34px;
+    border-radius: 8px;
+    font-size: 8.5px;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 430px) {
+  .view {
+    padding-inline: 10px;
+  }
+
+  .grid.cols-3,
+  .grid.cols-4,
+  .metric-grid.grid.cols-3,
+  .metric-grid.grid.cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modern-kpi-card {
+    min-height: 88px;
+    padding: 8px 6px;
+  }
+
+  .metric strong {
+    font-size: 16px;
+  }
+
+  .metric label,
+  .metric small {
+    font-size: 9.5px;
+  }
+
+  .modern-icon-tile {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .bar-row {
+    grid-template-columns: minmax(64px, 0.9fr) minmax(56px, 1fr) minmax(48px, auto);
+    font-size: 11px;
+  }
+
+  .panel {
+    padding: 11px;
+  }
+
+  .mobile-header-brand img {
+    width: min(44vw, 142px);
   }
 }
