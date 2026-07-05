@@ -2,7 +2,6 @@ const eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" 
 const pct = new Intl.NumberFormat("de-DE", { style: "percent", maximumFractionDigits: 1 });
 const sidebarStorageKey = "orisus-material-sidebar-collapsed";
 const reloadViewStorageKey = "orisus-material-reload-view";
-const matchReviewStorageKey = "orisus-material-reviewed-matches";
 const supabaseUrl = "https://rxiboswudbunvjqgpnyc.supabase.co";
 const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
 const invoiceBucket = "material-invoices";
@@ -22,7 +21,6 @@ const state = {
   openNavSection: "overview",
   sidebarCollapsed: localStorage.getItem(sidebarStorageKey) === "true",
   mobileNavOpen: false,
-  reviewedMatches: new Set(JSON.parse(localStorage.getItem(matchReviewStorageKey) || "[]")),
 };
 
 const navSections = [
@@ -1024,10 +1022,10 @@ function reviewView() {
     </div>
     <section class="panel tab-section">
       <div class="toolbar">
-        <h2>Matching-Prüfliste</h2>
-        <span class="tag amber">${reviewRows.filter(row => !isMatchReviewed(row)).length} offen</span>
+        <h2>Aus automatischem Vergleich ausgeschlossen</h2>
+        <span class="tag amber">${reviewRows.length} zurückgestellt</span>
       </div>
-      <p class="muted panel-sub">Hier landen Positionen mit niedriger Sicherheit oder unklarer Gruppenartikel-Zuordnung. Die Preise sind bereits auf erkennbare Packungsinhalte wie Stück, ml oder g normalisiert.</p>
+      <p class="muted panel-sub">Diese Positionen sehen teilweise gleich aus, haben aber abweichende Artikelnummern, Varianten, Größen, Farben oder unklare Packungsbasis. Sie werden deshalb nicht automatisch in Potenziale oder Leiter-Vergleiche einbezogen.</p>
       ${matchingReviewTable(reviewRows)}
     </section>`;
 }
@@ -1293,40 +1291,38 @@ function sampleImportTable(rows) {
   ]));
 }
 
-function matchReviewKey(row) {
-  return [row.invoiceId, row.productId, row.supplierName].join("|");
-}
-
-function isMatchReviewed(row) {
-  return state.reviewedMatches.has(matchReviewKey(row));
-}
-
 function matchingReviewRows() {
   return calculatedItems()
     .filter(row => row.match < 0.9 || !row.product.approved)
-    .sort((a, b) => {
-      const reviewedDiff = Number(isMatchReviewed(a)) - Number(isMatchReviewed(b));
-      return reviewedDiff || a.match - b.match;
-    });
+    .sort((a, b) => a.match - b.match);
+}
+
+function matchReviewReason(row) {
+  const text = `${row.supplierName} ${row.product.name}`.toLowerCase();
+  if (text.includes("interdental")) return "wahrscheinlich Größen-/Farbvariante";
+  if (text.includes("latex") || text.includes("hands")) return "wahrscheinlich Handschuhgröße";
+  if (text.includes("zircad") || text.includes("emax") || text.includes("ceram") || text.includes("cerabien")) return "Material-/Farb-/Blockvariante";
+  if (text.includes("polierer")) return "Form oder Körnung prüfen";
+  if (text.includes("schienendose")) return "Farbvariante, kein Preisvergleich nötig";
+  if (text.includes("sterifolie") || text.includes("night cleaner")) return "Artikelnummer/Katalogbasis nicht eindeutig";
+  if (text.includes("ketac") || text.includes("tetric") || text.includes("temp bond") || text.includes("miraject")) return "Material-/Anwendungsvariante";
+  return "zu ähnlich benannt, aber nicht sicher genug";
 }
 
 function matchingReviewTable(rows) {
   if (!rows.length) {
-    return `<p class="muted">Keine unsicheren Matches vorhanden.</p>`;
+    return `<p class="muted">Keine zurückgestellten Positionen vorhanden.</p>`;
   }
-  return table(["Status", "Lieferantenartikel", "Vorschlag", "Standort", "Lieferant", "Basismenge", "Sicherheit", "Aktion"], rows.map(row => {
-    const reviewed = isMatchReviewed(row);
-    return [
-      reviewed ? status("Geprüft") : status("In Prüfung"),
+  return table(["Status", "Lieferantenartikel", "Vorschlag", "Standort", "Lieferant", "Basismenge", "Sicherheit", "Grund"], rows.map(row => [
+      status("Zurückgestellt"),
       row.supplierName,
       row.product.name,
       row.inv.location,
       row.inv.supplier,
       `${row.qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`,
       matchTag(row.match),
-      reviewed ? `<button class="btn small match-review-action" data-match-key="${escapeHtml(matchReviewKey(row))}" data-reviewed="true">Zurücknehmen</button>` : `<button class="btn primary small match-review-action" data-match-key="${escapeHtml(matchReviewKey(row))}">Abhaken</button>`,
-    ];
-  }));
+      `<span class="muted">${matchReviewReason(row)}</span>`,
+  ]));
 }
 
 function itemsTable(rows) {
@@ -1492,17 +1488,6 @@ function bindViewEvents() {
     el.addEventListener("change", handleFilterChange);
   });
   document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
-  document.querySelectorAll(".match-review-action").forEach(btn => btn.addEventListener("click", () => {
-    const key = btn.dataset.matchKey;
-    if (!key) return;
-    if (state.reviewedMatches.has(key)) {
-      state.reviewedMatches.delete(key);
-    } else {
-      state.reviewedMatches.add(key);
-    }
-    localStorage.setItem(matchReviewStorageKey, JSON.stringify(Array.from(state.reviewedMatches)));
-    render();
-  }));
   const fileInput = document.getElementById("invoiceFileInput");
   const chooseFiles = document.getElementById("chooseInvoiceFiles");
   const dropzone = document.getElementById("dropzone");
