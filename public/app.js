@@ -1022,10 +1022,10 @@ function reviewView() {
     </div>
     <section class="panel tab-section">
       <div class="toolbar">
-        <h2>Aus automatischem Vergleich ausgeschlossen</h2>
+        <h2>Einheit / Variante nicht automatisch sicher</h2>
         <span class="tag amber">${reviewRows.length} zurückgestellt</span>
       </div>
-      <p class="muted panel-sub">Diese Positionen sehen teilweise gleich aus, haben aber abweichende Artikelnummern, Varianten, Größen, Farben oder unklare Packungsbasis. Sie werden deshalb nicht automatisch in Potenziale oder Leiter-Vergleiche einbezogen.</p>
+      <p class="muted panel-sub">Das sind meist gleiche Produktfamilien, aber mit anderer Einheit, Packungsgröße, Farbe, Größe, Körnung oder Materialvariante. Sobald die Basis eindeutig ist, vergleicht die App automatisch auf Stück, ml oder g. Wenn die Einheit nicht sicher genug ist, bleibt die Position vorsichtshalber aus Potenzialen und Standortvergleichen raus.</p>
       ${matchingReviewTable(reviewRows)}
     </section>`;
 }
@@ -1299,21 +1299,21 @@ function matchingReviewRows() {
 
 function matchReviewReason(row) {
   const text = `${row.supplierName} ${row.product.name}`.toLowerCase();
-  if (text.includes("interdental")) return "wahrscheinlich Größen-/Farbvariante";
+  if (text.includes("interdental")) return "andere Bürstengröße/Farbe möglich";
   if (text.includes("latex") || text.includes("hands")) return "wahrscheinlich Handschuhgröße";
-  if (text.includes("zircad") || text.includes("emax") || text.includes("ceram") || text.includes("cerabien")) return "Material-/Farb-/Blockvariante";
-  if (text.includes("polierer")) return "Form oder Körnung prüfen";
+  if (text.includes("zircad") || text.includes("emax") || text.includes("ceram") || text.includes("cerabien")) return "Material, Farbe oder Blockgröße möglich";
+  if (text.includes("polierer")) return "andere Form oder Körnung möglich";
   if (text.includes("schienendose")) return "Farbvariante, kein Preisvergleich nötig";
-  if (text.includes("sterifolie") || text.includes("night cleaner")) return "Artikelnummer/Katalogbasis nicht eindeutig";
+  if (text.includes("sterifolie") || text.includes("night cleaner")) return "Einheit oder Katalogbasis nicht eindeutig";
   if (text.includes("ketac") || text.includes("tetric") || text.includes("temp bond") || text.includes("miraject")) return "Material-/Anwendungsvariante";
-  return "zu ähnlich benannt, aber nicht sicher genug";
+  return "Einheit oder Variante nicht sicher genug";
 }
 
 function matchingReviewTable(rows) {
   if (!rows.length) {
     return `<p class="muted">Keine zurückgestellten Positionen vorhanden.</p>`;
   }
-  return table(["Status", "Lieferantenartikel", "Vorschlag", "Standort", "Lieferant", "Basismenge", "Sicherheit", "Grund"], rows.map(row => [
+  return table(["Status", "Lieferantenartikel", "Gruppenartikel", "Standort", "Lieferant", "Basismenge", "Sicherheit", "Warum raus?"], rows.map(row => [
       status("Zurückgestellt"),
       row.supplierName,
       row.product.name,
