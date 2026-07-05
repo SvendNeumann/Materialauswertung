@@ -31,7 +31,7 @@ const navSections = [
     label: "Überblick",
     items: [
       ["dashboard", "Management"],
-      ["mobile", "Standortleiter"],
+      ["mobile", "Standortvergleich"],
     ],
   },
   {
@@ -686,7 +686,7 @@ function titleFor(id) {
     recommendations: "Einkaufsempfehlungen",
     reports: "Report-Center",
     settings: "Zugänge & Rechte",
-    mobile: "Mobile Standortleiter-Ansicht",
+    mobile: "Standortvergleich",
   })[id];
 }
 
@@ -742,7 +742,7 @@ function pageIntro(id) {
     ],
     mobile: [
       "Standortvergleich",
-      "Mobile Vergleichsansicht: Standortpreis je Artikel, Gruppenschnitt, günstigster Lieferant und rechnerische Abweichung.",
+      "Vergleichsansicht nach Standort: Standortpreis je Artikel, Gruppenschnitt, günstigste Quelle und rechnerische Abweichung.",
     ],
   };
   const [title, description] = copy[id] || [titleFor(id) || "Auswertung", "Dieser Bereich zeigt die relevante Auswertung für den gewählten Arbeitsbereich."];
@@ -1224,21 +1224,25 @@ function mobileComparisonCards(rows) {
 }
 
 function mobileView() {
-  const rows = locationScopeRows(recommendations()).slice(0, 6);
-  const cards = mobileComparisonCards(rows);
+  const allRows = locationScopeRows(recommendations());
+  const selectedRows = state.locationFilter === "Alle" ? allRows : allRows.filter(row => row.inv.location === state.locationFilter);
+  const cardRows = selectedRows.slice(0, 6);
+  const cards = mobileComparisonCards(cardRows);
+  const activeScope = state.locationFilter === "Alle" ? scopeLabel() : state.locationFilter;
   return tabShell({
     metrics: [
-      { label: "Vergleiche", value: rows.length, sub: scopeLabel() },
-      { label: "Auffällig", value: rows.filter(row => row.className === "A-Fall").length, sub: "über Gruppenniveau" },
-      { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "Standort vs. Bestpreis" },
+      { label: "Vergleiche", value: selectedRows.length, sub: activeScope },
+      { label: "Auffällig", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "über Gruppenniveau" },
+      { label: "Potenzial / Jahr", value: eur.format(selectedRows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "Standort vs. Bestpreis" },
     ],
-    analysis: panel(`${scopeLabel()}: Standortvergleich`, `<p class="muted">Reiner Vergleich: Was zahlt der Standort je Artikel, wie liegt er zum Gruppenschnitt, und bei welchem Lieferant ist derselbe Artikel aktuell am günstigsten.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Standortvergleich`, `<p class="muted">Reiner Vergleich: Was zahlt der Standort je Artikel, wie liegt er zum Gruppenschnitt, und bei welcher Quelle ist derselbe Artikel aktuell am günstigsten.</p><div class="grid">${cards}</div>`),
     charts: [
-      panel("Abweichungen nach Klasse", barChartCount(importGroups(rows, row => row.className), "name", "count")),
+      panel("Abweichungen nach Klasse", barChartCount(importGroups(selectedRows, row => row.className), "name", "count")),
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
     ],
     tableTitle: "Standortvergleich je Artikel",
-    table: priceTable(rows),
+    tableTools: locationOnlyFilter(),
+    table: `<div class="bounded-table">${priceTable(selectedRows, false)}</div>`,
   });
 }
 
@@ -1246,6 +1250,10 @@ const routes = { dashboard, invoices: invoicesView, review: reviewView, products
 
 function filters() {
   return `<div class="filters"><input id="search" placeholder="Suchen" value="${state.query}"><select id="locationFilter"><option>Alle</option>${locations.map(l => `<option ${state.locationFilter === l.name ? "selected" : ""}>${l.name}</option>`)}</select><select id="supplierFilter"><option>Alle</option>${suppliers.map(s => `<option ${state.supplierFilter === s.name ? "selected" : ""}>${s.name}</option>`)}</select></div>`;
+}
+
+function locationOnlyFilter() {
+  return `<div class="filters compact-filter"><select id="locationFilter" aria-label="Standort filtern"><option>Alle</option>${locations.map(l => `<option ${state.locationFilter === l.name ? "selected" : ""}>${l.name}</option>`)}</select></div>`;
 }
 
 function filtered(rows) {
@@ -1333,8 +1341,9 @@ function productTable(rows) {
   ]));
 }
 
-function priceTable(rows) {
-  return table(["Artikel", "Standort", "Lieferant", "Effektiv", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], filtered(rows).map(r => [
+function priceTable(rows, applyFilters = true) {
+  const visibleRows = applyFilters ? filtered(rows) : rows;
+  return table(["Artikel", "Standort", "Lieferant", "Effektiv", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], visibleRows.map(r => [
     r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(groupAverage(r.productId) ? r.comparisonPrice / groupAverage(r.productId) - 1 : 0), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
   ]));
 }
@@ -1474,11 +1483,13 @@ function bindViewEvents() {
     });
   });
   document.querySelectorAll("#search, #locationFilter, #supplierFilter").forEach(el => {
-    el.addEventListener("input", event => {
+    const handleFilterChange = event => {
       state[event.target.id] = event.target.value;
       window.clearTimeout(filterRenderTimer);
       filterRenderTimer = window.setTimeout(render, event.target.id === "search" ? 120 : 0);
-    });
+    };
+    el.addEventListener("input", handleFilterChange);
+    el.addEventListener("change", handleFilterChange);
   });
   document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
   document.querySelectorAll(".match-review-action").forEach(btn => btn.addEventListener("click", () => {

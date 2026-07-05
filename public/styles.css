@@ -824,6 +824,15 @@ h3 {
   scrollbar-color: rgba(121, 238, 231, 0.45) rgba(3, 16, 26, 0.3);
 }
 
+.bounded-table .table-scroll-frame {
+  max-height: min(520px, 62vh);
+  overflow: auto;
+}
+
+.compact-filter select {
+  min-width: 190px;
+}
+
 .data-table {
   width: max-content;
   min-width: 100%;
