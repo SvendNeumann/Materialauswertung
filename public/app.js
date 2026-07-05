@@ -1886,6 +1886,7 @@ function reportsView() {
     <div class="grid cols-2 tab-section">
       ${reportCards.map(card => `<article class="panel report-card"><h2>${card[1]}</h2><p class="muted">${card[2]}</p><button class="btn primary print-report-btn" type="button" data-report="${card[0]}">Drucken</button></article>`).join("")}
     </div>
+    <p class="muted print-status" id="printStatus"></p>
     <section class="panel tab-section">
       <div class="toolbar"><h2>Vorschau sichere Top-Potenziale</h2><span class="tag blue">${rows.length} sichere Positionen</span></div>
       <div class="bounded-table">${reportPreviewTable(previewRows)}</div>
@@ -2480,30 +2481,45 @@ function reportHtml(type, rows) {
 
 function printReport(type) {
   const rows = reportRowsFor(type);
-  const report = window.open("", "_blank", "noopener,noreferrer");
-  if (!report) {
-    alert("Der Report konnte nicht geöffnet werden. Bitte Pop-ups für diese Seite erlauben.");
-    return;
-  }
-  report.document.open();
-  report.document.write(reportHtml(type, rows));
-  report.document.close();
-  report.focus();
-  window.setTimeout(() => report.print(), 250);
+  const status = document.getElementById("printStatus");
+  if (status) status.textContent = "Druckreport wird vorbereitet ...";
+  printHtml(reportHtml(type, rows));
 }
 
 function printPotentialReport() {
   const rows = selectedPotentialRows(20);
-  const report = window.open("", "_blank", "noopener,noreferrer");
-  if (!report) {
-    alert("Der Druckreport konnte nicht geöffnet werden. Bitte Pop-ups für diese Seite erlauben.");
+  printHtml(potentialReportHtml(rows));
+}
+
+function printHtml(html) {
+  document.getElementById("printFrame")?.remove();
+  const frame = document.createElement("iframe");
+  frame.id = "printFrame";
+  frame.title = "Druckreport";
+  frame.style.position = "fixed";
+  frame.style.right = "0";
+  frame.style.bottom = "0";
+  frame.style.width = "1px";
+  frame.style.height = "1px";
+  frame.style.border = "0";
+  frame.style.opacity = "0";
+  document.body.appendChild(frame);
+  const doc = frame.contentWindow?.document;
+  if (!doc) {
+    alert("Der Druckreport konnte nicht vorbereitet werden.");
     return;
   }
-  report.document.open();
-  report.document.write(potentialReportHtml(rows));
-  report.document.close();
-  report.focus();
-  window.setTimeout(() => report.print(), 250);
+  doc.open();
+  doc.write(html);
+  doc.close();
+  const runPrint = () => {
+    frame.contentWindow?.focus();
+    frame.contentWindow?.print();
+    const status = document.getElementById("printStatus");
+    if (status) status.textContent = "Druckdialog geöffnet. Falls nichts erscheint: Browser-Pop-ups/Drucken erlauben oder erneut tippen.";
+  };
+  frame.onload = runPrint;
+  window.setTimeout(runPrint, 150);
 }
 
 function yearlyTable(rows) {
