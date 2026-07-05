@@ -5,6 +5,18 @@ const reloadViewStorageKey = "orisus-material-reload-view";
 const supabaseUrl = "https://rxiboswudbunvjqgpnyc.supabase.co";
 const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
 const invoiceBucket = "material-invoices";
+const desiredLocationNames = ["Kirchberg", "Essen", "Kehl", "Ulmit", "Hüttenberg", "Kassel"];
+const locationAliases = {
+  kirchberg: "Kirchberg",
+  essen: "Essen",
+  "essen zollverein": "Essen",
+  kehl: "Kehl",
+  ulmit: "Ulmit",
+  ulm: "Ulmit",
+  huettenberg: "Hüttenberg",
+  hüttenberg: "Hüttenberg",
+  kassel: "Kassel",
+};
 
 const state = {
   view: "invoices",
@@ -135,12 +147,47 @@ function storageObjectUrl(path) {
   return `${supabaseUrl}/storage/v1/object/${invoiceBucket}/${path.split("/").map(encodeURIComponent).join("/")}`;
 }
 
+function locationAliasKey(name) {
+  return String(name || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function normalizedLocationName(name) {
+  const raw = String(name || "").trim();
+  if (!raw) return "offen";
+  return locationAliases[locationAliasKey(raw)] || raw;
+}
+
+function buildLocations(rows) {
+  const byName = new Map();
+  rows.forEach(row => {
+    const name = normalizedLocationName(row.name);
+    if (name === "offen" || byName.has(name)) return;
+    byName.set(name, {
+      id: row.id,
+      name,
+      manager: row.manager || "",
+      address: row.address || "",
+    });
+  });
+  desiredLocationNames.forEach(name => {
+    if (!byName.has(name)) {
+      byName.set(name, { id: name.toLowerCase(), name, manager: "", address: "" });
+    }
+  });
+  return Array.from(byName.values()).sort((a, b) => {
+    const ai = desiredLocationNames.indexOf(a.name);
+    const bi = desiredLocationNames.indexOf(b.name);
+    if (ai !== -1 || bi !== -1) return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    return a.name.localeCompare(b.name, "de");
+  });
+}
+
 function importRowFromDb(row) {
   return {
     file: row.file,
     document_type: row.document_type || "PDF",
     supplier: row.supplier || "offen",
-    location_name: row.location_name || "",
+    location_name: normalizedLocationName(row.location_name),
     invoice_no: row.invoice_no || "",
     invoice_date: row.invoice_date || "",
     gross_total: row.gross_total == null ? null : Number(row.gross_total),
@@ -167,12 +214,7 @@ async function loadSupabaseData() {
 
   if (!locationRows.length && !supplierRows.length && !importRows.length) return false;
 
-  locations = locationRows.map(row => ({
-    id: row.id,
-    name: row.name,
-    manager: row.manager || "",
-    address: row.address || "",
-  }));
+  locations = buildLocations(locationRows);
   suppliers = supplierRows.map(row => ({
     name: row.name,
     skonto: Number(row.skonto || 0),
@@ -195,7 +237,7 @@ async function loadSupabaseData() {
     no: row.invoice_no,
     date: row.invoice_date,
     supplier: row.supplier_name,
-    location: row.location_name,
+    location: normalizedLocationName(row.location_name),
     status: row.status,
     net: Number(row.net || 0),
     freight: Number(row.freight || 0),
@@ -241,7 +283,7 @@ async function uploadInvoiceFiles(fileList) {
     render();
     return;
   }
-  const locationName = document.getElementById("uploadLocation")?.value || locations[0]?.name || "";
+  const locationName = normalizedLocationName(document.getElementById("uploadLocation")?.value || locations[0]?.name || "");
   const supplierName = document.getElementById("uploadSupplier")?.value || suppliers[0]?.name || "";
   state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} werden hochgeladen und analysiert...`;
   render();
@@ -333,7 +375,7 @@ function locationForText(text, fallback) {
   const rules = [
     ["Kehl", [/77694\s+Kehl/i, /Rheinstr\.\s*46/i]],
     ["Kirchberg", [/08107\s+Kirchberg/i, /Auerbacher\s+Str\.\s*13/i]],
-    ["Essen Zollverein", [/45327\s+Essen/i, /Viktoriastra(?:ße|sse)\s+41a/i, /Zeche\s+Zollverein/i]],
+    ["Essen", [/45327\s+Essen/i, /Viktoriastra(?:ße|sse)\s+41a/i, /Zeche\s+Zollverein/i]],
     ["Hüttenberg", [/35625\s+H[üu]ttenberg/i, /Langg[öo]nser\s+Str\.\s*29/i]],
   ];
   return rules.find(([, patterns]) => patterns.some(pattern => pattern.test(text)))?.[0] || fallback || locations[0]?.name || "";
@@ -561,7 +603,7 @@ function itemDiscount(item) {
 async function buildLiveInvoicePayload(file, fallback) {
   const text = await pdfText(file);
   const supplier = supplierForText(text, fallback.supplierName);
-  const locationName = locationForText(text, fallback.locationName);
+  const locationName = normalizedLocationName(locationForText(text, fallback.locationName));
   const header = invoiceHeaderFromText(text, supplier);
   const totals = totalsFromText(text, supplier);
   const rawItems = extractItemsFromText(text, supplier);
@@ -1327,10 +1369,6 @@ function tabShell({ metrics, charts, tableTitle, table, tableTools = "", analysi
   `;
 }
 
-function normalizedLocationName(name) {
-  return name === "Huettenberg" ? "Hüttenberg" : name || "offen";
-}
-
 function sumImportGross(rows = state.sampleImports) {
   return rows.reduce((sum, row) => sum + Number(row.gross_total || 0), 0);
 }
@@ -1955,11 +1993,7 @@ function sampleImportTable(rows) {
   if (!rows.length) {
     return `<p class="muted">Noch keine PDFs importiert.</p>`;
   }
-  const normalizedRows = rows.map(row => ({
-    ...row,
-    location_name: row.location_name === "Huettenberg" ? "Hüttenberg" : row.location_name,
-  }));
-  return table(["Datei", "Typ", "Lieferant", "Standort", "Rechnung", "Datum", "Brutto", "Positionen", "Status"], normalizedRows.map(row => [
+  return table(["Datei", "Typ", "Lieferant", "Standort", "Rechnung", "Datum", "Brutto", "Positionen", "Status"], rows.map(row => [
     row.file,
     row.document_type,
     row.supplier,
