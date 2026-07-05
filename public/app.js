@@ -26,14 +26,6 @@ const navSections = [
     ],
   },
   {
-    id: "import",
-    label: "Import & Prüfung",
-    items: [
-      ["invoices", "Rechnungen"],
-      ["review", "Prüfcenter"],
-    ],
-  },
-  {
     id: "masterdata",
     label: "Stammdaten",
     items: [
@@ -57,6 +49,14 @@ const navSections = [
     items: [
       ["recommendations", "Empfehlungen"],
       ["reports", "Reports"],
+    ],
+  },
+  {
+    id: "import",
+    label: "Import & Prüfung",
+    items: [
+      ["invoices", "Rechnungen"],
+      ["review", "Prüfcenter"],
     ],
   },
   {
