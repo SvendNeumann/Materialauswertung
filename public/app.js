@@ -7,7 +7,7 @@ const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
 const invoiceBucket = "material-invoices";
 
 const state = {
-  view: "dashboard",
+  view: "invoices",
   role: "admin",
   location: "",
   query: "",
@@ -25,11 +25,32 @@ const state = {
 
 const navSections = [
   {
-    id: "overview",
-    label: "Überblick",
+    id: "workflow",
+    label: "Workflow",
+    items: [
+      ["invoices", "Rechnungen hochladen"],
+      ["review", "Prüfcenter"],
+      ["mobile", "Potenzialanalyse"],
+    ],
+  },
+  {
+    id: "analytics",
+    label: "Auswertung",
     items: [
       ["dashboard", "Management"],
-      ["mobile", "Standortvergleich"],
+      ["prices", "Preisvergleich"],
+      ["locations", "Standorte"],
+      ["suppliers", "Lieferanten"],
+      ["basket", "Warenkorb"],
+      ["yearly", "Jahresvergleich"],
+    ],
+  },
+  {
+    id: "reports",
+    label: "Reports",
+    items: [
+      ["recommendations", "Potenzialliste"],
+      ["reports", "Reports"],
     ],
   },
   {
@@ -37,39 +58,6 @@ const navSections = [
     label: "Stammdaten",
     items: [
       ["products", "Artikelstamm"],
-      ["suppliers", "Lieferanten"],
-    ],
-  },
-  {
-    id: "analytics",
-    label: "Analysen",
-    items: [
-      ["prices", "Preisvergleich"],
-      ["yearly", "Jahresvergleich"],
-      ["locations", "Standorte"],
-      ["basket", "Warenkorb"],
-    ],
-  },
-  {
-    id: "actions",
-    label: "Steuerung",
-    items: [
-      ["recommendations", "Empfehlungen"],
-      ["reports", "Reports"],
-    ],
-  },
-  {
-    id: "import",
-    label: "Import & Prüfung",
-    items: [
-      ["invoices", "Rechnungen"],
-      ["review", "Prüfcenter"],
-    ],
-  },
-  {
-    id: "admin",
-    label: "Administration",
-    items: [
       ["settings", "Einstellungen"],
     ],
   },
@@ -335,16 +323,19 @@ function comparableItems() {
 function productPriceStats() {
   if (derivedCache.productPriceStats) return derivedCache.productPriceStats;
   const grouped = comparableItems().reduce((index, row) => {
-    if (!index[row.productId]) index[row.productId] = { min: Infinity, sum: 0, count: 0 };
+    if (!index[row.productId]) index[row.productId] = { min: Infinity, sum: 0, count: 0, weightedSum: 0, qty: 0 };
     const current = index[row.productId];
+    const qty = Math.max(0, row.qty * row.product.pack);
     current.min = Math.min(current.min, row.comparisonPrice);
     current.sum += row.comparisonPrice;
     current.count += 1;
+    current.weightedSum += row.comparisonPrice * qty;
+    current.qty += qty;
     return index;
   }, {});
   derivedCache.productPriceStats = Object.fromEntries(Object.entries(grouped).map(([productId, row]) => [
     productId,
-    { best: row.min === Infinity ? 0 : row.min, average: row.count ? row.sum / row.count : 0 },
+    { best: row.min === Infinity ? 0 : row.min, average: row.qty ? row.weightedSum / row.qty : row.count ? row.sum / row.count : 0 },
   ]));
   return derivedCache.productPriceStats;
 }
@@ -681,10 +672,10 @@ function titleFor(id) {
     yearly: "Jahresvergleich & Preissteigerungen",
     locations: "Standortanalyse",
     basket: "Warenkorbanalyse",
-    recommendations: "Einkaufsempfehlungen",
+    recommendations: "Potenzialliste",
     reports: "Report-Center",
     settings: "Zugänge & Rechte",
-    mobile: "Standortvergleich",
+    mobile: "Potenzialanalyse",
   })[id];
 }
 
@@ -692,11 +683,11 @@ function pageIntro(id) {
   const copy = {
     dashboard: [
       "Management",
-      "Gesamtüberblick über Importvolumen, Rechnungsstatus, Standorte und die wichtigsten Potenziale aus der Materialauswertung.",
+      "Gesamtüberblick über Rechnungsbestand, Importvolumen, Standorte und die wichtigsten Potenziale aus der Materialauswertung.",
     ],
     invoices: [
       "Rechnungen & Upload",
-      "Hier werden neue PDF-Rechnungen hochgeladen, Lieferant und Standort zugeordnet und der Importstatus bis zur Freigabe verfolgt.",
+      "Hier werden neue PDF-Rechnungen hochgeladen und als Importvorgang erfasst. Nach Auslesung und Matching fließen sie in Preisvergleich und Potenzialanalyse ein.",
     ],
     review: [
       "Prüfcenter",
@@ -727,8 +718,8 @@ function pageIntro(id) {
       "Hier wird simuliert, was derselbe Artikelkorb bei verschiedenen Lieferanten kosten würde, inklusive fehlender Artikel und Nebenkosten.",
     ],
     recommendations: [
-      "Empfehlungen",
-      "Dieser Tab priorisiert Auffälligkeiten und Einkaufsmaßnahmen nach Potenzial, Abweichung und Dringlichkeit.",
+      "Potenzialliste",
+      "Dieser Tab bündelt alle rechnerischen Potenziale aus freigegebenen Artikelvergleichen als sortierte Gesamtliste.",
     ],
     reports: [
       "Reports",
@@ -739,8 +730,8 @@ function pageIntro(id) {
       "Dieser Bereich zeigt Rollen, Rechte und Zugänge für die Materialauswertung.",
     ],
     mobile: [
-      "Standortvergleich",
-      "Vergleichsansicht nach Standort: Standortpreis je Artikel, Gruppenschnitt, günstigste Quelle und rechnerische Abweichung.",
+      "Potenzialanalyse",
+      "Je Standort: aktueller Einkaufspreis, gewichteter Gruppenschnitt, günstigste Quelle und rechnerisches Jahrespotenzial.",
     ],
   };
   const [title, description] = copy[id] || [titleFor(id) || "Auswertung", "Dieser Bereich zeigt die relevante Auswertung für den gewählten Arbeitsbereich."];
@@ -818,8 +809,8 @@ function metricInfo(label, value, sub = "") {
     source = "Standort-Stammdaten und aus Rechnungsanschriften erkannte Standorte";
   } else if (lower.includes("a-fälle")) {
     meaning = "Zeigt die Anzahl priorisierter Auffälligkeiten mit hoher wirtschaftlicher Relevanz.";
-    formula = "Gezählt werden Empfehlungen der Klasse A-Fall. Diese entstehen nach freigegebener Positions- und Preislogik.";
-    source = "Preisvergleich, Empfehlungen und Priorisierungslogik";
+    formula = "Gezählt werden Potenziale der Klasse A-Fall. Diese entstehen nach freigegebener Positions- und Preislogik.";
+    source = "Preisvergleich, Potenzialanalyse und Priorisierungslogik";
   } else if (lower.includes("artikel") || lower.includes("kategorien") || lower.includes("freigegeben") || lower.includes("kritische")) {
     meaning = "Zeigt den Stand des Artikelstamms und der Artikelklassifizierung.";
     formula = "Zählung aus Gruppenartikeln, Kategorien, Freigabestatus oder kritischen Artikelmarkierungen.";
@@ -831,7 +822,7 @@ function metricInfo(label, value, sub = "") {
   } else if (lower.includes("potenzial")) {
     meaning = "Zeigt rechnerisches Einspar- oder Verbesserungspotenzial.";
     formula = "Differenz aus aktuellem Preis und bestem Vergleichspreis multipliziert mit Menge und Packungslogik.";
-    source = "Preisvergleich und Empfehlungen";
+    source = "Preisvergleich und Potenzialanalyse";
   } else if (lower.includes("preissteigerung") || lower.includes("jahreseffekt") || lower.includes("importjahre")) {
     meaning = "Zeigt die Jahres- beziehungsweise Preisentwicklungslogik.";
     formula = "Importjahre kommen aus Rechnungsdaten; Preissteigerungen werden nach freigegebenen historischen Artikelpreisen berechnet.";
@@ -841,9 +832,9 @@ function metricInfo(label, value, sub = "") {
     formula = "Vergleich freigegebener Artikelpositionen über Lieferantenpreise inklusive fehlender Artikel und Nebenkosten.";
     source = "Freigegebene Rechnungspositionen, Lieferantenpreise und Warenkorblogik";
   } else if (lower.includes("empfehlung") || lower.includes("maßnahmen")) {
-    meaning = "Zeigt priorisierte Einkaufs- oder Standortleiter-Maßnahmen.";
-    formula = "Empfehlungen entstehen aus Preisabweichung, Einsparpotenzial und Prioritätsklasse.";
-    source = "Empfehlungslogik nach freigegebenen Artikelpositionen";
+    meaning = "Zeigt priorisierte Preisabweichungen und Standort-Potenziale.";
+    formula = "Potenziale entstehen aus Preisabweichung, Einsparpotenzial und Prioritätsklasse.";
+    source = "Potenziallogik nach freigegebenen Artikelpositionen";
   }
 
   const html = `
@@ -937,7 +928,7 @@ function importAnalysisSummary() {
       <div class="calc-row total"><span>Aktueller Datenstand</span><strong>${imports} PDFs</strong></div>
       <div class="calc-row"><span>Erkannte Positionen</span><strong>${items.toLocaleString("de-DE")}</strong></div>
       <div class="calc-row"><span>Bruttovolumen der Importliste</span><strong>${eur.format(gross)}</strong></div>
-      <div class="calc-row"><span>Nächster Verarbeitungsschritt</span><strong>Positionsfreigabe</strong></div>
+      <div class="calc-row"><span>Nächster Verarbeitungsschritt</span><strong>Auslesung & Matching</strong></div>
     </div>
   `);
 }
@@ -969,7 +960,7 @@ function invoicesView() {
         <div class="dropzone" id="dropzone">
           <div>
             <strong>PDFs hier ablegen</strong>
-            <span class="muted">Dateien werden in Supabase gespeichert und dem Import zugeordnet.</span>
+            <span class="muted">Dateien werden gespeichert und als Import zur Auslesung vorgemerkt.</span>
             <button class="btn primary" id="chooseInvoiceFiles" type="button">PDF auswählen</button>
             <input id="invoiceFileInput" type="file" accept="application/pdf,.pdf" multiple hidden>
           </div>
@@ -980,8 +971,12 @@ function invoicesView() {
           <label>Lieferant<select id="uploadSupplier">${suppliers.map(s => `<option>${s.name}</option>`)}</select></label>
         </div>
       </section>
-      <section class="panel"><h2>Statusworkflow</h2><div class="workflow">${["Neu", "Ausgelesen", "In Prüfung", "Freigegeben", "Fehlerhaft", "Dublette"].map((s, i) => `<span class="${i < 4 ? "active" : ""}">${s}</span>`).join("")}</div></section>
+      <section class="panel"><h2>Analyseworkflow</h2><div class="workflow">${["Hochladen", "Auslesen", "Einheiten normalisieren", "Artikel matchen", "Potenzial berechnen", "Report"].map((s, i) => `<span class="${i < 5 ? "active" : ""}">${s}</span>`).join("")}</div></section>
     </div>
+    <section class="panel tab-section">
+      <h2>Was nach dem Upload passiert</h2>
+      <p class="muted">Der Upload legt die PDF in Supabase ab. Für die Potenzialanalyse werden daraus Rechnungsdaten, Positionen, Artikelnummern, Einheiten und Preise ausgelesen. Erst danach erscheinen die Positionen in Preisvergleich und Potenzialanalyse.</p>
+    </section>
     <section class="panel tab-section">
       <div class="toolbar">
         <h2>Importierte PDFs</h2>
@@ -1152,7 +1147,7 @@ function recommendationsView() {
   const rows = locationScopeRows(recommendations());
   return tabShell({
     metrics: [
-      { label: "Empfehlungen", value: rows.length, sub: "aus Preislogik" },
+      { label: "Potenziale", value: rows.length, sub: "aus Preislogik" },
       { label: "A-Fälle", value: rows.filter(row => row.className === "A-Fall").length, sub: "Priorität hoch" },
       { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "hochgerechnet" },
       { label: "Betroffene Artikel", value: new Set(rows.map(row => row.productId)).size, sub: "Gruppenartikel" },
@@ -1162,7 +1157,7 @@ function recommendationsView() {
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
       panel("Priorität nach Klasse", barChartCount(importGroups(rows, row => row.className), "name", "count")),
     ],
-    tableTitle: "Priorisierte Empfehlungen",
+    tableTitle: "Priorisierte Potenziale",
     tableTools: filters(),
     table: recommendationTable(rows),
   });
@@ -1172,11 +1167,11 @@ function reportsView() {
   const reports = [
     ["Lieferantenreport", "Verhandlungsliste, Rahmenpreis-Vorschlag, Top-Abweichungen"],
     ["Artikel-Abweichungsreport", "Standorte, Lieferanten, Preisentwicklung, Potenzial"],
-    ["Standort-Benchmark-Report", "Lieferantenmix, Bestellverhalten, Maßnahmenliste"],
+    ["Standort-Potenzialreport", "Standortpreis, Gruppenschnitt, Bestpreis und Jahrespotenzial"],
     ["Warenkorb-Report", "Artikelkorb, fehlende Artikel, realistisches Umstellungspotenzial"],
     ["Management-Dashboard-Report", "Top 10 Potenziale, Ranking, Preissteigerungen"],
   ];
-  return `<div class="grid cols-3">${reports.map(r => `<article class="panel"><h2>${r[0]}</h2><p class="muted">${r[1]}</p><button class="btn primary export-action">PDF vorbereiten</button> <button class="btn export-action">Excel</button></article>`).join("")}</div>`;
+  return `<div class="grid cols-3">${reports.map(r => `<article class="panel"><h2>${r[0]}</h2><p class="muted">${r[1]}</p><span class="tag blue">Reportbereich</span></article>`).join("")}</div>`;
 }
 
 function settingsView() {
@@ -1185,7 +1180,7 @@ function settingsView() {
 
 function mobileComparisonCards(rows) {
   if (!rows.length) {
-    return `<p class="muted">Noch keine belastbaren Standortvergleiche vorhanden.</p>`;
+    return `<p class="muted">Noch keine belastbaren Potenzialdaten vorhanden.</p>`;
   }
   return rows.map(row => {
     const groupPrice = groupAverage(row.productId);
@@ -1220,18 +1215,17 @@ function mobileView() {
   const activeScope = state.locationFilter === "Alle" ? scopeLabel() : state.locationFilter;
   return tabShell({
     metrics: [
-      { label: "Vergleiche", value: selectedRows.length, sub: activeScope },
-      { label: "Auffällig", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "über Gruppenniveau" },
+      { label: "Analysierte Artikel", value: selectedRows.length, sub: activeScope },
+      { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchstes Potenzial" },
       { label: "Potenzial / Jahr", value: eur.format(selectedRows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "Standort vs. Bestpreis" },
     ],
-    analysis: panel(`${activeScope}: Standortvergleich`, `<p class="muted">Reiner Vergleich: Was zahlt der Standort je Artikel, wie liegt er zum Gruppenschnitt, und bei welcher Quelle ist derselbe Artikel aktuell am günstigsten.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}<p class="muted">Für jeden freigegebenen Artikel wird gezeigt: Was zahlt der Standort aktuell, wie liegt der gewichtete Gruppenschnitt, wo liegt der aktuelle Bestpreis und welches Jahrespotenzial entsteht daraus.</p><div class="grid">${cards}</div>`),
     charts: [
       panel("Abweichungen nach Klasse", barChartCount(importGroups(selectedRows, row => row.className), "name", "count")),
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
     ],
-    tableTitle: "Standortvergleich je Artikel",
-    tableTools: locationOnlyFilter(),
-    table: `<div class="bounded-table">${priceTable(selectedRows, false)}</div>`,
+    tableTitle: "Potenzial je Standort und Artikel",
+    table: `<div class="bounded-table">${potentialAnalysisTable(selectedRows)}</div>`,
   });
 }
 
@@ -1340,8 +1334,21 @@ function productTable(rows) {
 
 function priceTable(rows, applyFilters = true) {
   const visibleRows = applyFilters ? filtered(rows) : rows;
-  return table(["Artikel", "Standort", "Lieferant", "Effektiv", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], visibleRows.map(r => [
+  return table(["Artikel", "Standort", "Lieferant", "Standortpreis", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], visibleRows.map(r => [
     r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(groupAverage(r.productId) ? r.comparisonPrice / groupAverage(r.productId) - 1 : 0), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
+  ]));
+}
+
+function potentialAnalysisTable(rows) {
+  return table(["Artikel", "Standort", "Aktueller Lieferant", "Standortpreis", "Gruppenschnitt", "Günstigste Quelle", "Bestpreis", "Potenzial/Jahr"], rows.map(r => [
+    r.product.name,
+    r.inv.location,
+    r.inv.supplier,
+    `${eur.format(r.comparisonPrice)} / ${r.product.unit}`,
+    `${eur.format(groupAverage(r.productId))} / ${r.product.unit}`,
+    r.recommendedLabel,
+    `${eur.format(bestPrice(r.productId))} / ${r.product.unit}`,
+    eur.format(r.saving * 12),
   ]));
 }
 
@@ -1488,7 +1495,6 @@ function bindViewEvents() {
     el.addEventListener("input", handleFilterChange);
     el.addEventListener("change", handleFilterChange);
   });
-  document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
   const fileInput = document.getElementById("invoiceFileInput");
   const chooseFiles = document.getElementById("chooseInvoiceFiles");
   const dropzone = document.getElementById("dropzone");
