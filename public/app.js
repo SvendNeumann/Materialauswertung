@@ -328,9 +328,15 @@ function calculatedItems() {
   return derivedCache.calculatedItems;
 }
 
+function comparableItems() {
+  if (derivedCache.comparableItems) return derivedCache.comparableItems;
+  derivedCache.comparableItems = calculatedItems().filter(row => row.product.approved && row.match >= 0.9);
+  return derivedCache.comparableItems;
+}
+
 function productPriceStats() {
   if (derivedCache.productPriceStats) return derivedCache.productPriceStats;
-  const grouped = calculatedItems().reduce((index, row) => {
+  const grouped = comparableItems().reduce((index, row) => {
     if (!index[row.productId]) index[row.productId] = { min: Infinity, sum: 0, count: 0 };
     const current = index[row.productId];
     current.min = Math.min(current.min, row.comparisonPrice);
@@ -367,15 +373,17 @@ function scopeLabel() {
 
 function kpis() {
   const rows = locationScopeRows(calculatedItems());
+  const comparableRows = locationScopeRows(comparableItems());
+  const recommendationRows = locationScopeRows(recommendations());
   const importedRows = locationScopeRows(state.sampleImports);
   const scopedInvoices = state.role === "location" ? invoices.filter(i => i.location === activeLocationName()) : invoices;
   const importedGross = importedRows.reduce((sum, row) => sum + Number(row.gross_total || 0), 0);
   const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
-  const potential = rows.reduce((sum, row) => sum + Math.max(0, row.comparisonPrice - bestPrice(row.productId)) * row.qty * row.product.pack, 0);
-  const avgDeviation = rows.length ? rows.reduce((sum, row) => {
+  const potential = recommendationRows.reduce((sum, row) => sum + row.saving, 0);
+  const avgDeviation = comparableRows.length ? comparableRows.reduce((sum, row) => {
     const average = groupAverage(row.productId);
     return sum + (average ? row.comparisonPrice / average - 1 : 0);
-  }, 0) / rows.length : 0;
+  }, 0) / comparableRows.length : 0;
   const netBase = scopedInvoices.reduce((s, i) => s + i.net, 0);
   return {
     invoices: scopedInvoices.length || importedRows.length,
@@ -393,7 +401,7 @@ function kpis() {
 
 function recommendations() {
   if (derivedCache.recommendations) return derivedCache.recommendations;
-  derivedCache.recommendations = calculatedItems().map(row => {
+  derivedCache.recommendations = comparableItems().map(row => {
     const best = bestPrice(row.productId);
     const average = groupAverage(row.productId);
     const saving = Math.max(0, row.comparisonPrice - best) * row.qty * row.product.pack;
@@ -414,10 +422,12 @@ function cheapestSupplier(productId) {
 function supplierStats() {
   if (derivedCache.supplierStats) return derivedCache.supplierStats;
   const allRows = calculatedItems();
+  const allComparableRows = comparableItems();
   const allRecommendations = recommendations();
   derivedCache.supplierStats = suppliers.map(supplier => {
     const supplierInvoices = invoices.filter(i => i.supplier === supplier.name);
     const rows = allRows.filter(i => i.inv.supplier === supplier.name);
+    const comparableRows = allComparableRows.filter(i => i.inv.supplier === supplier.name);
     const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
     const potential = allRecommendations.filter(r => r.inv.supplier === supplier.name).reduce((sum, r) => sum + r.saving, 0);
     const freight = supplierInvoices.reduce((sum, i) => sum + i.freight, 0);
@@ -425,10 +435,10 @@ function supplierStats() {
       ...supplier,
       volume,
       articleCount: new Set(rows.map(r => r.productId)).size,
-      deviation: rows.length ? rows.reduce((s, r) => {
+      deviation: comparableRows.length ? comparableRows.reduce((s, r) => {
         const average = groupAverage(r.productId);
         return s + (average ? r.comparisonPrice / average - 1 : 0);
-      }, 0) / rows.length : 0,
+      }, 0) / comparableRows.length : 0,
       discountRate: supplierInvoices.reduce((s, i) => s + i.discount, 0) / Math.max(1, supplierInvoices.reduce((s, i) => s + i.net, 0)),
       freightRate: freight / Math.max(1, supplierInvoices.reduce((s, i) => s + i.net, 0)),
       potential,
@@ -506,7 +516,7 @@ function invoiceYears() {
 function basketComparison(locationName = state.role === "location" ? activeLocationName() : null) {
   const cacheKey = `basket:${locationName || "all"}`;
   if (derivedCache[cacheKey]) return derivedCache[cacheKey];
-  const rows = calculatedItems().filter(i => !locationName || i.inv.location === locationName);
+  const rows = comparableItems().filter(i => !locationName || i.inv.location === locationName);
   if (!rows.length) return [];
   const productIndexById = new Map(products.map((product, index) => [product.id, index]));
   derivedCache[cacheKey] = suppliers.map(supplier => {
@@ -1067,7 +1077,7 @@ function suppliersView() {
 }
 
 function pricesView() {
-  const rows = locationScopeRows(calculatedItems());
+  const rows = locationScopeRows(comparableItems());
   const recs = locationScopeRows(recommendations());
   return tabShell({
     metrics: [
@@ -1193,14 +1203,18 @@ function mobileComparisonCards(rows) {
     const bestSupplier = cheapestSupplier(row.productId);
     const best = bestPrice(row.productId);
     const deviation = groupPrice ? row.comparisonPrice / groupPrice - 1 : 0;
+    const articleMatch = row.supplierName.match(/ArtNr\s+([^:]+):/);
+    const articleNo = articleMatch ? articleMatch[1].trim() : "nicht erkannt";
+    const bestSource = bestSupplier === row.inv.supplier ? `${bestSupplier} (beste Kondition)` : bestSupplier;
     return `
       <article class="mobile-card comparison-card">
         <strong>${row.product.name}</strong>
         <div class="price-row"><span>Standort</span><strong>${row.inv.location}</strong></div>
         <div class="price-row"><span>Lieferant Standort</span><strong>${row.inv.supplier}</strong></div>
+        <div class="price-row"><span>Artikelnummer Standort</span><strong>${articleNo}</strong></div>
         <div class="price-row highlight"><span>Standortpreis</span><strong>${eur.format(row.comparisonPrice)} / ${row.product.unit}</strong></div>
         <div class="price-row"><span>Gruppenschnitt</span><strong>${eur.format(groupPrice)} / ${row.product.unit}</strong></div>
-        <div class="price-row"><span>Günstigster Lieferant</span><strong>${bestSupplier}</strong></div>
+        <div class="price-row"><span>Günstigste Quelle</span><strong>${bestSource}</strong></div>
         <div class="price-row"><span>Bestpreis</span><strong>${eur.format(best)} / ${row.product.unit}</strong></div>
         <div class="price-row"><span>Abweichung zur Gruppe</span><strong>${pct.format(deviation)}</strong></div>
         <span class="tag ${row.className === "A-Fall" ? "red" : row.className === "B-Fall" ? "amber" : "blue"}">Potenzial ${eur.format(row.saving * 12)} pro Jahr</span>

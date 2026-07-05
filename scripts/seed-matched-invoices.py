@@ -117,6 +117,25 @@ REVIEW_PATTERNS = [
     (r"\btetric\b.*\b(?:evoflow|evoceram)\b", "Tetric-Materialvariante prüfen"),
 ]
 
+VERIFIED_ARTICLE_MATCHES = {
+    "9884844": {
+        "key": "hs-eurosept-xtra-e-handdesinfektion",
+        "name": "HS-EuroSept Xtra E Händedesinfektion",
+        "category": "Hygiene",
+        "pack_factor": 500,
+        "unit": "ml",
+        "pack_note": "500 ml (Wawibox/Henry-Schein-Katalogbasis)",
+    },
+    "9884845": {
+        "key": "hs-eurosept-xtra-e-handdesinfektion",
+        "name": "HS-EuroSept Xtra E Händedesinfektion",
+        "category": "Hygiene",
+        "pack_factor": 1000,
+        "unit": "ml",
+        "pack_note": "1 l (Wawibox/Henry-Schein-Katalogbasis)",
+    },
+}
+
 
 def normalize_text(value: str) -> str:
     text = value.casefold()
@@ -175,7 +194,12 @@ def catalog_key(description: str) -> str:
     return " ".join(tokens[:10]) or re.sub(r"\W+", "", description.casefold()) or "artikel"
 
 
-def match_key(item: dict) -> tuple[str, str, str, float]:
+def match_key(item: dict, ambiguous_article_keys: set[str]) -> tuple[str, str, str, float]:
+    verified = VERIFIED_ARTICLE_MATCHES.get(item["article_no"])
+    if verified:
+        stable_id = hashlib.sha1(verified["key"].encode("utf-8")).hexdigest()[:12].upper()
+        return f"G-{stable_id}", verified["name"], verified["category"], 0.97
+
     rule = auto_match_rule(item["description"])
     if rule:
         stable_id = hashlib.sha1(rule["key"].encode("utf-8")).hexdigest()[:12].upper()
@@ -183,6 +207,12 @@ def match_key(item: dict) -> tuple[str, str, str, float]:
 
     review_reason = needs_review(item["description"])
     key = catalog_key(item["description"])
+    if key in ambiguous_article_keys:
+        key = f"{key} artnr {item['article_no']}"
+        product_name = f'{item["description"][:52]} · ArtNr {item["article_no"]}'
+        stable_id = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12].upper()
+        return f"P-{stable_id}", product_name, category_for(item["description"]), 0.82
+
     stable_id = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12].upper()
     score = 0.82 if review_reason else 0.94
     return f"P-{stable_id}", item["description"][:64], category_for(item["description"]), score
@@ -235,6 +265,10 @@ def pack_basis(description: str) -> tuple[float, str, str]:
 
 
 def catalog_pack_override(item: dict, pack_factor: float, unit: str, pack_note: str) -> tuple[float, str, str]:
+    verified = VERIFIED_ARTICLE_MATCHES.get(item["article_no"])
+    if verified:
+        return verified["pack_factor"], verified["unit"], verified["pack_note"]
+
     if pack_factor != 1 or unit != "Einheit":
         return pack_factor, unit, pack_note
 
@@ -272,6 +306,15 @@ def item_discount(item: dict) -> float:
 
 def build_payload(input_dir: Path) -> dict:
     summaries = [asdict(extractor.summarize(path)) for path in extractor.invoice_paths(input_dir)]
+    article_numbers_by_key: dict[str, set[str]] = defaultdict(set)
+    for summary in summaries:
+        for item in summary["items"]:
+            if item["article_no"] not in VERIFIED_ARTICLE_MATCHES and not auto_match_rule(item["description"]):
+                article_numbers_by_key[catalog_key(item["description"])].add(item["article_no"])
+    ambiguous_article_keys = {
+        key for key, article_numbers in article_numbers_by_key.items() if len(article_numbers) > 1
+    }
+
     products_by_id: dict[str, dict] = {}
     invoice_rows = []
     item_rows = []
@@ -293,7 +336,7 @@ def build_payload(input_dir: Path) -> dict:
             "skonto_used": False,
         })
         for item in summary["items"]:
-            product_id, product_name, category, score = match_key(item)
+            product_id, product_name, category, score = match_key(item, ambiguous_article_keys)
             pack_factor, unit, pack_note = pack_basis(item["description"])
             pack_factor, unit, pack_note = catalog_pack_override(item, pack_factor, unit, pack_note)
             products_by_id.setdefault(product_id, {

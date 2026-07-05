@@ -4643,6 +4643,16 @@
       "approved": true
     },
     {
+      "id": "G-D4C1952D30E5",
+      "name": "HS-EuroSept Xtra E Händedesinfektion",
+      "category": "Hygiene",
+      "unit": "ml",
+      "pack": 1,
+      "standard": true,
+      "critical": false,
+      "approved": true
+    },
+    {
       "id": "G-ED50365CBF37",
       "name": "Activator Universal Plus Paste 60 ml",
       "category": "Prothetik",
@@ -4663,6 +4673,36 @@
       "approved": true
     },
     {
+      "id": "P-00C47459E476",
+      "name": "HS-Acclean Interdentalbürsten · ArtNr 9883516",
+      "category": "Hygiene",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
+      "id": "P-025DE811F2CD",
+      "name": "HS-Latex Hands.ExtraGrip pf Cr · ArtNr 98837081",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
+      "id": "P-02F1A651812F",
+      "name": "CERABIEN ZR FC Paste Stain · ArtNr 205203",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-04009D65F655",
       "name": "Omni Matrizenspanner 7mm St",
       "category": "Material",
@@ -4681,6 +4721,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-042729887F5D",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203188",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-0440AE9A55B0",
@@ -4883,6 +4933,16 @@
       "approved": true
     },
     {
+      "id": "P-12BA40F67154",
+      "name": "IPS emax ZirCAD MT Multi A3,5 · ArtNr 896296",
+      "category": "Praxislabor",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-141BB19E2B5A",
       "name": "Bohrerreinigungsbürste",
       "category": "Praxislabor",
@@ -4961,6 +5021,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-19B5B61653F3",
+      "name": "HS-Sterifolie 100mm Sterireel · ArtNr 5724225",
+      "category": "Hygiene",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-19F4F88F11F8",
@@ -5283,6 +5353,26 @@
       "approved": false
     },
     {
+      "id": "P-2E1151E9B016",
+      "name": "HS-Acclean Interdentalbürsten · ArtNr 9883514",
+      "category": "Hygiene",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
+      "id": "P-2E7BA6D5474F",
+      "name": "IPS e.max Ceram Transpa Incisa · ArtNr 217330",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-2E84A2C72605",
       "name": "Oral-B Satin Tape 50m",
       "category": "Material",
@@ -5291,6 +5381,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-2E8AFD7908DB",
+      "name": "HS-Latex Hands.ExtraGrip pf Cr · ArtNr 98837071",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-2F683C8368C7",
@@ -5326,16 +5426,6 @@
       "id": "P-33D0C9C66660",
       "name": "ORBIject Kanülen grün 13mm G30",
       "category": "Verbrauchsmaterial",
-      "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
-      "id": "P-34D6C41CBC6E",
-      "name": "HS-Sterifolie 100mm Sterireel",
-      "category": "Hygiene",
       "unit": "Einheit",
       "pack": 1,
       "standard": false,
@@ -5553,6 +5643,16 @@
       "approved": true
     },
     {
+      "id": "P-45CC3A686C93",
+      "name": "EVE DIAPOL TWIST Polierer RA · ArtNr 119771",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-45D520244384",
       "name": "Porto und Verpackung",
       "category": "Material",
@@ -5763,26 +5863,6 @@
       "approved": true
     },
     {
-      "id": "P-5066F1C1D2B0",
-      "name": "Omni Schienendose f.Erwachsene",
-      "category": "Material",
-      "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
-      "id": "P-50D5FBD97EE2",
-      "name": "HS-Acclean Interdentalbürsten",
-      "category": "Hygiene",
-      "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
       "id": "P-5117ED376398",
       "name": "MD 555 Spezialreiniger Flas",
       "category": "Material",
@@ -5793,14 +5873,14 @@
       "approved": true
     },
     {
-      "id": "P-549B64A89B54",
-      "name": "EVE DIAPOL TWIST Polierer RA",
+      "id": "P-53F0EAA103D2",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203191",
       "category": "Material",
       "unit": "Einheit",
       "pack": 1,
       "standard": false,
       "critical": false,
-      "approved": true
+      "approved": false
     },
     {
       "id": "P-569FA9726E6F",
@@ -5843,6 +5923,16 @@
       "approved": true
     },
     {
+      "id": "P-5982376975ED",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203189",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-59E1E1F53D66",
       "name": "Eltra 40 Extra Pa 8,3kg",
       "category": "Material",
@@ -5857,16 +5947,6 @@
       "name": "Bearbeitungsgebühr",
       "category": "Material",
       "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
-      "id": "P-5A4A1D16D6FF",
-      "name": "Night Cleaner 800ml",
-      "category": "Hygiene",
-      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5921,6 +6001,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-5DAF7554314D",
+      "name": "HS-Sterifolie 100mm Sterireel · ArtNr 9002993",
+      "category": "Hygiene",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-5E7139F0D840",
@@ -6133,6 +6223,16 @@
       "approved": true
     },
     {
+      "id": "P-6E7AAA4D50B3",
+      "name": "HS-Acclean Interdentalbürsten · ArtNr 9883515",
+      "category": "Hygiene",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-6E8ADE65E5C0",
       "name": "Injekt Solo Einmalspritze 2ml",
       "category": "Material",
@@ -6263,16 +6363,6 @@
       "approved": true
     },
     {
-      "id": "P-76DF66DAB7AA",
-      "name": "HS-Latex Hands.ExtraGrip pf Cr",
-      "category": "Material",
-      "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
       "id": "P-7706787EBB77",
       "name": "Bur 2.0 Metal",
       "category": "Praxislabor",
@@ -6383,6 +6473,16 @@
       "approved": true
     },
     {
+      "id": "P-80D8AF376AC5",
+      "name": "EVE DIAPOL TWIST Polierer RA · ArtNr 119773",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-820A2B101BB8",
       "name": "Instrumentenschutzkappen, rd 2",
       "category": "Material",
@@ -6473,6 +6573,16 @@
       "approved": true
     },
     {
+      "id": "P-89F3499C8AE8",
+      "name": "EVE DIAPOL TWIST Polierer RA · ArtNr 119769",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-8B4DE74E46F5",
       "name": "Ubistesin 1/400 000 Pack 6x50Z",
       "category": "Material",
@@ -6491,6 +6601,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-8BF34179394F",
+      "name": "IPS emax ZirCAD MT Multi A3,5 · ArtNr 897698",
+      "category": "Praxislabor",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-8C16AEB77122",
@@ -6673,6 +6793,16 @@
       "approved": true
     },
     {
+      "id": "P-96A0E915307D",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203190",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-96AE6861D31F",
       "name": "Silkam schwarz 4/0 HS21 Pack 1",
       "category": "Material",
@@ -6853,16 +6983,6 @@
       "approved": true
     },
     {
-      "id": "P-A0D3FCE6F370",
-      "name": "CERABIEN ZR FC Paste Stain",
-      "category": "Material",
-      "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
       "id": "P-A2E5401EE24B",
       "name": "HS-Mundspiegel Rhod 4 Plan, Mo",
       "category": "Material",
@@ -6973,16 +7093,6 @@
       "approved": true
     },
     {
-      "id": "P-AE1068663B33",
-      "name": "IPS e.max Ceram Transpa Incisa",
-      "category": "Material",
-      "unit": "Einheit",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
       "id": "P-B091813A532B",
       "name": "Papiersp. Greater Tap. SB 0.06",
       "category": "Material",
@@ -7013,6 +7123,16 @@
       "approved": true
     },
     {
+      "id": "P-B1BFD88912DC",
+      "name": "Night Cleaner 800ml · ArtNr 825514",
+      "category": "Hygiene",
+      "unit": "ml",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-B2A93FE82C5C",
       "name": "HS-Papier Pe Servietten grün,",
       "category": "Material",
@@ -7031,6 +7151,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-B7640C276A79",
+      "name": "CERABIEN ZR FC Paste Stain · ArtNr 205200",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-B7CAE84F2230",
@@ -7103,19 +7233,19 @@
       "approved": true
     },
     {
-      "id": "P-BDDB9FC0382F",
-      "name": "HS-Schaumstoff Pellets GR 4 8x",
+      "id": "P-BD7A39B33435",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203192",
       "category": "Material",
       "unit": "Einheit",
       "pack": 1,
       "standard": false,
       "critical": false,
-      "approved": true
+      "approved": false
     },
     {
-      "id": "P-BE3AA3C44C8F",
-      "name": "HS-EuroSept Xtra Handdesinfekt",
-      "category": "Hygiene",
+      "id": "P-BDDB9FC0382F",
+      "name": "HS-Schaumstoff Pellets GR 4 8x",
+      "category": "Material",
       "unit": "Einheit",
       "pack": 1,
       "standard": false,
@@ -7177,16 +7307,6 @@
       "name": "Orotol Plus Flas 2,5l",
       "category": "Material",
       "unit": "ml",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": true
-    },
-    {
-      "id": "P-C67AA99BCBA9",
-      "name": "IPS emax ZirCAD MT Multi A3,5",
-      "category": "Praxislabor",
-      "unit": "Einheit",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -7363,6 +7483,16 @@
       "approved": false
     },
     {
+      "id": "P-D47F256B75F1",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203193",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-D4BD6435BE46",
       "name": "Quattrocare Plus Spray Dose 50",
       "category": "Material",
@@ -7491,6 +7621,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-DDD33F015ED7",
+      "name": "Omni Schienendose f.Erwachsene · ArtNr 203187",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-DDFBE2CA106C",
@@ -7783,6 +7923,16 @@
       "approved": true
     },
     {
+      "id": "P-F0F7D3A27323",
+      "name": "CERABIEN ZR FC Paste Stain · ArtNr 204882",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-F1E2249556AA",
       "name": "Omni Einmal-Patientenumhang",
       "category": "Material",
@@ -7833,6 +7983,16 @@
       "approved": true
     },
     {
+      "id": "P-F52601F0C32A",
+      "name": "IPS e.max Ceram Transpa Incisa · ArtNr 217329",
+      "category": "Material",
+      "unit": "Einheit",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
+    },
+    {
       "id": "P-F606EE6388F2",
       "name": "RISKONTROL NV Einwegansätze we",
       "category": "Material",
@@ -7841,6 +8001,16 @@
       "standard": false,
       "critical": false,
       "approved": true
+    },
+    {
+      "id": "P-F610C93F6400",
+      "name": "Night Cleaner 800ml · ArtNr 8255141",
+      "category": "Hygiene",
+      "unit": "ml",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": false
     },
     {
       "id": "P-F612D6C6FEDB",
@@ -8510,21 +8680,21 @@
     },
     {
       "invoice_id": "INV-231053578",
-      "product_id": "P-50D5FBD97EE2",
+      "product_id": "P-2E1151E9B016",
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
       "supplier_item_name": "Henry Schein ArtNr 9883514: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053578",
-      "product_id": "P-50D5FBD97EE2",
+      "product_id": "P-00C47459E476",
       "qty": 4.0,
       "list_price": 12.65,
       "item_discount": 0.26007905138339926,
       "supplier_item_name": "Henry Schein ArtNr 9883516: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053578",
@@ -8600,12 +8770,12 @@
     },
     {
       "invoice_id": "INV-231053578",
-      "product_id": "P-34D6C41CBC6E",
+      "product_id": "P-5DAF7554314D",
       "qty": 1.0,
       "list_price": 26.05,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 9002993: HS-Sterifolie 100mm Sterireel · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053578",
@@ -8798,30 +8968,30 @@
     },
     {
       "invoice_id": "INV-231053578",
-      "product_id": "P-50D5FBD97EE2",
+      "product_id": "P-2E1151E9B016",
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
       "supplier_item_name": "Henry Schein ArtNr 9883514: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053578",
-      "product_id": "P-50D5FBD97EE2",
+      "product_id": "P-6E7AAA4D50B3",
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
       "supplier_item_name": "Henry Schein ArtNr 9883515: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053578",
-      "product_id": "P-50D5FBD97EE2",
+      "product_id": "P-00C47459E476",
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
       "supplier_item_name": "Henry Schein ArtNr 9883516: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053578",
@@ -9113,12 +9283,12 @@
     },
     {
       "invoice_id": "INV-231053610",
-      "product_id": "P-5A4A1D16D6FF",
+      "product_id": "P-F610C93F6400",
       "qty": 1600.0,
       "list_price": 0.0191875,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 8255141: Night Cleaner 800ml · Basis: 800 ml",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053610",
@@ -9284,12 +9454,12 @@
     },
     {
       "invoice_id": "INV-231053610",
-      "product_id": "P-76DF66DAB7AA",
+      "product_id": "P-2E8AFD7908DB",
       "qty": 10.0,
       "list_price": 5.13,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 98837071: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053610",
@@ -9347,12 +9517,12 @@
     },
     {
       "invoice_id": "INV-231053610",
-      "product_id": "P-76DF66DAB7AA",
+      "product_id": "P-2E8AFD7908DB",
       "qty": 20.0,
       "list_price": 5.13,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 98837071: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053610",
@@ -9437,12 +9607,12 @@
     },
     {
       "invoice_id": "INV-231053773",
-      "product_id": "P-C67AA99BCBA9",
+      "product_id": "P-12BA40F67154",
       "qty": 2.0,
       "list_price": 192.7,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 896296: IPS emax ZirCAD MT Multi A3,5 · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053773",
@@ -9509,12 +9679,12 @@
     },
     {
       "invoice_id": "INV-231053773",
-      "product_id": "P-C67AA99BCBA9",
+      "product_id": "P-8BF34179394F",
       "qty": 2.0,
       "list_price": 213.35,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 897698: IPS emax ZirCAD MT Multi A3,5 · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231053773",
@@ -10067,12 +10237,12 @@
     },
     {
       "invoice_id": "INV-231082251",
-      "product_id": "P-50D5FBD97EE2",
+      "product_id": "P-2E1151E9B016",
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
       "supplier_item_name": "Henry Schein ArtNr 9883514: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231082251",
@@ -10229,12 +10399,12 @@
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-5A4A1D16D6FF",
+      "product_id": "P-B1BFD88912DC",
       "qty": 1600.0,
       "list_price": 0.0191875,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 825514: Night Cleaner 800ml · Basis: 800 ml",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231082265",
@@ -10292,12 +10462,12 @@
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-76DF66DAB7AA",
+      "product_id": "P-2E8AFD7908DB",
       "qty": 10.0,
       "list_price": 5.13,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 98837071: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231082265",
@@ -10391,21 +10561,21 @@
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-76DF66DAB7AA",
+      "product_id": "P-2E8AFD7908DB",
       "qty": 50.0,
       "list_price": 5.13,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 98837071: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-76DF66DAB7AA",
+      "product_id": "P-025DE811F2CD",
       "qty": 20.0,
       "list_price": 6.24,
       "item_discount": 1.1102230246251565e-16,
       "supplier_item_name": "Henry Schein ArtNr 98837081: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231082265",
@@ -10544,21 +10714,21 @@
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-BE3AA3C44C8F",
-      "qty": 10.0,
-      "list_price": 15.9,
+      "product_id": "G-D4C1952D30E5",
+      "qty": 10000.0,
+      "list_price": 0.0159,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein ArtNr 9884845: HS-EuroSept Xtra Handdesinfekt · Basis: 1 Einheit",
-      "match_score": 0.94
+      "supplier_item_name": "Henry Schein ArtNr 9884845: HS-EuroSept Xtra Handdesinfekt · Basis: 1 l (Wawibox/Henry-Schein-Katalogbasis)",
+      "match_score": 0.97
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-BE3AA3C44C8F",
-      "qty": 4.0,
-      "list_price": 3.54,
+      "product_id": "G-D4C1952D30E5",
+      "qty": 2000.0,
+      "list_price": 0.00708,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein ArtNr 9884844: HS-EuroSept Xtra Handdesinfekt · Basis: 1 Einheit",
-      "match_score": 0.94
+      "supplier_item_name": "Henry Schein ArtNr 9884844: HS-EuroSept Xtra Handdesinfekt · Basis: 500 ml (Wawibox/Henry-Schein-Katalogbasis)",
+      "match_score": 0.97
     },
     {
       "invoice_id": "INV-231082265",
@@ -10670,12 +10840,12 @@
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-34D6C41CBC6E",
+      "product_id": "P-19B5B61653F3",
       "qty": 2.0,
       "list_price": 26.05,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 5724225: HS-Sterifolie 100mm Sterireel · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231082265",
@@ -10922,21 +11092,21 @@
     },
     {
       "invoice_id": "INV-231083648",
-      "product_id": "P-AE1068663B33",
+      "product_id": "P-F52601F0C32A",
       "qty": 1.0,
       "list_price": 57.8,
       "item_discount": 0.2600346020761245,
       "supplier_item_name": "Henry Schein ArtNr 217329: IPS e.max Ceram Transpa Incisa · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231083648",
-      "product_id": "P-AE1068663B33",
+      "product_id": "P-2E7BA6D5474F",
       "qty": 1.0,
       "list_price": 57.8,
       "item_discount": 0.2600346020761245,
       "supplier_item_name": "Henry Schein ArtNr 217330: IPS e.max Ceram Transpa Incisa · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-231083648",
@@ -11489,21 +11659,21 @@
     },
     {
       "invoice_id": "INV-1026136155",
-      "product_id": "P-A0D3FCE6F370",
+      "product_id": "P-B7640C276A79",
       "qty": 1.0,
       "list_price": 38.79,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 205200: CERABIEN ZR FC Paste Stain · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026136155",
-      "product_id": "P-A0D3FCE6F370",
+      "product_id": "P-02F1A651812F",
       "qty": 1.0,
       "list_price": 64.14,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 205203: CERABIEN ZR FC Paste Stain · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026136155",
@@ -11543,30 +11713,30 @@
     },
     {
       "invoice_id": "INV-1026136155",
-      "product_id": "P-549B64A89B54",
+      "product_id": "P-89F3499C8AE8",
       "qty": 1.0,
       "list_price": 50.85,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 119769: EVE DIAPOL TWIST Polierer RA · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026136155",
-      "product_id": "P-549B64A89B54",
+      "product_id": "P-45CC3A686C93",
       "qty": 1.0,
       "list_price": 50.85,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 119771: EVE DIAPOL TWIST Polierer RA · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026136155",
-      "product_id": "P-549B64A89B54",
+      "product_id": "P-80D8AF376AC5",
       "qty": 1.0,
       "list_price": 50.85,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 119773: EVE DIAPOL TWIST Polierer RA · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026136155",
@@ -11660,12 +11830,12 @@
     },
     {
       "invoice_id": "INV-1026136155",
-      "product_id": "P-A0D3FCE6F370",
+      "product_id": "P-F0F7D3A27323",
       "qty": 1.0,
       "list_price": 41.69,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 204882: CERABIEN ZR FC Paste Stain · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026136155",
@@ -12020,66 +12190,66 @@
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-DDD33F015ED7",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203187: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-042729887F5D",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203188: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-5982376975ED",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203189: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-96A0E915307D",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203190: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-53F0EAA103D2",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203191: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-BD7A39B33435",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203192: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-D47F256B75F1",
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
       "supplier_item_name": "GERL ArtNr 203193: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
-      "match_score": 0.94
+      "match_score": 0.82
     },
     {
       "invoice_id": "INV-1026167513",
@@ -12302,8 +12472,18 @@
     },
     {
       "supplier_name": "GERL",
+      "product_id": "P-02F1A651812F",
+      "price": 64.14
+    },
+    {
+      "supplier_name": "GERL",
       "product_id": "P-04009D65F655",
       "price": 11.62
+    },
+    {
+      "supplier_name": "GERL",
+      "product_id": "P-042729887F5D",
+      "price": 0.84
     },
     {
       "supplier_name": "GERL",
@@ -12397,6 +12577,11 @@
     },
     {
       "supplier_name": "GERL",
+      "product_id": "P-45CC3A686C93",
+      "price": 50.85
+    },
+    {
+      "supplier_name": "GERL",
       "product_id": "P-45D520244384",
       "price": 8.9
     },
@@ -12422,13 +12607,13 @@
     },
     {
       "supplier_name": "GERL",
-      "product_id": "P-5066F1C1D2B0",
+      "product_id": "P-53F0EAA103D2",
       "price": 0.84
     },
     {
       "supplier_name": "GERL",
-      "product_id": "P-549B64A89B54",
-      "price": 50.85
+      "product_id": "P-5982376975ED",
+      "price": 0.84
     },
     {
       "supplier_name": "GERL",
@@ -12492,6 +12677,11 @@
     },
     {
       "supplier_name": "GERL",
+      "product_id": "P-80D8AF376AC5",
+      "price": 50.85
+    },
+    {
+      "supplier_name": "GERL",
       "product_id": "P-830EC846E7DC",
       "price": 1.1324
     },
@@ -12504,6 +12694,11 @@
       "supplier_name": "GERL",
       "product_id": "P-863503A5785A",
       "price": 0.2053
+    },
+    {
+      "supplier_name": "GERL",
+      "product_id": "P-89F3499C8AE8",
+      "price": 50.85
     },
     {
       "supplier_name": "GERL",
@@ -12527,6 +12722,11 @@
     },
     {
       "supplier_name": "GERL",
+      "product_id": "P-96A0E915307D",
+      "price": 0.84
+    },
+    {
+      "supplier_name": "GERL",
       "product_id": "P-97D797F1D18C",
       "price": 0.0816
     },
@@ -12534,11 +12734,6 @@
       "supplier_name": "GERL",
       "product_id": "P-9E1C5D265186",
       "price": 115.92
-    },
-    {
-      "supplier_name": "GERL",
-      "product_id": "P-A0D3FCE6F370",
-      "price": 48.2067
     },
     {
       "supplier_name": "GERL",
@@ -12552,8 +12747,18 @@
     },
     {
       "supplier_name": "GERL",
+      "product_id": "P-B7640C276A79",
+      "price": 38.79
+    },
+    {
+      "supplier_name": "GERL",
       "product_id": "P-B7CAE84F2230",
       "price": 6.47
+    },
+    {
+      "supplier_name": "GERL",
+      "product_id": "P-BD7A39B33435",
+      "price": 0.84
     },
     {
       "supplier_name": "GERL",
@@ -12569,6 +12774,11 @@
       "supplier_name": "GERL",
       "product_id": "P-D22BC3BC7402",
       "price": 69.15
+    },
+    {
+      "supplier_name": "GERL",
+      "product_id": "P-D47F256B75F1",
+      "price": 0.84
     },
     {
       "supplier_name": "GERL",
@@ -12594,6 +12804,11 @@
       "supplier_name": "GERL",
       "product_id": "P-DD8E44D17FF3",
       "price": 16.312
+    },
+    {
+      "supplier_name": "GERL",
+      "product_id": "P-DDD33F015ED7",
+      "price": 0.84
     },
     {
       "supplier_name": "GERL",
@@ -12624,6 +12839,11 @@
       "supplier_name": "GERL",
       "product_id": "P-E67CF2F1476E",
       "price": 29.65
+    },
+    {
+      "supplier_name": "GERL",
+      "product_id": "P-F0F7D3A27323",
+      "price": 41.69
     },
     {
       "supplier_name": "GERL",
@@ -12687,8 +12907,23 @@
     },
     {
       "supplier_name": "Henry Schein",
+      "product_id": "G-D4C1952D30E5",
+      "price": 0.0115
+    },
+    {
+      "supplier_name": "Henry Schein",
       "product_id": "P-0017ACD47428",
       "price": 0.0264
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-00C47459E476",
+      "price": 12.15
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-025DE811F2CD",
+      "price": 6.24
     },
     {
       "supplier_name": "Henry Schein",
@@ -12762,6 +12997,11 @@
     },
     {
       "supplier_name": "Henry Schein",
+      "product_id": "P-12BA40F67154",
+      "price": 192.7
+    },
+    {
+      "supplier_name": "Henry Schein",
       "product_id": "P-141BB19E2B5A",
       "price": 8.75
     },
@@ -12789,6 +13029,11 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-18442D78654D",
       "price": 0.3297
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-19B5B61653F3",
+      "price": 26.05
     },
     {
       "supplier_name": "Henry Schein",
@@ -12912,8 +13157,23 @@
     },
     {
       "supplier_name": "Henry Schein",
+      "product_id": "P-2E1151E9B016",
+      "price": 11.65
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-2E7BA6D5474F",
+      "price": 57.8
+    },
+    {
+      "supplier_name": "Henry Schein",
       "product_id": "P-2E84A2C72605",
       "price": 2.7
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-2E8AFD7908DB",
+      "price": 5.13
     },
     {
       "supplier_name": "Henry Schein",
@@ -12929,11 +13189,6 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-3236A7AA0BF4",
       "price": 64.2
-    },
-    {
-      "supplier_name": "Henry Schein",
-      "product_id": "P-34D6C41CBC6E",
-      "price": 26.05
     },
     {
       "supplier_name": "Henry Schein",
@@ -13067,11 +13322,6 @@
     },
     {
       "supplier_name": "Henry Schein",
-      "product_id": "P-50D5FBD97EE2",
-      "price": 11.8167
-    },
-    {
-      "supplier_name": "Henry Schein",
       "product_id": "P-5117ED376398",
       "price": 56.15
     },
@@ -13092,11 +13342,6 @@
     },
     {
       "supplier_name": "Henry Schein",
-      "product_id": "P-5A4A1D16D6FF",
-      "price": 0.0192
-    },
-    {
-      "supplier_name": "Henry Schein",
       "product_id": "P-5B00EDD767EA",
       "price": 15.8
     },
@@ -13114,6 +13359,11 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-5DA22841A826",
       "price": 9.83
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-5DAF7554314D",
+      "price": 26.05
     },
     {
       "supplier_name": "Henry Schein",
@@ -13182,6 +13432,11 @@
     },
     {
       "supplier_name": "Henry Schein",
+      "product_id": "P-6E7AAA4D50B3",
+      "price": 11.65
+    },
+    {
+      "supplier_name": "Henry Schein",
       "product_id": "P-6F4E1D057CCE",
       "price": 8.9
     },
@@ -13224,11 +13479,6 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-7666480ECD81",
       "price": 112.5
-    },
-    {
-      "supplier_name": "Henry Schein",
-      "product_id": "P-76DF66DAB7AA",
-      "price": 5.352
     },
     {
       "supplier_name": "Henry Schein",
@@ -13319,6 +13569,11 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-8B4DE74E46F5",
       "price": 192.8
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-8BF34179394F",
+      "price": 213.35
     },
     {
       "supplier_name": "Henry Schein",
@@ -13497,11 +13752,6 @@
     },
     {
       "supplier_name": "Henry Schein",
-      "product_id": "P-AE1068663B33",
-      "price": 57.8
-    },
-    {
-      "supplier_name": "Henry Schein",
       "product_id": "P-B091813A532B",
       "price": 14.85
     },
@@ -13509,6 +13759,11 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-B152DA07C3CB",
       "price": 2.0
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-B1BFD88912DC",
+      "price": 0.0192
     },
     {
       "supplier_name": "Henry Schein",
@@ -13557,11 +13812,6 @@
     },
     {
       "supplier_name": "Henry Schein",
-      "product_id": "P-BE3AA3C44C8F",
-      "price": 9.72
-    },
-    {
-      "supplier_name": "Henry Schein",
       "product_id": "P-BE62CF9AD567",
       "price": 60.27
     },
@@ -13589,11 +13839,6 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-C59EBE3D10A3",
       "price": 0.0169
-    },
-    {
-      "supplier_name": "Henry Schein",
-      "product_id": "P-C67AA99BCBA9",
-      "price": 203.025
     },
     {
       "supplier_name": "Henry Schein",
@@ -13797,8 +14042,18 @@
     },
     {
       "supplier_name": "Henry Schein",
+      "product_id": "P-F52601F0C32A",
+      "price": 57.8
+    },
+    {
+      "supplier_name": "Henry Schein",
       "product_id": "P-F606EE6388F2",
       "price": 55.95
+    },
+    {
+      "supplier_name": "Henry Schein",
+      "product_id": "P-F610C93F6400",
+      "price": 0.0192
     },
     {
       "supplier_name": "Henry Schein",
