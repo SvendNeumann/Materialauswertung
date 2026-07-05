@@ -527,7 +527,6 @@ function basketComparison(locationName = state.role === "location" ? activeLocat
 function render() {
   syncShellState();
   renderNav();
-  renderBottomNav();
   document.getElementById("viewTitle").textContent = titleFor(state.view);
   document.getElementById("viewEyebrow").textContent = state.role === "location" ? `Standort ${activeLocationName()}` : "Materialpreis-Controlling";
   const view = document.getElementById("view");
@@ -564,22 +563,6 @@ function renderNav() {
     bindNavActivation(nav);
   }
   syncNavState(nav);
-}
-
-function renderBottomNav() {
-  const bottomNav = document.getElementById("bottomNav");
-  if (bottomNav.dataset.rendered !== "true") {
-    const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "yearly", "recommendations", "mobile"].includes(id));
-    bottomNav.innerHTML = bottomItems.map(([id, label]) => `<button data-view="${id}" title="${label}"><span>${shortNavLabel(label)}</span></button>`).join("");
-    bottomNav.addEventListener("click", event => {
-      const btn = event.target.closest?.("[data-view]");
-      if (btn) goToView(btn.dataset.view);
-    });
-    bottomNav.dataset.rendered = "true";
-  }
-  bottomNav.querySelectorAll("[data-view]").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.view === state.view);
-  });
 }
 
 function syncNavState(nav = document.getElementById("nav")) {
@@ -644,17 +627,6 @@ function bindNavActivation(nav) {
 function reloadCurrentView() {
   sessionStorage.setItem(reloadViewStorageKey, state.view);
   window.location.reload();
-}
-
-function shortNavLabel(label) {
-  return ({
-    "Dashboard": "Home",
-    "Rechnungen": "Import",
-    "Preisvergleich": "Preise",
-    "Jahresvergleich": "Trend",
-    "Empfehlungen": "Tipps",
-    "Standortleiter": "Mobil",
-  })[label] || label;
 }
 
 function syncShellState() {

@@ -270,8 +270,6 @@ tr:last-child td { border-bottom: 0; }
 .workflow span.active { color: white; background: var(--blue); border-color: var(--blue); }
 .mobile-card { display: grid; gap: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: white; }
 .mobile-card .price-row { display: flex; justify-content: space-between; gap: 12px; }
-.bottom-nav { display: none; }
-
 @media (max-width: 1180px) {
   .app-shell { grid-template-columns: 240px minmax(0, 1fr); }
   body.sidebar-collapsed .app-shell { grid-template-columns: 82px minmax(0, 1fr); }
@@ -340,19 +338,8 @@ tr:last-child td { border-bottom: 0; }
     width: min(46vw, 178px);
     height: auto;
   }
-  .view { padding: calc(92px + env(safe-area-inset-top)) 16px 98px; }
+  .view { padding: calc(92px + env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom)); }
   .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
-  .bottom-nav {
-    position: fixed; left: 16px; right: 16px; bottom: max(12px, env(safe-area-inset-bottom));
-    z-index: 12; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px;
-    padding: 4px; border: 1px solid rgba(220, 226, 234, 0.88); border-radius: 13px;
-    background: rgba(255, 255, 255, 0.94); box-shadow: 0 18px 50px rgba(24, 34, 53, 0.18); backdrop-filter: blur(14px);
-  }
-  .bottom-nav button {
-    min-width: 0; min-height: 38px; display: grid; place-items: center; gap: 2px;
-    border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-size: 9px; font-weight: 800;
-  }
-  .bottom-nav button.active { background: #e9f2ff; color: var(--blue); }
 }
 
 @media (max-width: 640px) {
@@ -376,7 +363,7 @@ tr:last-child td { border-bottom: 0; }
   .mobile-header-brand img {
     width: min(48vw, 172px);
   }
-  .view { padding: calc(86px + env(safe-area-inset-top)) 12px 100px; }
+  .view { padding: calc(86px + env(safe-area-inset-top)) 12px max(18px, env(safe-area-inset-bottom)); }
   .grid { gap: 10px; }
   .form-grid { grid-template-columns: 1fr; }
   .panel { padding: 14px; }
@@ -464,7 +451,6 @@ body {
 
 .sidebar,
 .topbar,
-.bottom-nav,
 .role-card {
   border-color: rgba(178, 226, 229, 0.2) !important;
   background: rgba(12, 34, 49, 0.9) !important;
@@ -942,19 +928,6 @@ h3 {
   border-color: rgba(121, 238, 231, 0.36);
 }
 
-.bottom-nav {
-  background: rgba(12, 34, 49, 0.92) !important;
-}
-
-.bottom-nav button {
-  color: #b5cbd1;
-}
-
-.bottom-nav button.active {
-  background: rgba(48, 213, 200, 0.12);
-  color: #79eee7;
-}
-
 @media (min-width: 1280px) {
   .app-shell::before {
     display: none;
@@ -1043,7 +1016,7 @@ h3 {
   }
 
   .view {
-    padding: calc(82px + env(safe-area-inset-top)) 12px 92px;
+    padding: calc(82px + env(safe-area-inset-top)) 12px max(18px, env(safe-area-inset-bottom));
   }
 
   .grid {
@@ -1274,19 +1247,6 @@ h3 {
     font-size: 10.5px;
   }
 
-  .bottom-nav {
-    left: 10px;
-    right: 10px;
-    bottom: max(10px, env(safe-area-inset-bottom));
-    border-radius: 12px;
-  }
-
-  .bottom-nav button {
-    min-height: 34px;
-    border-radius: 8px;
-    font-size: 8.5px;
-    line-height: 1.1;
-  }
 }
 
 @media (max-width: 430px) {
