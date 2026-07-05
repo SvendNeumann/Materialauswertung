@@ -157,6 +157,21 @@ function normalizedLocationName(name) {
   return locationAliases[locationAliasKey(raw)] || raw;
 }
 
+function normalizeLocationState() {
+  state.location = normalizedLocationName(state.location);
+  if (state.location === "offen") state.location = "";
+  if (state.locationFilter !== "Alle") state.locationFilter = normalizedLocationName(state.locationFilter);
+  if (state.reportLocation !== "Alle") state.reportLocation = normalizedLocationName(state.reportLocation);
+}
+
+function locationValue(row) {
+  return normalizedLocationName(row?.inv?.location || row?.location || row?.location_name || "");
+}
+
+function locationMatches(value, selected) {
+  return selected === "Alle" || normalizedLocationName(value) === normalizedLocationName(selected);
+}
+
 function buildLocations(rows) {
   const byName = new Map();
   rows.forEach(row => {
@@ -811,11 +826,11 @@ function groupAverage(productId) {
 }
 
 function locationScopeRows(rows) {
-  return state.role === "location" ? rows.filter(row => (row.inv?.location || row.location || row.location_name) === activeLocationName()) : rows;
+  return state.role === "location" ? rows.filter(row => locationMatches(locationValue(row), activeLocationName())) : rows;
 }
 
 function activeLocationName() {
-  return state.location || locations[0]?.name || "";
+  return normalizedLocationName(state.location || locations[0]?.name || "");
 }
 
 function scopeLabel() {
@@ -857,7 +872,7 @@ function kpis() {
   const comparableRows = locationScopeRows(comparableItems());
   const recommendationRows = locationScopeRows(recommendations());
   const importedRows = locationScopeRows(state.sampleImports);
-  const scopedInvoices = state.role === "location" ? invoices.filter(i => i.location === activeLocationName()) : invoices;
+  const scopedInvoices = state.role === "location" ? invoices.filter(i => locationMatches(i.location, activeLocationName())) : invoices;
   const importedGross = importedRows.reduce((sum, row) => sum + Number(row.gross_total || 0), 0);
   const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
   const potential = recommendationRows.reduce((sum, row) => sum + row.saving, 0);
@@ -1873,8 +1888,7 @@ function potentialComparisonRows(productId) {
 function isSafePotential(row) {
   const comparisons = potentialComparisonRows(row.productId);
   return row.product.approved
-    && row.product.standard
-    && row.match >= 0.95
+    && row.match >= 0.9
     && row.product.unit
     && row.product.unit !== "Einheit"
     && row.comparisonPrice > bestPrice(row.productId)
@@ -1905,7 +1919,7 @@ function securePotentialRows() {
 
 function selectedPotentialRows(limit = null) {
   const rows = locationScopeRows(recommendations());
-  const filteredByLocation = state.locationFilter === "Alle" ? rows : rows.filter(row => row.inv.location === state.locationFilter);
+  const filteredByLocation = state.locationFilter === "Alle" ? rows : rows.filter(row => locationMatches(row.inv.location, state.locationFilter));
   const selected = state.safePotentialOnly ? filteredByLocation.filter(isSafePotential) : filteredByLocation;
   return limit ? selected.slice(0, limit) : selected;
 }
@@ -1913,7 +1927,7 @@ function selectedPotentialRows(limit = null) {
 function reportRowsFor(type) {
   const rows = securePotentialRows();
   if (type === "location") {
-    return (state.reportLocation === "Alle" ? rows : rows.filter(row => row.inv.location === state.reportLocation)).sort((a, b) => b.saving - a.saving);
+    return (state.reportLocation === "Alle" ? rows : rows.filter(row => locationMatches(row.inv.location, state.reportLocation))).sort((a, b) => b.saving - a.saving);
   }
   if (type === "supplier") {
     return (state.reportSupplier === "Alle" ? rows : rows.filter(row => row.inv.supplier === state.reportSupplier)).sort((a, b) => b.saving - a.saving);
@@ -1926,8 +1940,9 @@ function reportRowsFor(type) {
 }
 
 function mobileView() {
+  normalizeLocationState();
   const selectedRows = selectedPotentialRows();
-  const activeScope = state.locationFilter === "Alle" ? scopeLabel() : state.locationFilter;
+  const activeScope = state.locationFilter === "Alle" ? scopeLabel() : normalizedLocationName(state.locationFilter);
   const locationRows = potentialLocationRows(selectedRows);
   const info = periodInfo(selectedRows);
   const totalMonth = actualPotential(selectedRows);
@@ -1979,7 +1994,7 @@ function filtered(rows) {
     const text = JSON.stringify(row).toLowerCase();
     const location = row.inv?.location || row.location;
     const supplier = row.inv?.supplier || row.supplier;
-    return (!query || text.includes(query)) && (state.locationFilter === "Alle" || location === state.locationFilter) && (state.supplierFilter === "Alle" || supplier === state.supplierFilter);
+    return (!query || text.includes(query)) && locationMatches(location, state.locationFilter) && (state.supplierFilter === "Alle" || supplier === state.supplierFilter);
   });
 }
 
