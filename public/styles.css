@@ -347,6 +347,63 @@ tr:last-child td { border-bottom: 0; }
   .workflow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+@media (min-width: 861px) {
+  body.sidebar-collapsed .sidebar {
+    overflow-x: hidden;
+  }
+
+  body.sidebar-collapsed .brand {
+    grid-template-columns: 1fr;
+    gap: 0;
+    justify-items: center;
+  }
+
+  body.sidebar-collapsed .brand-mark {
+    width: 52px;
+    max-width: 100%;
+  }
+
+  body.sidebar-collapsed .brand-mark img {
+    width: 52px;
+    max-width: 52px;
+  }
+
+  body.sidebar-collapsed .nav button,
+  body.sidebar-collapsed .nav a {
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: 0;
+    overflow: hidden;
+  }
+
+  body.sidebar-collapsed .nav-label,
+  body.sidebar-collapsed .role-card strong,
+  body.sidebar-collapsed .role-card small {
+    display: none !important;
+  }
+
+  body.sidebar-collapsed .nav-section-trigger::after,
+  body.sidebar-collapsed .nav-subitem::after {
+    content: "";
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: rgba(238, 251, 251, 0.32);
+  }
+
+  body.sidebar-collapsed .nav-section.open .nav-section-trigger::after,
+  body.sidebar-collapsed .nav-subitem.active::after {
+    background: #78f0ea;
+    box-shadow: 0 0 0 7px rgba(120, 240, 234, 0.12);
+  }
+
+  body.sidebar-collapsed .role-card {
+    display: grid;
+    place-items: center;
+  }
+}
+
 @media (max-width: 860px) {
   body.sidebar-collapsed .app-shell,
   .app-shell { grid-template-columns: 1fr; }
