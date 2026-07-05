@@ -13,6 +13,7 @@ const state = {
   query: "",
   supplierFilter: "Alle",
   locationFilter: "Alle",
+  safePotentialOnly: true,
   categoryFilter: "Alle",
   sampleImports: [],
   uploadStatus: "",
@@ -1662,9 +1663,43 @@ function topPotentialArticleRows(rows) {
   }));
 }
 
+function potentialComparisonRows(productId) {
+  return comparableItems().filter(row => row.productId === productId);
+}
+
+function isSafePotential(row) {
+  const comparisons = potentialComparisonRows(row.productId);
+  return row.product.approved
+    && row.product.standard
+    && row.match >= 0.95
+    && row.product.unit
+    && row.product.unit !== "Einheit"
+    && row.comparisonPrice > bestPrice(row.productId)
+    && comparisons.length >= 2;
+}
+
+function potentialReason(row) {
+  const comparisons = potentialComparisonRows(row.productId);
+  const basis = `${(row.qty * row.product.pack).toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`;
+  const supplierText = row.recommendedSupplier === row.inv.supplier
+    ? "beste Kondition beim gleichen Lieferanten"
+    : `günstigste Quelle: ${row.recommendedSupplier}`;
+  return `Freigegebenes Gruppenprodukt, ${Math.round(row.match * 100)}% Match, normalisiert auf ${basis}, ${comparisons.length} Vergleichspreise, ${supplierText}.`;
+}
+
+function safePotentialToggle() {
+  return `
+    <label class="switch-row">
+      <input id="safePotentialOnly" type="checkbox" ${state.safePotentialOnly ? "checked" : ""}>
+      <span>Nur sichere Potenziale zeigen</span>
+    </label>
+  `;
+}
+
 function selectedPotentialRows(limit = null) {
   const rows = locationScopeRows(recommendations());
-  const selected = state.locationFilter === "Alle" ? rows : rows.filter(row => row.inv.location === state.locationFilter);
+  const filteredByLocation = state.locationFilter === "Alle" ? rows : rows.filter(row => row.inv.location === state.locationFilter);
+  const selected = state.safePotentialOnly ? filteredByLocation.filter(isSafePotential) : filteredByLocation;
   return limit ? selected.slice(0, limit) : selected;
 }
 
@@ -1688,7 +1723,7 @@ function mobileView() {
       { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchste Priorität" },
       { label: "Betroffene Artikel", value: affectedProducts, sub: topArticle ? `Top: ${topArticle.product.name}` : "keine Potenziale" },
     ],
-    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}${safePotentialToggle()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus. Mit aktivem Sicherheitsschalter werden nur sehr belastbare Vergleiche mit hoher Matchsicherheit und erkannter Basiseinheit gezeigt.</p><div class="grid">${cards}</div>`),
     charts: [
       panel("Potenzial je Standort", barChart(locationRows, "name", "monthly", 1)),
       panel("A-Fälle je Standort", barChartCount(locationRows, "name", "aCases")),
@@ -1829,7 +1864,7 @@ function potentialLocationTable(rows) {
 }
 
 function potentialAnalysisTable(rows) {
-  return table(["Artikel", "Standort", "Aktueller Lieferant", "Bestellmenge", "Standortpreis", "Gruppenschnitt", "Günstigste Quelle", "Bestpreis", "Potenzial/Jahr"], rows.map(r => {
+  return table(["Artikel", "Standort", "Aktueller Lieferant", "Bestellmenge", "Standortpreis", "Gruppenschnitt", "Günstigste Quelle", "Bestpreis", "Potenzial/Jahr", "Begründung"], rows.map(r => {
     const baseQuantity = r.qty * r.product.pack;
     return [
       r.product.name,
@@ -1841,6 +1876,7 @@ function potentialAnalysisTable(rows) {
       r.recommendedLabel,
       `${eur.format(bestPrice(r.productId))} / ${r.product.unit}`,
       eur.format(r.saving * 12),
+      `<span class="muted">${escapeHtml(potentialReason(r))}</span>`,
     ];
   }));
 }
@@ -1871,6 +1907,7 @@ function potentialReportHtml(rows) {
         <td>${eur.format(best)}</td>
         <td>${eur.format(saving)}</td>
         <td>${pct.format(pctSaving)}</td>
+        <td>${escapeHtml(potentialReason(row))}</td>
       </tr>
     `;
   }).join("");
@@ -1881,6 +1918,7 @@ function potentialReportHtml(rows) {
         <meta charset="utf-8" />
         <title>Orisus Potenzialreport</title>
         <style>
+          @page { size: A4 landscape; margin: 12mm; }
           body { font-family: Arial, sans-serif; color: #102235; margin: 28px; }
           header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; border-bottom: 3px solid #28c9c3; padding-bottom: 18px; margin-bottom: 22px; }
           h1 { margin: 0 0 6px; font-size: 28px; }
@@ -1891,7 +1929,7 @@ function potentialReportHtml(rows) {
           .kpi { border: 1px solid #cbdde1; border-left: 5px solid #28c9c3; border-radius: 8px; padding: 12px; }
           .kpi span { display: block; color: #5d6f7d; font-size: 12px; font-weight: 700; text-transform: uppercase; }
           .kpi strong { display: block; margin-top: 7px; font-size: 20px; }
-          table { width: 100%; border-collapse: collapse; font-size: 11px; }
+          table { width: 100%; border-collapse: collapse; font-size: 10px; }
           th { background: #0d3542; color: white; text-align: left; }
           th, td { border: 1px solid #d8e5e8; padding: 7px; vertical-align: top; }
           tbody tr:nth-child(even) { background: #f4f9fa; }
@@ -1923,12 +1961,12 @@ function potentialReportHtml(rows) {
         <table>
           <thead>
             <tr>
-              <th>#</th><th>Artikel</th><th>Standort</th><th>Aktueller Lieferant</th><th>Menge</th><th>Aktueller Preis</th><th>Günstigste Quelle</th><th>Bestpreis</th><th>Potenzial</th><th>Potenzial %</th>
+              <th>#</th><th>Artikel</th><th>Standort</th><th>Aktueller Lieferant</th><th>Menge</th><th>Aktueller Preis</th><th>Günstigste Quelle</th><th>Bestpreis</th><th>Potenzial</th><th>Potenzial %</th><th>Begründung</th>
             </tr>
           </thead>
-          <tbody>${bodyRows || `<tr><td colspan="10">Keine Potenziale im aktuellen Filter.</td></tr>`}</tbody>
+          <tbody>${bodyRows || `<tr><td colspan="11">Keine Potenziale im aktuellen Filter.</td></tr>`}</tbody>
         </table>
-        <div class="note">Hinweis: Prozentwerte beziehen sich auf den Einkaufswert der jeweils eingelesenen Bestellmenge. Die Jahres-Hochrechnung in der App basiert darauf, dass sich diese Bestellstruktur vergleichbar wiederholt.</div>
+        <div class="note">Hinweis: Prozentwerte beziehen sich auf den Einkaufswert der jeweils eingelesenen Bestellmenge. Bei aktivem Sicherheitsschalter enthält der Report nur freigegebene, normalisierte Artikel mit hoher Matchsicherheit und mindestens zwei Vergleichspreisen. Die Jahres-Hochrechnung in der App basiert darauf, dass sich diese Bestellstruktur vergleichbar wiederholt.</div>
       </body>
     </html>`;
 }
@@ -2089,6 +2127,10 @@ function bindViewEvents() {
     };
     el.addEventListener("input", handleFilterChange);
     el.addEventListener("change", handleFilterChange);
+  });
+  document.getElementById("safePotentialOnly")?.addEventListener("change", event => {
+    state.safePotentialOnly = event.target.checked;
+    render();
   });
   document.getElementById("printPotentialReport")?.addEventListener("click", printPotentialReport);
   const fileInput = document.getElementById("invoiceFileInput");
