@@ -548,31 +548,53 @@ function renderNav() {
   if (!state.openNavSection) {
     state.openNavSection = sectionForView(state.view)?.id || "overview";
   }
-  nav.innerHTML = navSections.map(section => {
-    const open = state.openNavSection === section.id;
-    const active = section.items.some(([id]) => id === state.view);
-    return `
-      <section class="nav-section ${open ? "open" : ""} ${active ? "active" : ""}">
-        <button class="nav-section-trigger" data-section="${section.id}" title="${section.label}" aria-expanded="${open}">
-          <span class="nav-label">${section.label}</span>
-          <span class="nav-chevron">⌄</span>
-        </button>
-        <div class="nav-subitems">
-          ${section.items.map(([id, label]) => `<button type="button" class="nav-subitem ${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></button>`).join("")}
-        </div>
-      </section>
-    `;
-  }).join("");
-  bindNavActivation(nav);
+  if (nav.dataset.rendered !== "true") {
+    nav.innerHTML = navSections.map(section => `
+        <section class="nav-section" data-nav-section="${section.id}">
+          <button class="nav-section-trigger" data-section="${section.id}" title="${section.label}" aria-expanded="false">
+            <span class="nav-label">${section.label}</span>
+            <span class="nav-chevron">⌄</span>
+          </button>
+          <div class="nav-subitems">
+            ${section.items.map(([id, label]) => `<button type="button" class="nav-subitem" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></button>`).join("")}
+          </div>
+        </section>
+      `).join("");
+    nav.dataset.rendered = "true";
+    bindNavActivation(nav);
+  }
+  syncNavState(nav);
 }
 
 function renderBottomNav() {
   const bottomNav = document.getElementById("bottomNav");
-  const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "yearly", "recommendations", "mobile"].includes(id));
-  bottomNav.innerHTML = bottomItems.map(([id, label]) => `<button class="${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span>${shortNavLabel(label)}</span></button>`).join("");
-  bottomNav.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
-    goToView(btn.dataset.view);
-  }));
+  if (bottomNav.dataset.rendered !== "true") {
+    const bottomItems = navItems.filter(([id]) => ["dashboard", "invoices", "yearly", "recommendations", "mobile"].includes(id));
+    bottomNav.innerHTML = bottomItems.map(([id, label]) => `<button data-view="${id}" title="${label}"><span>${shortNavLabel(label)}</span></button>`).join("");
+    bottomNav.addEventListener("click", event => {
+      const btn = event.target.closest?.("[data-view]");
+      if (btn) goToView(btn.dataset.view);
+    });
+    bottomNav.dataset.rendered = "true";
+  }
+  bottomNav.querySelectorAll("[data-view]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.view === state.view);
+  });
+}
+
+function syncNavState(nav = document.getElementById("nav")) {
+  nav.querySelectorAll("[data-nav-section]").forEach(sectionEl => {
+    const sectionId = sectionEl.dataset.navSection;
+    const section = navSections.find(item => item.id === sectionId);
+    const open = state.openNavSection === sectionId;
+    const active = section?.items.some(([id]) => id === state.view) || false;
+    sectionEl.classList.toggle("open", open);
+    sectionEl.classList.toggle("active", active);
+    sectionEl.querySelector(".nav-section-trigger")?.setAttribute("aria-expanded", String(open));
+  });
+  nav.querySelectorAll("[data-view]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.view === state.view);
+  });
 }
 
 function sectionForView(viewId) {
