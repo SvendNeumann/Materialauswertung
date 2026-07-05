@@ -432,7 +432,7 @@ function invoiceYears() {
   return Array.from(years).sort();
 }
 
-function basketSimulation(locationName = state.role === "location" ? activeLocationName() : null) {
+function basketComparison(locationName = state.role === "location" ? activeLocationName() : null) {
   const rows = calculatedItems().filter(i => !locationName || i.inv.location === locationName);
   if (!rows.length) return [];
   return suppliers.map(supplier => {
@@ -730,7 +730,7 @@ function locationsView() {
 
 function basketView() {
   const locationName = state.role === "location" ? activeLocationName() : null;
-  const sim = basketSimulation(locationName);
+  const sim = basketComparison(locationName);
   if (!sim.length) {
     return `<section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Noch keine freigegebenen Artikelpositionen vorhanden. Sobald Rechnungen vollständig ausgelesen sind, erscheint hier der Lieferantenvergleich.</p></section>`;
   }
