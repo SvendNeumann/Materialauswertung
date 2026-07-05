@@ -1577,6 +1577,7 @@ function reviewView() {
         <span class="tag amber">${reviewRows.length} zurückgestellt</span>
       </div>
       <p class="muted panel-sub">Das sind meist gleiche Produktfamilien, aber mit anderer Einheit, Packungsgröße, Farbe, Größe, Körnung oder Materialvariante. Sobald die Basis eindeutig ist, vergleicht die App automatisch auf Stück, ml oder g. Wenn die Einheit nicht sicher genug ist, bleibt die Position vorsichtshalber aus Potenzialen und Standortvergleichen raus.</p>
+      ${reviewReasonStats(reviewRows)}
       ${matchingReviewTable(reviewRows)}
     </section>`;
 }
@@ -2105,13 +2106,28 @@ function matchReviewReason(row) {
   return "Einheit oder Variante nicht sicher genug";
 }
 
+function reviewReasonStats(rows) {
+  const groups = importGroups(rows, matchReviewReason).map(row => ({
+    ...row,
+    share: rows.length ? row.count / rows.length : 0,
+  }));
+  if (!groups.length) return `<p class="muted">Keine Rückstellgründe vorhanden.</p>`;
+  return `<div class="reason-grid">${groups.map(row => `
+    <div class="reason-pill">
+      <strong>${row.count}</strong>
+      <span>${escapeHtml(row.name)}</span>
+      <small>${pct.format(row.share)}</small>
+    </div>
+  `).join("")}</div>`;
+}
+
 function matchingReviewTable(rows) {
   if (!rows.length) {
     return `<p class="muted">Keine zurückgestellten Positionen vorhanden.</p>`;
   }
   return table(["Status", "Lieferantenartikel", "Gruppenartikel", "Standort", "Lieferant", "Basismenge", "Sicherheit", "Warum raus?"], rows.map(row => [
       status("Zurückgestellt"),
-      row.supplierName,
+      `${escapeHtml(row.supplierName)}<br><span class="muted">${escapeHtml(matchReviewReason(row))}</span>`,
       row.product.name,
       row.inv.location,
       row.inv.supplier,
