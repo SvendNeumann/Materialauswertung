@@ -1491,7 +1491,7 @@ function pricesView() {
     ],
     tableTitle: "Artikelpreisvergleich",
     tableTools: filters(),
-    table: priceTable(rows),
+    table: `<div class="bounded-table">${priceTable(rows)}</div>`,
   });
 }
 
