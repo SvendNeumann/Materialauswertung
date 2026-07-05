@@ -862,10 +862,10 @@ function tabShell({ metrics, charts, tableTitle, table, tableTools = "", analysi
     <div class="grid cols-2 tab-section">
       ${charts.join("")}
     </div>
-    <section class="panel tab-section">
+    ${table ? `<section class="panel tab-section">
       <div class="toolbar"><h2>${tableTitle}</h2>${tableTools}</div>
       ${table}
-    </section>
+    </section>` : ""}
   `;
 }
 
@@ -950,8 +950,6 @@ function dashboard() {
       panel("Importvolumen je Standort", barChart(locationImportStats(), "name", "gross", 1)),
       panel("Importvolumen je Lieferant", barChart(supplierImportStats(), "name", "gross", 1)),
     ],
-    tableTitle: "Management-Analyse",
-    table: sampleImportTable(state.sampleImports),
   });
 }
 
