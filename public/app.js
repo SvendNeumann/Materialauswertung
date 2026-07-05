@@ -867,6 +867,18 @@ function bestInternalRow(productId) {
     .sort((a, b) => a.comparisonPrice - b.comparisonPrice)[0] || null;
 }
 
+function internalComparisonInfo(productId) {
+  const rows = comparableItems().filter(row => row.productId === productId);
+  const locationsSet = new Set(rows.map(row => row.inv.location));
+  const suppliersSet = new Set(rows.map(row => row.inv.supplier));
+  return {
+    rows,
+    locationCount: locationsSet.size,
+    supplierCount: suppliersSet.size,
+    priceCount: rows.length,
+  };
+}
+
 function groupAverage(productId) {
   return productPriceStats()[productId]?.average || 0;
 }
@@ -1665,7 +1677,7 @@ function pricesView() {
     ],
     tableTitle: "Artikelpreisvergleich",
     tableTools: filters(),
-    table: `<div class="bounded-table">${priceTable(rows)}</div>`,
+    table: `<div class="bounded-table" id="priceTableContainer">${priceTable(rows)}</div>`,
   });
 }
 
@@ -2071,7 +2083,7 @@ function mobileView() {
 const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, priceTrend: priceTrendView, yearly: yearlyView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
 
 function filters() {
-  return `<div class="filters"><input id="search" placeholder="Suchen" value="${state.query}"><select id="locationFilter"><option>Alle</option>${locations.map(l => `<option ${state.locationFilter === l.name ? "selected" : ""}>${l.name}</option>`)}</select><select id="supplierFilter"><option>Alle</option>${suppliers.map(s => `<option ${state.supplierFilter === s.name ? "selected" : ""}>${s.name}</option>`)}</select></div>`;
+  return `<div class="filters"><input id="search" placeholder="Suchen" value="${escapeHtml(state.query)}" autocomplete="off"><select id="locationFilter"><option>Alle</option>${locations.map(l => `<option ${state.locationFilter === l.name ? "selected" : ""}>${l.name}</option>`)}</select><select id="supplierFilter"><option>Alle</option>${suppliers.map(s => `<option ${state.supplierFilter === s.name ? "selected" : ""}>${s.name}</option>`)}</select></div>`;
 }
 
 function locationOnlyFilter() {
@@ -2086,6 +2098,13 @@ function filtered(rows) {
     const supplier = row.inv?.supplier || row.supplier;
     return (!query || text.includes(query)) && locationMatches(location, state.locationFilter) && (state.supplierFilter === "Alle" || supplier === state.supplierFilter);
   });
+}
+
+function rerenderPriceTableOnly() {
+  const container = document.getElementById("priceTableContainer");
+  if (!container || state.view !== "prices") return false;
+  container.innerHTML = priceTable(locationScopeRows(comparableItems()));
+  return true;
 }
 
 function invoiceTable(rows) {
@@ -2184,8 +2203,10 @@ function productTable(rows) {
 
 function priceTable(rows, applyFilters = true) {
   const visibleRows = applyFilters ? filtered(rows) : rows;
-  return table(["Artikel", "Standort", "Interner Beststandort", "Aktueller Preis", "Interner Bestpreis", "Differenz", "Ø Gruppe", "Abweichung"], visibleRows.map(r => {
+  return table(["Artikel", "Standort", "Interne Vergleiche", "Interner Beststandort", "Aktueller Preis", "Interner Bestpreis", "Differenz", "Ø Gruppe", "Abweichung"], visibleRows.map(r => {
     const best = bestInternalRow(r.productId);
+    const info = internalComparisonInfo(r.productId);
+    const hasOtherLocation = info.rows.some(row => !locationMatches(row.inv.location, r.inv.location));
     const bestLabel = best ? `${best.inv.location} · ${best.inv.supplier}` : "offen";
     const bestValue = best?.comparisonPrice || 0;
     const diff = bestValue ? r.comparisonPrice - bestValue : 0;
@@ -2193,6 +2214,7 @@ function priceTable(rows, applyFilters = true) {
     return [
       r.product.name,
       `${r.inv.location}<br><span class="muted">${escapeHtml(r.inv.supplier)}</span>`,
+      hasOtherLocation ? `${info.locationCount} Standorte<br><span class="muted">${info.priceCount} Preise</span>` : `nur ${r.inv.location}<br><span class="muted">${info.priceCount} Preis${info.priceCount === 1 ? "" : "e"}</span>`,
       bestLabel,
       `${eur.format(r.comparisonPrice)} / ${r.product.unit}`,
       bestValue ? `${eur.format(bestValue)} / ${r.product.unit}` : "offen",
@@ -2669,6 +2691,7 @@ function bindViewEvents() {
   document.querySelectorAll("#search, #locationFilter, #supplierFilter").forEach(el => {
     const handleFilterChange = event => {
       state[event.target.id] = event.target.value;
+      if (event.target.id === "search" && rerenderPriceTableOnly()) return;
       window.clearTimeout(filterRenderTimer);
       filterRenderTimer = window.setTimeout(render, event.target.id === "search" ? 120 : 0);
     };
