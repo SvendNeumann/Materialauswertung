@@ -191,6 +191,8 @@ p { line-height: 1.5; }
   background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; box-shadow: var(--shadow);
 }
 .panel.tight { padding: 12px; }
+.tab-section { margin-top: 16px; }
+.panel-sub { margin-top: -6px; margin-bottom: 14px; }
 .metric {
   min-height: 118px; display: grid; align-content: space-between;
   border-left: 4px solid var(--blue);

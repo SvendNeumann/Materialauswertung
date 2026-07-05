@@ -600,25 +600,113 @@ function metricIcon(label) {
   return "✓";
 }
 
+function metricGrid(items) {
+  const cols = Math.min(4, Math.max(3, items.length));
+  return `<div class="grid cols-${cols}">${items.map(item => metric(item.label, item.value, item.sub)).join("")}</div>`;
+}
+
+function panel(title, body, sub = "") {
+  return `<section class="panel"><h2>${title}</h2>${sub ? `<p class="muted panel-sub">${sub}</p>` : ""}${body}</section>`;
+}
+
+function tabShell({ metrics, charts, tableTitle, table, tableTools = "", analysis = "" }) {
+  return `
+    ${metricGrid(metrics)}
+    ${analysis ? `<div class="tab-section">${analysis}</div>` : ""}
+    <div class="grid cols-2 tab-section">
+      ${charts.join("")}
+    </div>
+    <section class="panel tab-section">
+      <div class="toolbar"><h2>${tableTitle}</h2>${tableTools}</div>
+      ${table}
+    </section>
+  `;
+}
+
+function normalizedLocationName(name) {
+  return name === "Huettenberg" ? "Hüttenberg" : name || "offen";
+}
+
+function sumImportGross(rows = state.sampleImports) {
+  return rows.reduce((sum, row) => sum + Number(row.gross_total || 0), 0);
+}
+
+function sumImportItems(rows = state.sampleImports) {
+  return rows.reduce((sum, row) => sum + Number(row.extracted_items || 0), 0);
+}
+
+function importYear(row) {
+  return row.invoice_date ? row.invoice_date.slice(-4) : "offen";
+}
+
+function importGroups(rows, labelFn) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const name = labelFn(row) || "offen";
+    const current = groups.get(name) || { name, count: 0, gross: 0, items: 0 };
+    current.count += 1;
+    current.gross += Number(row.gross_total || 0);
+    current.items += Number(row.extracted_items || 0);
+    groups.set(name, current);
+  });
+  return Array.from(groups.values()).sort((a, b) => b.gross - a.gross || b.count - a.count);
+}
+
+function supplierImportStats() {
+  return importGroups(state.sampleImports, row => row.supplier);
+}
+
+function locationImportStats() {
+  return importGroups(state.sampleImports, row => normalizedLocationName(row.location_name));
+}
+
+function yearImportStats() {
+  return importGroups(state.sampleImports, importYear).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+}
+
+function importStatusStats() {
+  return importGroups(state.sampleImports, row => row.warnings?.length ? "Mit Hinweis" : "Ausgelesen");
+}
+
+function barChartCount(rows, labelKey, valueKey, fallbackMax = 1) {
+  if (!rows.length) return `<p class="muted">Noch keine Daten vorhanden.</p>`;
+  const max = Math.max(fallbackMax, ...rows.map(r => Number(r[valueKey] || 0)));
+  return `<div class="chart-bars">${rows.map(r => `<div class="bar-row"><strong>${r[labelKey]}</strong><div class="bar-track"><div class="bar-fill" style="width:${Math.max(4, Number(r[valueKey] || 0) / max * 100)}%"></div></div><span class="num">${Number(r[valueKey] || 0).toLocaleString("de-DE")}</span></div>`).join("")}</div>`;
+}
+
+function importAnalysisSummary() {
+  const imports = state.sampleImports.length;
+  const items = sumImportItems();
+  const gross = sumImportGross();
+  return panel("Auswertung", `
+    <div class="calc-box">
+      <div class="calc-row total"><span>Aktueller Datenstand</span><strong>${imports} PDFs</strong></div>
+      <div class="calc-row"><span>Erkannte Positionen</span><strong>${items.toLocaleString("de-DE")}</strong></div>
+      <div class="calc-row"><span>Bruttovolumen der Importliste</span><strong>${eur.format(gross)}</strong></div>
+      <div class="calc-row"><span>Nächster Verarbeitungsschritt</span><strong>Positionsfreigabe</strong></div>
+    </div>
+  `);
+}
+
 function dashboard() {
   const data = kpis();
-  return `
-    <div class="grid cols-4">
-      ${metric("Analysierte Rechnungen", data.invoices, "inkl. Statusworkflow")}
-      ${metric("Gesamtvolumen", eur.format(data.volume), "effektiv netto im Zeitraum")}
-      ${metric("Potenzial / Monat", eur.format(data.monthly), `${eur.format(data.yearly)} pro Jahr`)}
-      ${metric("A-Fälle", data.aCases, "sofort priorisieren")}
-      ${metric("Aktive Artikel", data.products, "Gruppenartikel")}
-      ${metric("Aktive Lieferanten", data.suppliers, "mit Konditionen")}
-      ${metric("Ø Abweichung", pct.format(data.deviation), "vs. Gruppendurchschnitt")}
-      ${metric("Skontonutzung", pct.format(data.skonto), `Versandquote ${pct.format(data.freight)}`)}
-    </div>
-    <div class="grid cols-2" style="margin-top:16px">
-      <section class="panel"><h2>Einsparpotenzial je Standort</h2>${barChart(locationStats(), "name", "potential", 150)}</section>
-      <section class="panel"><h2>Einkaufsvolumen je Lieferant</h2>${barChart(supplierStats(), "name", "volume", 1300)}</section>
-      <section class="panel"><h2>Top-Artikel mit Potenzial</h2>${recommendationTable(recommendations().slice(0, 5))}</section>
-      <section class="panel"><h2>Warnungen</h2>${warnings()}</section>
-    </div>`;
+  return tabShell({
+    metrics: [
+      { label: "Analysierte Rechnungen", value: data.invoices, sub: "aus Supabase-Import" },
+      { label: "Gesamtvolumen", value: eur.format(data.volume), sub: "Brutto/Netto je Datenstand" },
+      { label: "Erkannte Positionen", value: sumImportItems().toLocaleString("de-DE"), sub: "aus PDF-Auslesung" },
+      { label: "Aktive Lieferanten", value: data.suppliers, sub: "mit echten Importen" },
+      { label: "Aktive Standorte", value: locations.length, sub: "aus Rechnungsanschriften" },
+      { label: "A-Fälle", value: data.aCases, sub: "nach Positionsfreigabe" },
+    ],
+    analysis: importAnalysisSummary(),
+    charts: [
+      panel("Importvolumen je Standort", barChart(locationImportStats(), "name", "gross", 1)),
+      panel("Importvolumen je Lieferant", barChart(supplierImportStats(), "name", "gross", 1)),
+    ],
+    tableTitle: "Management-Analyse",
+    table: sampleImportTable(state.sampleImports),
+  });
 }
 
 function invoicesView() {
@@ -642,20 +730,20 @@ function invoicesView() {
       </section>
       <section class="panel"><h2>Statusworkflow</h2><div class="workflow">${["Neu", "Ausgelesen", "In Prüfung", "Freigegeben", "Fehlerhaft", "Dublette"].map((s, i) => `<span class="${i < 4 ? "active" : ""}">${s}</span>`).join("")}</div></section>
     </div>
-    <section class="panel" style="margin-top:16px">
+    <section class="panel tab-section">
       <div class="toolbar">
         <h2>Importierte PDFs</h2>
         <span class="tag blue">${state.sampleImports.length || 0} PDFs im Import</span>
       </div>
       ${sampleImportTable(state.sampleImports)}
-    </section>
-    <section class="panel" style="margin-top:16px"><div class="toolbar"><h2>Rechnungsliste</h2>${filters()}</div>${invoiceTable(invoices)}</section>`;
+    </section>`;
 }
 
 function reviewView() {
   const inv = invoices[2];
   if (!inv) {
-    return `<section class="panel"><h2>Prüfcenter</h2><p class="muted">Noch keine vollständig ausgelesene Rechnung mit Positionsdaten vorhanden. Die importierten PDFs liegen im Rechnungsupload bereit.</p></section>`;
+    return `<section class="panel"><h2>Prüfcenter</h2><p class="muted">Noch keine vollständig ausgelesene Rechnung mit Positionsdaten vorhanden. Die importierten PDFs liegen im Rechnungsupload bereit.</p></section>
+    <section class="panel tab-section"><div class="toolbar"><h2>Prüfliste</h2><span class="tag blue">${state.sampleImports.length || 0} PDFs</span></div>${sampleImportTable(state.sampleImports)}</section>`;
   }
   const rows = calculatedItems().filter(i => i.invoiceId === inv.id);
   return `
@@ -682,63 +770,150 @@ function reviewView() {
 }
 
 function productsView() {
-  return `<section class="panel"><div class="toolbar"><h2>Artikel-Matching</h2>${filters()}</div>${productTable(products)}</section>`;
+  const categories = new Set(products.map(product => product.category).filter(Boolean)).size;
+  const approved = products.filter(product => product.approved).length;
+  const critical = products.filter(product => product.critical).length;
+  const avgMatch = invoiceItems.length ? invoiceItems.reduce((sum, item) => sum + item.match, 0) / invoiceItems.length : 0;
+  return tabShell({
+    metrics: [
+      { label: "Aktive Artikel", value: products.length, sub: "freigegebene Gruppenartikel" },
+      { label: "Kategorien", value: categories, sub: "Materialgruppen" },
+      { label: "Freigegeben", value: approved, sub: "im Artikelstamm" },
+      { label: "Kritische Artikel", value: critical, sub: "prüfpflichtig" },
+      { label: "Ø Matching", value: pct.format(avgMatch), sub: "Positionssicherheit" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Artikel werden erst nach vollständiger Positionsfreigabe in den Gruppenartikelstamm übernommen. Dadurch bleiben Preisvergleiche sauber und nachvollziehbar.</p>`),
+    charts: [
+      panel("Artikel nach Kategorie", barChartCount(importGroups(products, row => row.category), "name", "count")),
+      panel("Matching-Status", barChartCount(importGroups(products, row => row.approved ? "Freigegeben" : "In Prüfung"), "name", "count")),
+    ],
+    tableTitle: "Artikel-Matching",
+    tableTools: filters(),
+    table: productTable(products),
+  });
 }
 
 function suppliersView() {
-  return `<section class="panel"><h2>Lieferantenvergleich</h2>${supplierTable(supplierStats())}</section>`;
+  const stats = supplierStats();
+  const importStats = supplierImportStats();
+  return tabShell({
+    metrics: [
+      { label: "Aktive Lieferanten", value: suppliers.length, sub: "mit echten Importen" },
+      { label: "Importvolumen", value: eur.format(sumImportGross()), sub: "über alle Lieferanten" },
+      { label: "Positionen", value: sumImportItems().toLocaleString("de-DE"), sub: "aus PDF-Auslesung" },
+      { label: "Ø Rechnung", value: eur.format(state.sampleImports.length ? sumImportGross() / state.sampleImports.length : 0), sub: "brutto je PDF" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Die Lieferantenbewertung startet mit echten Importvolumen. Konditionen, Preisabweichungen und Rahmenpreis-Potenziale werden sichtbar, sobald die Rechnungspositionen freigegeben sind.</p>`),
+    charts: [
+      panel("Volumen je Lieferant", barChart(importStats, "name", "gross", 1)),
+      panel("Positionen je Lieferant", barChartCount(importStats, "name", "items")),
+    ],
+    tableTitle: "Lieferantenanalyse",
+    table: supplierTable(stats),
+  });
 }
 
 function pricesView() {
-  return `<section class="panel"><div class="toolbar"><h2>Artikelpreisvergleich</h2>${filters()}</div>${priceTable(locationScopeRows(calculatedItems()))}</section>`;
+  const rows = locationScopeRows(calculatedItems());
+  const recs = locationScopeRows(recommendations());
+  return tabShell({
+    metrics: [
+      { label: "Preispositionen", value: rows.length, sub: "freigegeben analysierbar" },
+      { label: "A-Fälle", value: recs.filter(row => row.className === "A-Fall").length, sub: "sofort verhandeln" },
+      { label: "Potenzial / Monat", value: eur.format(recs.reduce((sum, row) => sum + row.saving, 0)), sub: "aus Positionen" },
+      { label: "Ø Abweichung", value: pct.format(kpis().deviation), sub: "vs. Gruppe" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Der Preisvergleich arbeitet nur mit freigegebenen Positionsdaten. Damit erscheinen hier keine Schätzwerte, sondern nur belastbare Artikelpreise.</p>`),
+    charts: [
+      panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
+      panel("Volumen nach Lieferant", barChart(supplierStats(), "name", "volume", 1)),
+    ],
+    tableTitle: "Artikelpreisvergleich",
+    tableTools: filters(),
+    table: priceTable(rows),
+  });
 }
 
 function yearlyView() {
   const rows = yearlyPriceRows();
   const summary = yearlySummary();
   const years = invoiceYears();
-  return `
-    <div class="grid cols-4">
-      ${metric("Ø Preissteigerung", pct.format(summary.avgIncrease), "gewichtet mit 2026-Mengen")}
-      ${metric("Jahreseffekt", eur.format(summary.annualImpact), "Mehrkosten vs. Vorjahr")}
-      ${metric("A-Fälle Preis", summary.aCases, "sofort verhandeln")}
-      ${metric("Importjahre", years.join(", "), "aus Rechnungsdaten erkannt")}
-    </div>
-    <div class="grid cols-2" style="margin-top:16px">
-      <section class="panel">
-        <h2>Preissteigerung nach Artikel</h2>
-        ${barChart(rows.slice(0, 6).map(row => ({ name: row.product.name, potential: row.annualImpact })), "name", "potential", 1200)}
-      </section>
-      <section class="panel">
-        <h2>Jahresentwicklung Top-Artikel</h2>
-        ${yearTrendBox(summary.strongest)}
-      </section>
-    </div>
-    <section class="panel" style="margin-top:16px">
-      <div class="toolbar">
-        <h2>Mehrjahresvergleich je Gruppenartikel</h2>
-        <span class="tag blue">aus Rechnungs- und Preisverlauf</span>
-      </div>
-      ${yearlyTable(rows)}
-    </section>
-  `;
+  return tabShell({
+    metrics: [
+      { label: "Importjahre", value: years.join(", ") || "offen", sub: "aus Rechnungsdaten" },
+      { label: "Ø Preissteigerung", value: pct.format(summary.avgIncrease), sub: "nach Positionsfreigabe" },
+      { label: "Jahreseffekt", value: eur.format(summary.annualImpact), sub: "Mehrkosten vs. Vorjahr" },
+      { label: "A-Fälle Preis", value: summary.aCases, sub: "sofort verhandeln" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Der Jahresvergleich nutzt echte Rechnungsjahre sofort und ergänzt Preissteigerungen, sobald die Artikelpositionen historisch vergleichbar freigegeben sind.</p>`),
+    charts: [
+      panel("Importvolumen nach Jahr", barChart(yearImportStats(), "name", "gross", 1)),
+      panel("Preissteigerung nach Artikel", barChart(rows.slice(0, 6).map(row => ({ name: row.product.name, potential: row.annualImpact })), "name", "potential", 1)),
+    ],
+    tableTitle: "Mehrjahresvergleich je Gruppenartikel",
+    tableTools: `<span class="tag blue">aus Rechnungs- und Preisverlauf</span>`,
+    table: yearlyTable(rows),
+  });
 }
 
 function locationsView() {
-  return `<div class="grid cols-2"><section class="panel"><h2>Standort-Benchmark</h2>${locationTable(locationStats())}</section><section class="panel"><h2>Preisabweichung je Standort</h2>${barChart(locationStats(), "name", "potential", 160)}</section></div>`;
+  const stats = locationStats();
+  const imports = locationImportStats();
+  return tabShell({
+    metrics: [
+      { label: "Aktive Standorte", value: locations.length, sub: "aus Rechnungsdaten" },
+      { label: "Importvolumen", value: eur.format(sumImportGross()), sub: "über alle Standorte" },
+      { label: "Positionen", value: sumImportItems().toLocaleString("de-DE"), sub: "aus PDF-Auslesung" },
+      { label: "Ø Rechnung", value: eur.format(state.sampleImports.length ? sumImportGross() / state.sampleImports.length : 0), sub: "brutto je PDF" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Die Standortanalyse nutzt die aus den Rechnungsanschriften erkannten Standorte. Als Admin bleibt die Sicht über alle Standorte konsolidiert.</p>`),
+    charts: [
+      panel("Importvolumen je Standort", barChart(imports, "name", "gross", 1)),
+      panel("Positionen je Standort", barChartCount(imports, "name", "items")),
+    ],
+    tableTitle: "Standort-Benchmark",
+    table: locationTable(stats),
+  });
 }
 
 function basketView() {
   const locationName = state.role === "location" ? activeLocationName() : null;
   const sim = basketComparison(locationName);
-  if (!sim.length) {
-    return `<section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Noch keine freigegebenen Artikelpositionen vorhanden. Sobald Rechnungen vollständig ausgelesen sind, erscheint hier der Lieferantenvergleich.</p></section>`;
-  }
-  return `<div class="grid cols-2"><section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Vergleich des aktuellen Artikelkorbs über die verfügbaren Lieferanten.</p>${basketTable(sim)}</section><section class="panel"><h2>Realistische Empfehlung</h2><div class="calc-box">${sim.map((s, i) => `<div class="calc-row ${i === 0 ? "total" : ""}"><span>${s.supplier}${i === 0 ? " · bevorzugt" : ""}</span><strong>${eur.format(s.total)}</strong></div>`).join("")}</div><p class="muted">Fehlende Artikel, Mindestbestellwerte, Skonto und Versandkosten werden im Vergleich berücksichtigt.</p></section></div>`;
+  return tabShell({
+    metrics: [
+      { label: "Warenkorb-Positionen", value: calculatedItems().length, sub: scopeLabel() },
+      { label: "Vergleichslieferanten", value: suppliers.length, sub: "für Korbvergleich" },
+      { label: "Bester Korb", value: sim[0] ? eur.format(sim[0].total) : eur.format(0), sub: sim[0]?.supplier || "nach Freigabe" },
+      { label: "Fehlende Artikel", value: sim.reduce((sum, row) => sum + row.missing, 0), sub: "im Lieferantenvergleich" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Noch keine freigegebenen Artikelpositionen vorhanden. Sobald Rechnungen vollständig ausgelesen sind, erscheint hier der Lieferantenvergleich.</p>`),
+    charts: [
+      panel("Warenkorb je Lieferant", barChart(sim, "supplier", "total", 1)),
+      panel("Fehlende Artikel", barChartCount(sim, "supplier", "missing")),
+    ],
+    tableTitle: `Warenkorb ${scopeLabel()}`,
+    table: basketTable(sim),
+  });
 }
 
 function recommendationsView() {
-  return `<section class="panel"><div class="toolbar"><h2>Priorisierte Empfehlungen</h2>${filters()}</div>${recommendationTable(locationScopeRows(recommendations()))}</section>`;
+  const rows = locationScopeRows(recommendations());
+  return tabShell({
+    metrics: [
+      { label: "Empfehlungen", value: rows.length, sub: "aus Preislogik" },
+      { label: "A-Fälle", value: rows.filter(row => row.className === "A-Fall").length, sub: "Priorität hoch" },
+      { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "hochgerechnet" },
+      { label: "Betroffene Artikel", value: new Set(rows.map(row => row.productId)).size, sub: "Gruppenartikel" },
+    ],
+    analysis: panel("Auswertung", `<p class="muted">Empfehlungen entstehen erst aus freigegebenen Artikelpositionen. Die Reihenfolge folgt Potenzial, Abweichung und Priorität.</p>`),
+    charts: [
+      panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
+      panel("Priorität nach Klasse", barChartCount(importGroups(rows, row => row.className), "name", "count")),
+    ],
+    tableTitle: "Priorisierte Empfehlungen",
+    tableTools: filters(),
+    table: recommendationTable(rows),
+  });
 }
 
 function reportsView() {
@@ -758,7 +933,21 @@ function settingsView() {
 
 function mobileView() {
   const rows = locationScopeRows(recommendations()).slice(0, 6);
-  return `<div class="grid"><section class="panel"><h2>${scopeLabel()}: Maßnahmen</h2><p class="muted">Mobile, reduzierte Standortleiter-Sicht ohne fremde Rechnungsdetails.</p></section>${rows.map(r => `<article class="mobile-card"><strong>${r.product.name}</strong><div class="price-row"><span>Standort: ${r.inv.location}</span><strong>${r.inv.supplier}</strong></div><div class="price-row"><span>Aktuell</span><strong>${eur.format(r.comparisonPrice)} / ${r.product.unit}</strong></div><div class="price-row"><span>Empfohlen: ${r.recommendedLabel}</span><strong>${eur.format(r.best)} / ${r.product.unit}</strong></div><span class="tag ${r.className === "A-Fall" ? "red" : "amber"}">${r.className} · ${eur.format(r.saving * 12)} jährlich</span><div><button class="btn primary small">Übernehmen</button> <button class="btn small">Ignorieren</button> <button class="btn small">Begründen</button></div></article>`).join("")}</div>`;
+  const cards = rows.length ? rows.map(r => `<article class="mobile-card"><strong>${r.product.name}</strong><div class="price-row"><span>Standort: ${r.inv.location}</span><strong>${r.inv.supplier}</strong></div><div class="price-row"><span>Aktuell</span><strong>${eur.format(r.comparisonPrice)} / ${r.product.unit}</strong></div><div class="price-row"><span>Empfohlen: ${r.recommendedLabel}</span><strong>${eur.format(r.best)} / ${r.product.unit}</strong></div><span class="tag ${r.className === "A-Fall" ? "red" : "amber"}">${r.className} · ${eur.format(r.saving * 12)} jährlich</span><div><button class="btn primary small">Übernehmen</button> <button class="btn small">Ignorieren</button> <button class="btn small">Begründen</button></div></article>`).join("") : `<p class="muted">Noch keine Standortleiter-Maßnahmen vorhanden.</p>`;
+  return tabShell({
+    metrics: [
+      { label: "Maßnahmen", value: rows.length, sub: scopeLabel() },
+      { label: "A-Fälle", value: rows.filter(row => row.className === "A-Fall").length, sub: "mobil priorisiert" },
+      { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "für Standortleiter" },
+    ],
+    analysis: panel(`${scopeLabel()}: Maßnahmen`, `<p class="muted">Mobile, reduzierte Standortleiter-Sicht ohne fremde Rechnungsdetails.</p><div class="grid">${cards}</div>`),
+    charts: [
+      panel("Maßnahmen nach Priorität", barChartCount(importGroups(rows, row => row.className), "name", "count")),
+      panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
+    ],
+    tableTitle: "Mobile Maßnahmenliste",
+    table: recommendationTable(rows),
+  });
 }
 
 const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, yearly: yearlyView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
