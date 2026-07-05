@@ -85,7 +85,6 @@ let products = [];
 let supplierPriceIndex = {};
 let invoices = [];
 let invoiceItems = [];
-let lastNavPointerActivation = 0;
 let suppressHashNavigation = false;
 const historicalPriceFactors = {};
 const historicalVolumes = {};
@@ -487,7 +486,7 @@ function renderNav() {
           <span class="nav-chevron">⌄</span>
         </button>
         <div class="nav-subitems">
-          ${section.items.map(([id, label]) => `<a class="nav-subitem ${state.view === id ? "active" : ""}" href="#${id}" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></a>`).join("")}
+          ${section.items.map(([id, label]) => `<button type="button" class="nav-subitem ${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></button>`).join("")}
         </div>
       </section>
     `;
@@ -538,27 +537,13 @@ function activateNavTarget(target) {
 }
 
 function bindNavActivation(nav) {
-  nav.addEventListener("touchstart", event => {
-    if (activateNavTarget(event.target)) {
-      lastNavPointerActivation = Date.now();
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }, { passive: false });
-  nav.addEventListener("pointerdown", event => {
-    if (activateNavTarget(event.target)) {
-      lastNavPointerActivation = Date.now();
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  });
+  if (nav.dataset.bound === "true") return;
+  nav.dataset.bound = "true";
   nav.addEventListener("click", event => {
-    if (Date.now() - lastNavPointerActivation < 700) {
+    if (activateNavTarget(event.target)) {
       event.preventDefault();
       event.stopPropagation();
-      return;
     }
-    activateNavTarget(event.target);
   });
 }
 
