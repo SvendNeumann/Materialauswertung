@@ -737,8 +737,8 @@ function pageIntro(id) {
       "Dieser Bereich zeigt Rollen, Rechte und Zugänge für die Materialauswertung.",
     ],
     mobile: [
-      "Standortleiter",
-      "Reduzierte mobile Ansicht für standortbezogene Maßnahmen ohne unnötige Detailtiefe aus der Gesamtadministration.",
+      "Standortvergleich",
+      "Mobile Vergleichsansicht: Standortpreis je Artikel, Gruppenschnitt, günstigster Lieferant und rechnerische Abweichung.",
     ],
   };
   const [title, description] = copy[id] || [titleFor(id) || "Auswertung", "Dieser Bereich zeigt die relevante Auswertung für den gewählten Arbeitsbereich."];
@@ -1192,22 +1192,47 @@ function settingsView() {
   return `<section class="panel"><h2>Zugänge & Rechte</h2>${roleTable()}</section>`;
 }
 
+function mobileComparisonCards(rows) {
+  if (!rows.length) {
+    return `<p class="muted">Noch keine belastbaren Standortvergleiche vorhanden.</p>`;
+  }
+  return rows.map(row => {
+    const groupPrice = groupAverage(row.productId);
+    const bestSupplier = cheapestSupplier(row.productId);
+    const best = bestPrice(row.productId);
+    const deviation = groupPrice ? row.comparisonPrice / groupPrice - 1 : 0;
+    return `
+      <article class="mobile-card comparison-card">
+        <strong>${row.product.name}</strong>
+        <div class="price-row"><span>Standort</span><strong>${row.inv.location}</strong></div>
+        <div class="price-row"><span>Lieferant Standort</span><strong>${row.inv.supplier}</strong></div>
+        <div class="price-row highlight"><span>Standortpreis</span><strong>${eur.format(row.comparisonPrice)} / ${row.product.unit}</strong></div>
+        <div class="price-row"><span>Gruppenschnitt</span><strong>${eur.format(groupPrice)} / ${row.product.unit}</strong></div>
+        <div class="price-row"><span>Günstigster Lieferant</span><strong>${bestSupplier}</strong></div>
+        <div class="price-row"><span>Bestpreis</span><strong>${eur.format(best)} / ${row.product.unit}</strong></div>
+        <div class="price-row"><span>Abweichung zur Gruppe</span><strong>${pct.format(deviation)}</strong></div>
+        <span class="tag ${row.className === "A-Fall" ? "red" : row.className === "B-Fall" ? "amber" : "blue"}">Potenzial ${eur.format(row.saving * 12)} pro Jahr</span>
+      </article>
+    `;
+  }).join("");
+}
+
 function mobileView() {
   const rows = locationScopeRows(recommendations()).slice(0, 6);
-  const cards = rows.length ? rows.map(r => `<article class="mobile-card"><strong>${r.product.name}</strong><div class="price-row"><span>Standort: ${r.inv.location}</span><strong>${r.inv.supplier}</strong></div><div class="price-row"><span>Aktuell</span><strong>${eur.format(r.comparisonPrice)} / ${r.product.unit}</strong></div><div class="price-row"><span>Empfohlen: ${r.recommendedLabel}</span><strong>${eur.format(r.best)} / ${r.product.unit}</strong></div><span class="tag ${r.className === "A-Fall" ? "red" : "amber"}">${r.className} · ${eur.format(r.saving * 12)} jährlich</span><div><button class="btn primary small">Übernehmen</button> <button class="btn small">Ignorieren</button> <button class="btn small">Begründen</button></div></article>`).join("") : `<p class="muted">Noch keine Standortleiter-Maßnahmen vorhanden.</p>`;
+  const cards = mobileComparisonCards(rows);
   return tabShell({
     metrics: [
-      { label: "Maßnahmen", value: rows.length, sub: scopeLabel() },
-      { label: "A-Fälle", value: rows.filter(row => row.className === "A-Fall").length, sub: "mobil priorisiert" },
-      { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "für Standortleiter" },
+      { label: "Vergleiche", value: rows.length, sub: scopeLabel() },
+      { label: "Auffällig", value: rows.filter(row => row.className === "A-Fall").length, sub: "über Gruppenniveau" },
+      { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "Standort vs. Bestpreis" },
     ],
-    analysis: panel(`${scopeLabel()}: Maßnahmen`, `<p class="muted">Mobile, reduzierte Standortleiter-Sicht ohne fremde Rechnungsdetails.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${scopeLabel()}: Standortvergleich`, `<p class="muted">Reiner Vergleich: Was zahlt der Standort je Artikel, wie liegt er zum Gruppenschnitt, und bei welchem Lieferant ist derselbe Artikel aktuell am günstigsten.</p><div class="grid">${cards}</div>`),
     charts: [
-      panel("Maßnahmen nach Priorität", barChartCount(importGroups(rows, row => row.className), "name", "count")),
+      panel("Abweichungen nach Klasse", barChartCount(importGroups(rows, row => row.className), "name", "count")),
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
     ],
-    tableTitle: "Mobile Maßnahmenliste",
-    table: recommendationTable(rows),
+    tableTitle: "Standortvergleich je Artikel",
+    table: priceTable(rows),
   });
 }
 
