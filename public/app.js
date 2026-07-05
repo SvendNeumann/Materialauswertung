@@ -299,8 +299,6 @@ async function uploadInvoiceFiles(fileList) {
     render();
     return;
   }
-  const locationName = normalizedLocationName(document.getElementById("uploadLocation")?.value || locations[0]?.name || "");
-  const supplierName = document.getElementById("uploadSupplier")?.value || suppliers[0]?.name || "";
   state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} werden hochgeladen und analysiert...`;
   render();
 
@@ -326,8 +324,8 @@ async function uploadInvoiceFiles(fileList) {
       const [created] = await supabaseInsert("sample_imports", {
         file: importFileKey,
         document_type: "PDF",
-        supplier: supplierName,
-        location_name: locationName,
+        supplier: "wird erkannt",
+        location_name: "wird erkannt",
         invoice_no: null,
         invoice_date: null,
         gross_total: null,
@@ -338,7 +336,7 @@ async function uploadInvoiceFiles(fileList) {
       state.sampleImports = [importRowFromDb(created), ...state.sampleImports.filter(row => row.file !== importFileKey)];
       state.uploadStatus = `${file.name}: PDF gespeichert, Auslesung läuft...`;
       render();
-      const payload = await buildLiveInvoicePayload(file, { supplierName, locationName });
+      const payload = await buildLiveInvoicePayload(file, { supplierName: "", locationName: "" });
       payload.file = importFileKey;
       payload.invoice.source_file = importFileKey;
       await supabaseRpc("ingest_invoice_analysis", { p_payload: payload });
@@ -384,7 +382,7 @@ function supplierForText(text, fallback) {
   if (text.includes("Henry Schein Dental Deutschland")) return "Henry Schein";
   if (text.includes("Plandent GmbH")) return "Plandent";
   if (text.includes("Monatsrechnung Blatt") && text.includes("Kundennummer 312075")) return "GERL";
-  return fallback || "Henry Schein";
+  return fallback || "offen";
 }
 
 function locationForText(text, fallback) {
@@ -394,7 +392,7 @@ function locationForText(text, fallback) {
     ["Essen", [/45327\s+Essen/i, /Viktoriastra(?:ße|sse)\s+41a/i, /Zeche\s+Zollverein/i]],
     ["Hüttenberg", [/35625\s+H[üu]ttenberg/i, /Langg[öo]nser\s+Str\.\s*29/i]],
   ];
-  return rules.find(([, patterns]) => patterns.some(pattern => pattern.test(text)))?.[0] || fallback || locations[0]?.name || "";
+  return rules.find(([, patterns]) => patterns.some(pattern => pattern.test(text)))?.[0] || fallback || "offen";
 }
 
 function documentTypeForText(text, supplier) {
@@ -1566,16 +1564,13 @@ function invoicesView() {
           </div>
         </div>
         ${state.uploadStatus ? `<p class="upload-status">${state.uploadStatus}</p>` : ""}
-        <div class="form-grid" style="margin-top:14px">
-          <label>Standort<select id="uploadLocation">${locations.map(l => `<option>${l.name}</option>`)}</select></label>
-          <label>Lieferant<select id="uploadSupplier">${suppliers.map(s => `<option>${s.name}</option>`)}</select></label>
-        </div>
+        <p class="muted panel-sub">Standort und Lieferant werden je PDF automatisch aus Rechnungsanschrift und Rechnungslayout erkannt.</p>
       </section>
       <section class="panel"><h2>Analyseworkflow</h2><div class="workflow">${["Hochladen", "Auslesen", "Einheiten normalisieren", "Artikel matchen", "Potenzial berechnen", "Report"].map((s, i) => `<span class="${i < 5 ? "active" : ""}">${s}</span>`).join("")}</div></section>
     </div>
     <section class="panel tab-section">
       <h2>Was nach dem Upload passiert</h2>
-      <p class="muted">Der Upload legt die PDF in Supabase ab. Für die Potenzialanalyse werden daraus Rechnungsdaten, Positionen, Artikelnummern, Einheiten und Preise ausgelesen. Erst danach erscheinen die Positionen in Preisvergleich und Potenzialanalyse.</p>
+      <p class="muted">Der Upload legt jede PDF in Supabase ab. Pro Datei erkennt die App Lieferant, Standort, Rechnungsdaten, Positionen, Artikelnummern, Einheiten und Preise automatisch. Mehrere hochgeladene PDFs dürfen daher unterschiedliche Standorte und Lieferanten enthalten.</p>
     </section>
     <section class="panel tab-section">
       <div class="toolbar">
