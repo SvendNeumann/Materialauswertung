@@ -1233,6 +1233,10 @@ function metricInfo(label, value, sub = "") {
     meaning = "Zeigt die durchschnittliche Preisabweichung gegenüber dem Gruppenvergleich.";
     formula = "Durchschnitt der relativen Abweichung: effektiver Artikelpreis / Gruppendurchschnitt minus 1.";
     source = "Freigegebene Rechnungspositionen und Gruppendurchschnitt";
+  } else if (lower.includes("hochrechnung")) {
+    meaning = "Zeigt das rechnerische Jahrespotenzial, wenn die eingelesene Bestellbasis über ein Jahr vergleichbar wiederkehrt.";
+    formula = "Potenzial der eingelesenen Bestellmengen multipliziert mit 12. Das ist eine Hochrechnung, kein bereits realisierter Jahreswert.";
+    source = "Potenzialanalyse aus freigegebenen Rechnungspositionen";
   } else if (lower.includes("potenzial")) {
     meaning = "Zeigt rechnerisches Einspar- oder Verbesserungspotenzial.";
     formula = "Differenz aus aktuellem Preis und bestem Vergleichspreis multipliziert mit Menge und Packungslogik.";
@@ -1621,25 +1625,78 @@ function mobileComparisonCards(rows) {
   }).join("");
 }
 
+function potentialLocationRows(rows) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const name = row.inv.location || "offen";
+    const current = groups.get(name) || {
+      name,
+      monthly: 0,
+      potential: 0,
+      count: 0,
+      aCases: 0,
+      products: new Set(),
+      top: null,
+    };
+    current.monthly += row.saving;
+    current.potential += row.saving * 12;
+    current.count += 1;
+    current.aCases += row.className === "A-Fall" ? 1 : 0;
+    current.products.add(row.productId);
+    if (!current.top || row.saving > current.top.saving) current.top = row;
+    groups.set(name, current);
+  });
+
+  return Array.from(groups.values()).map(row => ({
+    ...row,
+    productCount: row.products.size,
+    topArticle: row.top?.product.name || "offen",
+    topSupplier: row.top?.recommendedLabel || "offen",
+  })).sort((a, b) => b.potential - a.potential || b.aCases - a.aCases);
+}
+
+function topPotentialArticleRows(rows) {
+  return rows.slice(0, 8).map(row => ({
+    name: `${row.inv.location}: ${row.product.name}`,
+    potential: row.saving,
+  }));
+}
+
 function mobileView() {
   const allRows = locationScopeRows(recommendations());
   const selectedRows = state.locationFilter === "Alle" ? allRows : allRows.filter(row => row.inv.location === state.locationFilter);
-  const cardRows = selectedRows.slice(0, 6);
-  const cards = mobileComparisonCards(cardRows);
   const activeScope = state.locationFilter === "Alle" ? scopeLabel() : state.locationFilter;
+  const locationRows = potentialLocationRows(selectedRows);
+  const totalMonth = selectedRows.reduce((sum, row) => sum + row.saving, 0);
+  const totalYear = totalMonth * 12;
+  const topLocation = locationRows[0];
+  const topArticle = selectedRows[0];
+  const affectedProducts = new Set(selectedRows.map(row => row.productId)).size;
+  const cards = mobileComparisonCards(selectedRows.slice(0, 3));
+
   return tabShell({
     metrics: [
-      { label: "Analysierte Artikel", value: selectedRows.length, sub: activeScope },
-      { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchstes Potenzial" },
-      { label: "Potenzial / Jahr", value: eur.format(selectedRows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "Standort vs. Bestpreis" },
+      { label: "Potenzial Bestellungen", value: eur.format(totalMonth), sub: "aus eingelesener Ware" },
+      { label: "Hochrechnung / Jahr", value: eur.format(totalYear), sub: "auf Basis der Bestellungen" },
+      { label: "Standorte mit Potenzial", value: locationRows.length, sub: "mit Abweichungen" },
+      { label: "Top-Standort", value: topLocation?.name || "offen", sub: topLocation ? eur.format(topLocation.monthly) : "kein Potenzial" },
+      { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchste Priorität" },
+      { label: "Betroffene Artikel", value: affectedProducts, sub: topArticle ? `Top: ${topArticle.product.name}` : "keine Potenziale" },
     ],
-    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}<p class="muted">Für jeden freigegebenen Artikel wird gezeigt: Was zahlt der Standort aktuell, wie liegt der gewichtete Gruppenschnitt, wo liegt der aktuelle Bestpreis und welches Jahrespotenzial entsteht daraus.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}<p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus.</p><div class="grid">${cards}</div>`),
     charts: [
-      panel("Abweichungen nach Klasse", barChartCount(importGroups(selectedRows, row => row.className), "name", "count")),
-      panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
+      panel("Potenzial je Standort", barChart(locationRows, "name", "monthly", 1)),
+      panel("A-Fälle je Standort", barChartCount(locationRows, "name", "aCases")),
+      panel("Top Artikelpotenziale", barChart(topPotentialArticleRows(selectedRows), "name", "potential", 1)),
     ],
-    tableTitle: "Potenzial je Standort und Artikel",
-    table: `<div class="bounded-table">${potentialAnalysisTable(selectedRows)}</div>`,
+    tableTitle: "Standort-Potenzialübersicht",
+    table: `
+      <div class="bounded-table">${potentialLocationTable(locationRows)}</div>
+      <div class="sub-table">
+        <h3>Artikelpotenziale</h3>
+        <div class="bounded-table">${potentialAnalysisTable(selectedRows)}</div>
+      </div>
+    `,
   });
 }
 
@@ -1753,17 +1810,34 @@ function priceTable(rows, applyFilters = true) {
   ]));
 }
 
-function potentialAnalysisTable(rows) {
-  return table(["Artikel", "Standort", "Aktueller Lieferant", "Standortpreis", "Gruppenschnitt", "Günstigste Quelle", "Bestpreis", "Potenzial/Jahr"], rows.map(r => [
-    r.product.name,
-    r.inv.location,
-    r.inv.supplier,
-    `${eur.format(r.comparisonPrice)} / ${r.product.unit}`,
-    `${eur.format(groupAverage(r.productId))} / ${r.product.unit}`,
-    r.recommendedLabel,
-    `${eur.format(bestPrice(r.productId))} / ${r.product.unit}`,
-    eur.format(r.saving * 12),
+function potentialLocationTable(rows) {
+  return table(["Standort", "Positionen", "Artikel", "A-Fälle", "Potenzial Bestellungen", "Hochrechnung/Jahr", "Größter Hebel", "Günstigste Quelle"], rows.map(r => [
+    r.name,
+    r.count,
+    r.productCount,
+    r.aCases,
+    eur.format(r.monthly),
+    eur.format(r.potential),
+    r.topArticle,
+    r.topSupplier,
   ]));
+}
+
+function potentialAnalysisTable(rows) {
+  return table(["Artikel", "Standort", "Aktueller Lieferant", "Bestellmenge", "Standortpreis", "Gruppenschnitt", "Günstigste Quelle", "Bestpreis", "Potenzial/Jahr"], rows.map(r => {
+    const baseQuantity = r.qty * r.product.pack;
+    return [
+      r.product.name,
+      r.inv.location,
+      r.inv.supplier,
+      `${baseQuantity.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${r.product.unit}`,
+      `${eur.format(r.comparisonPrice)} / ${r.product.unit}`,
+      `${eur.format(groupAverage(r.productId))} / ${r.product.unit}`,
+      r.recommendedLabel,
+      `${eur.format(bestPrice(r.productId))} / ${r.product.unit}`,
+      eur.format(r.saving * 12),
+    ];
+  }));
 }
 
 function yearlyTable(rows) {

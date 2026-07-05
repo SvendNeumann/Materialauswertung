@@ -200,6 +200,7 @@ p { line-height: 1.5; }
 }
 .panel.tight { padding: 12px; }
 .tab-section { margin-top: 16px; }
+.sub-table { margin-top: 18px; }
 .panel-sub { margin-top: -6px; margin-bottom: 14px; }
 .metric {
   min-height: 118px; display: grid; align-content: space-between;
