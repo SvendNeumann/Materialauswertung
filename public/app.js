@@ -2,6 +2,8 @@ const eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" 
 const pct = new Intl.NumberFormat("de-DE", { style: "percent", maximumFractionDigits: 1 });
 const sidebarStorageKey = "orisus-material-sidebar-collapsed";
 const reloadViewStorageKey = "orisus-material-reload-view";
+const supabaseUrl = "https://rxiboswudbunvjqgpnyc.supabase.co";
+const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
 
 const state = {
   view: "dashboard",
@@ -71,7 +73,7 @@ const navSections = [
 
 const navItems = navSections.flatMap(section => section.items);
 
-const locations = [
+let locations = [
   { id: "kehl", name: "Kehl", manager: "M. Schneider", invoices: 42, address: "Hauptstr. 18, Kehl" },
   { id: "essen-zollverein", name: "Essen Zollverein", manager: "T. Wagner", invoices: 31, address: "Viktoriastraße 41a, 45327 Essen" },
   { id: "huettenberg", name: "Hüttenberg", manager: "S. Hofmann", invoices: 18, address: "Langgönser Str. 29, 35625 Hüttenberg" },
@@ -81,7 +83,7 @@ const locations = [
   { id: "kassel", name: "Kassel", manager: "N. Bauer", invoices: 35, address: "Wilhelmshöher Allee 76, Kassel" },
 ];
 
-const suppliers = [
+let suppliers = [
   { name: "Henry Schein", skonto: 0.02, freightFree: 350, terms: "14 Tage 2%, 30 Tage netto", contact: "meyer@henryschein.example" },
   { name: "Plandent", skonto: 0.00, freightFree: 400, terms: "Zahlung ohne Abzug", contact: "essen@plandent.example" },
   { name: "GERL", skonto: 0.00, freightFree: 300, terms: "Bankeinzug nach Monatsrechnung", contact: "material@gerl.example" },
@@ -90,7 +92,7 @@ const suppliers = [
   { name: "Dentaurum", skonto: 0.01, freightFree: 500, terms: "14 Tage 1%, 30 Tage netto", contact: "service@dentaurum.example" },
 ];
 
-const products = [
+let products = [
   { id: "P-100", name: "Nitrilhandschuhe M, blau", category: "Praxisbedarf", unit: "Stück", pack: 100, standard: true, critical: false, approved: true },
   { id: "P-110", name: "Mundschutz Typ II", category: "Hygiene", unit: "Stück", pack: 50, standard: true, critical: false, approved: true },
   { id: "P-120", name: "Absaugkanülen 16 mm", category: "Verbrauchsmaterial", unit: "Stück", pack: 100, standard: true, critical: false, approved: true },
@@ -101,7 +103,7 @@ const products = [
   { id: "P-170", name: "Prophylaxepaste Mint", category: "Prophylaxe", unit: "g", pack: 100, standard: true, critical: false, approved: true },
 ];
 
-const supplierPriceIndex = {
+let supplierPriceIndex = {
   "Henry Schein": [5.9, 4.3, 8.4, 9.7, 31.8, 58.5, 94.0, 12.5],
   Plandent: [5.7, 4.5, 8.1, 9.4, 32.6, 56.8, 92.4, 12.2],
   GERL: [6.0, 4.2, 8.6, 9.2, 31.2, 57.9, 90.6, 12.0],
@@ -110,7 +112,7 @@ const supplierPriceIndex = {
   Dentaurum: [6.1, 4.8, 8.8, 9.9, 29.6, 53.9, 96.8, 12.8],
 };
 
-const invoices = [
+let invoices = [
   { id: "INV-24091", no: "HS-883102", date: "2026-06-03", supplier: "Henry Schein", location: "Kehl", status: "Freigegeben", net: 1486, freight: 18, surcharge: 0, discount: 52, skontoUsed: true },
   { id: "INV-24107", no: "DU-553901", date: "2026-06-05", supplier: "Dental-Union", location: "Essen", status: "In Prüfung", net: 964, freight: 0, surcharge: 0, discount: 24, skontoUsed: true },
   { id: "INV-24118", no: "PL-190442", date: "2026-06-09", supplier: "Pluradent", location: "Kirchberg", status: "Ausgelesen", net: 612, freight: 24, surcharge: 9, discount: 0, skontoUsed: false },
@@ -119,7 +121,7 @@ const invoices = [
   { id: "INV-24158", no: "DU-554108", date: "2026-06-24", supplier: "Dental-Union", location: "Kehl", status: "Freigegeben", net: 1320, freight: 0, surcharge: 0, discount: 39, skontoUsed: true },
 ];
 
-const invoiceItems = [
+let invoiceItems = [
   ["INV-24091", "P-100", 18, 5.9, 0.04, "Nitrile Gloves Medium Blue", 0.93],
   ["INV-24091", "P-130", 22, 9.7, 0.02, "FD 312 Flächendesinfektion 1L", 0.88],
   ["INV-24091", "P-150", 8, 58.5, 0.05, "Bond Universal 5ml", 0.91],
@@ -160,6 +162,86 @@ const historicalVolumes = {
   "P-160": { 2024: 130, 2025: 165, 2026: 180 },
   "P-170": { 2024: 680, 2025: 720, 2026: 810 },
 };
+
+async function supabaseTable(table, query = "select=*") {
+  const response = await fetch(`${supabaseUrl}/rest/v1/${table}?${query}`, {
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`${table}: ${response.status}`);
+  }
+  return response.json();
+}
+
+async function loadSupabaseData() {
+  const [locationRows, supplierRows, productRows, priceRows, invoiceRows, itemRows] = await Promise.all([
+    supabaseTable("locations", "select=id,name,manager,address&order=name.asc"),
+    supabaseTable("suppliers", "select=name,skonto,freight_free,terms,contact&order=name.asc"),
+    supabaseTable("products", "select=id,name,category,unit,pack,standard,critical,approved&order=id.asc"),
+    supabaseTable("supplier_prices", "select=supplier_name,product_id,price"),
+    supabaseTable("invoices", "select=id,invoice_no,invoice_date,supplier_name,location_name,status,net,freight,surcharge,discount,skonto_used&order=invoice_date.desc"),
+    supabaseTable("invoice_items", "select=invoice_id,product_id,qty,list_price,item_discount,supplier_item_name,match_score&order=id.asc"),
+  ]);
+
+  if (!locationRows.length || !supplierRows.length || !productRows.length) return false;
+
+  locations = locationRows.map(row => ({
+    id: row.id,
+    name: row.name,
+    manager: row.manager || "",
+    address: row.address || "",
+  }));
+  suppliers = supplierRows.map(row => ({
+    name: row.name,
+    skonto: Number(row.skonto || 0),
+    freightFree: Number(row.freight_free || 0),
+    terms: row.terms || "",
+    contact: row.contact || "",
+  }));
+  products = productRows.map(row => ({
+    id: row.id,
+    name: row.name,
+    category: row.category || "",
+    unit: row.unit || "",
+    pack: Number(row.pack || 1),
+    standard: Boolean(row.standard),
+    critical: Boolean(row.critical),
+    approved: Boolean(row.approved),
+  }));
+  invoices = invoiceRows.map(row => ({
+    id: row.id,
+    no: row.invoice_no,
+    date: row.invoice_date,
+    supplier: row.supplier_name,
+    location: row.location_name,
+    status: row.status,
+    net: Number(row.net || 0),
+    freight: Number(row.freight || 0),
+    surcharge: Number(row.surcharge || 0),
+    discount: Number(row.discount || 0),
+    skontoUsed: Boolean(row.skonto_used),
+  }));
+  invoiceItems = itemRows.map(row => ({
+    invoiceId: row.invoice_id,
+    productId: row.product_id,
+    qty: Number(row.qty || 0),
+    listPrice: Number(row.list_price || 0),
+    itemDiscount: Number(row.item_discount || 0),
+    supplierName: row.supplier_item_name || "",
+    match: Number(row.match_score || 0),
+  }));
+  supplierPriceIndex = suppliers.reduce((index, supplier) => {
+    index[supplier.name] = products.map(product => {
+      const row = priceRows.find(price => price.supplier_name === supplier.name && price.product_id === product.id);
+      return row ? Number(row.price || 0) : 0;
+    });
+    return index;
+  }, {});
+  return true;
+}
 
 function invoiceTotalBeforeAdjustments(invoiceId) {
   return invoiceItems.filter(i => i.invoiceId === invoiceId).reduce((sum, i) => sum + i.qty * i.listPrice * (1 - i.itemDiscount), 0);
@@ -821,6 +903,13 @@ function init() {
     }
   });
   render();
+  loadSupabaseData()
+    .then(loaded => {
+      if (loaded) render();
+    })
+    .catch(error => {
+      console.warn("Supabase-Daten konnten nicht geladen werden.", error);
+    });
   fetch("./sample-invoice-imports.json")
     .then(response => response.ok ? response.json() : [])
     .then(imports => {
