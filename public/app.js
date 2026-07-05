@@ -5,14 +5,15 @@ const reloadViewStorageKey = "orisus-material-reload-view";
 const supabaseUrl = "https://rxiboswudbunvjqgpnyc.supabase.co";
 const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
 const invoiceBucket = "material-invoices";
-const desiredLocationNames = ["Kirchberg", "Essen", "Kehl", "Ulmit", "Hüttenberg", "Kassel"];
+const desiredLocationNames = ["Kirchberg", "Essen", "Kehl", "Ulmet", "Hüttenberg", "Kassel"];
 const locationAliases = {
   kirchberg: "Kirchberg",
   essen: "Essen",
   "essen zollverein": "Essen",
   kehl: "Kehl",
-  ulmit: "Ulmit",
-  ulm: "Ulmit",
+  ulmet: "Ulmet",
+  ulmit: "Ulmet",
+  ulm: "Ulmet",
   huettenberg: "Hüttenberg",
   hüttenberg: "Hüttenberg",
   kassel: "Kassel",
