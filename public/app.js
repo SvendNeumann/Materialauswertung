@@ -85,6 +85,8 @@ let products = [];
 let supplierPriceIndex = {};
 let invoices = [];
 let invoiceItems = [];
+let lastNavPointerActivation = 0;
+let suppressHashNavigation = false;
 const historicalPriceFactors = {};
 const historicalVolumes = {};
 
@@ -485,19 +487,12 @@ function renderNav() {
           <span class="nav-chevron">⌄</span>
         </button>
         <div class="nav-subitems">
-          ${section.items.map(([id, label]) => `<button class="nav-subitem ${state.view === id ? "active" : ""}" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></button>`).join("")}
+          ${section.items.map(([id, label]) => `<a class="nav-subitem ${state.view === id ? "active" : ""}" href="#${id}" data-view="${id}" title="${label}"><span class="nav-label">${label}</span></a>`).join("")}
         </div>
       </section>
     `;
   }).join("");
-  nav.querySelectorAll("[data-section]").forEach(btn => btn.addEventListener("click", () => {
-    const nextSection = btn.dataset.section;
-    state.openNavSection = state.openNavSection === nextSection ? "" : nextSection;
-    render();
-  }));
-  nav.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("click", () => {
-    goToView(btn.dataset.view);
-  }));
+  bindNavActivation(nav);
 }
 
 function renderBottomNav() {
@@ -518,7 +513,53 @@ function goToView(viewId) {
   const nextSection = sectionForView(viewId);
   state.openNavSection = nextSection?.id || state.openNavSection;
   closeMobileNav();
+  if (window.location.hash !== `#${viewId}`) {
+    suppressHashNavigation = true;
+    window.history.replaceState(null, "", `#${viewId}`);
+    window.setTimeout(() => { suppressHashNavigation = false; }, 0);
+  }
   render();
+}
+
+function activateNavTarget(target) {
+  const viewButton = target.closest?.("[data-view]");
+  if (viewButton) {
+    goToView(viewButton.dataset.view);
+    return true;
+  }
+  const sectionButton = target.closest?.("[data-section]");
+  if (sectionButton) {
+    const nextSection = sectionButton.dataset.section;
+    state.openNavSection = state.openNavSection === nextSection ? "" : nextSection;
+    render();
+    return true;
+  }
+  return false;
+}
+
+function bindNavActivation(nav) {
+  nav.addEventListener("touchstart", event => {
+    if (activateNavTarget(event.target)) {
+      lastNavPointerActivation = Date.now();
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, { passive: false });
+  nav.addEventListener("pointerdown", event => {
+    if (activateNavTarget(event.target)) {
+      lastNavPointerActivation = Date.now();
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  });
+  nav.addEventListener("click", event => {
+    if (Date.now() - lastNavPointerActivation < 700) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    activateNavTarget(event.target);
+  });
 }
 
 function reloadCurrentView() {
@@ -560,6 +601,7 @@ function toggleSidebar() {
 }
 
 function openMobileNav() {
+  closeKpiInfo();
   state.mobileNavOpen = true;
   syncShellState();
 }
@@ -1328,6 +1370,11 @@ function init() {
   const sidebarOverlay = document.getElementById("sidebarOverlay");
   const reloadAppBtn = document.getElementById("reloadAppBtn");
   const reloadView = sessionStorage.getItem(reloadViewStorageKey);
+  const hashView = window.location.hash.replace("#", "");
+  if (hashView && routes[hashView]) {
+    state.view = hashView;
+    state.openNavSection = sectionForView(hashView)?.id || state.openNavSection;
+  }
   if (reloadView && routes[reloadView]) {
     state.view = reloadView;
     state.openNavSection = sectionForView(reloadView)?.id || state.openNavSection;
@@ -1347,6 +1394,16 @@ function init() {
   window.addEventListener("resize", () => {
     if (!window.matchMedia("(max-width: 860px)").matches && state.mobileNavOpen) {
       closeMobileNav();
+    }
+  });
+  window.addEventListener("hashchange", () => {
+    if (suppressHashNavigation) return;
+    const hashView = window.location.hash.replace("#", "");
+    if (hashView && routes[hashView]) {
+      state.view = hashView;
+      state.openNavSection = sectionForView(hashView)?.id || state.openNavSection;
+      closeMobileNav();
+      render();
     }
   });
   render();
