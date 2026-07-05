@@ -1662,9 +1662,14 @@ function topPotentialArticleRows(rows) {
   }));
 }
 
+function selectedPotentialRows(limit = null) {
+  const rows = locationScopeRows(recommendations());
+  const selected = state.locationFilter === "Alle" ? rows : rows.filter(row => row.inv.location === state.locationFilter);
+  return limit ? selected.slice(0, limit) : selected;
+}
+
 function mobileView() {
-  const allRows = locationScopeRows(recommendations());
-  const selectedRows = state.locationFilter === "Alle" ? allRows : allRows.filter(row => row.inv.location === state.locationFilter);
+  const selectedRows = selectedPotentialRows();
   const activeScope = state.locationFilter === "Alle" ? scopeLabel() : state.locationFilter;
   const locationRows = potentialLocationRows(selectedRows);
   const totalMonth = selectedRows.reduce((sum, row) => sum + row.saving, 0);
@@ -1683,7 +1688,7 @@ function mobileView() {
       { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchste Priorität" },
       { label: "Betroffene Artikel", value: affectedProducts, sub: topArticle ? `Top: ${topArticle.product.name}` : "keine Potenziale" },
     ],
-    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}<p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus.</p><div class="grid">${cards}</div>`),
     charts: [
       panel("Potenzial je Standort", barChart(locationRows, "name", "monthly", 1)),
       panel("A-Fälle je Standort", barChartCount(locationRows, "name", "aCases")),
@@ -1840,6 +1845,108 @@ function potentialAnalysisTable(rows) {
   }));
 }
 
+function potentialReportHtml(rows) {
+  const scope = state.locationFilter === "Alle" ? "Alle Standorte" : state.locationFilter;
+  const currentTotal = rows.reduce((sum, row) => sum + row.comparisonPrice * row.qty * row.product.pack, 0);
+  const bestTotal = rows.reduce((sum, row) => sum + bestPrice(row.productId) * row.qty * row.product.pack, 0);
+  const savingTotal = Math.max(0, currentTotal - bestTotal);
+  const savingPct = currentTotal ? savingTotal / currentTotal : 0;
+  const today = new Date().toLocaleDateString("de-DE");
+  const bodyRows = rows.map((row, index) => {
+    const baseQuantity = row.qty * row.product.pack;
+    const currentCost = row.comparisonPrice * baseQuantity;
+    const best = bestPrice(row.productId);
+    const bestCost = best * baseQuantity;
+    const saving = Math.max(0, currentCost - bestCost);
+    const pctSaving = currentCost ? saving / currentCost : 0;
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(row.product.name)}</td>
+        <td>${escapeHtml(row.inv.location)}</td>
+        <td>${escapeHtml(row.inv.supplier)}</td>
+        <td>${baseQuantity.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${escapeHtml(row.product.unit)}</td>
+        <td>${eur.format(row.comparisonPrice)}</td>
+        <td>${escapeHtml(row.recommendedLabel)}</td>
+        <td>${eur.format(best)}</td>
+        <td>${eur.format(saving)}</td>
+        <td>${pct.format(pctSaving)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  return `<!doctype html>
+    <html lang="de">
+      <head>
+        <meta charset="utf-8" />
+        <title>Orisus Potenzialreport</title>
+        <style>
+          body { font-family: Arial, sans-serif; color: #102235; margin: 28px; }
+          header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; border-bottom: 3px solid #28c9c3; padding-bottom: 18px; margin-bottom: 22px; }
+          h1 { margin: 0 0 6px; font-size: 28px; }
+          h2 { margin: 24px 0 10px; font-size: 18px; }
+          p { margin: 4px 0; line-height: 1.45; }
+          .muted { color: #5d6f7d; }
+          .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0 22px; }
+          .kpi { border: 1px solid #cbdde1; border-left: 5px solid #28c9c3; border-radius: 8px; padding: 12px; }
+          .kpi span { display: block; color: #5d6f7d; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+          .kpi strong { display: block; margin-top: 7px; font-size: 20px; }
+          table { width: 100%; border-collapse: collapse; font-size: 11px; }
+          th { background: #0d3542; color: white; text-align: left; }
+          th, td { border: 1px solid #d8e5e8; padding: 7px; vertical-align: top; }
+          tbody tr:nth-child(even) { background: #f4f9fa; }
+          .note { margin-top: 16px; padding: 12px; background: #eef8f8; border-left: 4px solid #28c9c3; }
+          @media print {
+            body { margin: 14mm; }
+            header, .kpi, .note { break-inside: avoid; }
+            table { page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+          }
+        </style>
+      </head>
+      <body>
+        <header>
+          <div>
+            <h1>Potenzialreport Top 20</h1>
+            <p class="muted">${escapeHtml(scope)} · erstellt am ${today}</p>
+          </div>
+          <div><strong>ORISUS</strong><br><span class="muted">Materialpreis-Controlling</span></div>
+        </header>
+        <section class="kpis">
+          <div class="kpi"><span>Artikel im Report</span><strong>${rows.length}</strong></div>
+          <div class="kpi"><span>Aktueller Einkauf</span><strong>${eur.format(currentTotal)}</strong></div>
+          <div class="kpi"><span>Bestpreis-Vergleich</span><strong>${eur.format(bestTotal)}</strong></div>
+          <div class="kpi"><span>Einsparpotenzial</span><strong>${eur.format(savingTotal)} · ${pct.format(savingPct)}</strong></div>
+        </section>
+        <p>Der Report zeigt, welche bereits bestellten Artikel im aktuellen Datenstand rechnerisch günstiger bezogen werden könnten. Verglichen werden nur freigegebene, normalisierte Artikel mit erkannter Menge und Einheit.</p>
+        <h2>Top-20-Artikel nach absolutem Potenzial</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Artikel</th><th>Standort</th><th>Aktueller Lieferant</th><th>Menge</th><th>Aktueller Preis</th><th>Günstigste Quelle</th><th>Bestpreis</th><th>Potenzial</th><th>Potenzial %</th>
+            </tr>
+          </thead>
+          <tbody>${bodyRows || `<tr><td colspan="10">Keine Potenziale im aktuellen Filter.</td></tr>`}</tbody>
+        </table>
+        <div class="note">Hinweis: Prozentwerte beziehen sich auf den Einkaufswert der jeweils eingelesenen Bestellmenge. Die Jahres-Hochrechnung in der App basiert darauf, dass sich diese Bestellstruktur vergleichbar wiederholt.</div>
+      </body>
+    </html>`;
+}
+
+function printPotentialReport() {
+  const rows = selectedPotentialRows(20);
+  const report = window.open("", "_blank", "noopener,noreferrer");
+  if (!report) {
+    alert("Der Druckreport konnte nicht geöffnet werden. Bitte Pop-ups für diese Seite erlauben.");
+    return;
+  }
+  report.document.open();
+  report.document.write(potentialReportHtml(rows));
+  report.document.close();
+  report.focus();
+  window.setTimeout(() => report.print(), 250);
+}
+
 function yearlyTable(rows) {
   return table(["Priorität", "Gruppenartikel", "Hauptlieferant", "2024", "2025", "2026", "ggü. Vorjahr", "seit 2024", "Menge 2026", "Jahreseffekt"], rows.map(row => [
     `<span class="tag ${row.status === "A-Fall" ? "red" : row.status === "B-Fall" ? "amber" : "blue"}">${row.status}</span>`,
@@ -1983,6 +2090,7 @@ function bindViewEvents() {
     el.addEventListener("input", handleFilterChange);
     el.addEventListener("change", handleFilterChange);
   });
+  document.getElementById("printPotentialReport")?.addEventListener("click", printPotentialReport);
   const fileInput = document.getElementById("invoiceFileInput");
   const chooseFiles = document.getElementById("chooseInvoiceFiles");
   const dropzone = document.getElementById("dropzone");

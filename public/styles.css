@@ -214,6 +214,7 @@ p { line-height: 1.5; }
 
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.report-actions { margin: 10px 0 12px; }
 .filters input, .filters select, .form-grid input, .form-grid select {
   min-height: 38px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); padding: 8px 10px;
 }
