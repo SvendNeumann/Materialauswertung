@@ -585,8 +585,27 @@ function titleFor(id) {
   })[id];
 }
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;",
+  })[char]);
+}
+
 function metric(label, value, sub = "") {
-  return `<article class="panel metric modern-kpi-card"><span class="modern-icon-tile">${metricIcon(label)}</span><label>${label}</label><strong>${value}</strong><small>${sub}</small></article>`;
+  const info = metricInfo(label, value, sub);
+  return `
+    <article class="panel metric modern-kpi-card">
+      <button class="kpi-info-btn" type="button" aria-label="${escapeHtml(label)} erklären" data-info-title="${escapeHtml(info.title)}" data-info-html="${encodeURIComponent(info.html)}">i</button>
+      <span class="modern-icon-tile">${metricIcon(label)}</span>
+      <label>${escapeHtml(label)}</label>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(sub)}</small>
+    </article>
+  `;
 }
 
 function metricIcon(label) {
@@ -603,6 +622,79 @@ function metricIcon(label) {
 function metricGrid(items) {
   const cols = Math.min(4, Math.max(3, items.length));
   return `<div class="grid cols-${cols} metric-grid">${items.map(item => metric(item.label, item.value, item.sub)).join("")}</div>`;
+}
+
+function infoRow(label, value, strong = false) {
+  return `<div class="kpi-info-row ${strong ? "strong" : ""}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+}
+
+function metricInfo(label, value, sub = "") {
+  const lower = label.toLowerCase();
+  let meaning = "Diese Kachel fasst den aktuellen Kennzahlenstand für den geöffneten Arbeitsbereich zusammen.";
+  let formula = "Wert wird aus den aktuell geladenen Supabase-Daten und den freigegebenen App-Berechnungen gebildet.";
+  let source = "Supabase-Datenbestand der Materialauswertung";
+
+  if (lower.includes("rechnung") || lower.includes("pdf")) {
+    meaning = "Zeigt, wie viele Rechnungen beziehungsweise PDF-Importe aktuell in der App berücksichtigt werden.";
+    formula = "Anzahl der geladenen Import- oder Rechnungsdatensätze im aktuellen Sichtbereich.";
+    source = "Tabelle sample_imports beziehungsweise freigegebene Rechnungen";
+  } else if (lower.includes("volumen")) {
+    meaning = "Zeigt das Einkaufs- beziehungsweise Importvolumen im aktuellen Sichtbereich.";
+    formula = "Summe der vorhandenen Rechnungswerte. Bei noch nicht freigegebenen Positionen wird das Bruttovolumen aus den PDF-Importen genutzt.";
+    source = "Rechnungsimporte mit Bruttobetrag; später freigegebene Rechnungspositionen";
+  } else if (lower.includes("position")) {
+    meaning = "Zeigt die Anzahl der aus PDF-Rechnungen erkannten Materialpositionen.";
+    formula = "Summe der Spalte erkannte Positionen über alle geladenen PDF-Importe.";
+    source = "PDF-Auslesung / sample_imports.extracted_items";
+  } else if (lower.includes("lieferant")) {
+    meaning = "Zeigt die Lieferantenbasis im aktuellen Datenstand.";
+    formula = "Anzahl aktiver Lieferanten beziehungsweise Gruppierung der Importdaten nach Lieferant.";
+    source = "Lieferanten-Stammdaten und Lieferant aus PDF-Importen";
+  } else if (lower.includes("standort")) {
+    meaning = "Zeigt die Standortbasis im aktuellen Datenstand.";
+    formula = "Anzahl erkannter oder aktiver Standorte aus Rechnungsanschriften und Standort-Stammdaten.";
+    source = "Standort-Stammdaten und aus Rechnungsanschriften erkannte Standorte";
+  } else if (lower.includes("a-fälle")) {
+    meaning = "Zeigt die Anzahl priorisierter Auffälligkeiten mit hoher wirtschaftlicher Relevanz.";
+    formula = "Gezählt werden Empfehlungen der Klasse A-Fall. Diese entstehen nach freigegebener Positions- und Preislogik.";
+    source = "Preisvergleich, Empfehlungen und Priorisierungslogik";
+  } else if (lower.includes("artikel") || lower.includes("kategorien") || lower.includes("freigegeben") || lower.includes("kritische")) {
+    meaning = "Zeigt den Stand des Artikelstamms und der Artikelklassifizierung.";
+    formula = "Zählung aus Gruppenartikeln, Kategorien, Freigabestatus oder kritischen Artikelmarkierungen.";
+    source = "Artikelstamm und Matching-Freigabe";
+  } else if (lower.includes("abweichung")) {
+    meaning = "Zeigt die durchschnittliche Preisabweichung gegenüber dem Gruppenvergleich.";
+    formula = "Durchschnitt der relativen Abweichung: effektiver Artikelpreis / Gruppendurchschnitt minus 1.";
+    source = "Freigegebene Rechnungspositionen und Gruppendurchschnitt";
+  } else if (lower.includes("potenzial")) {
+    meaning = "Zeigt rechnerisches Einspar- oder Verbesserungspotenzial.";
+    formula = "Differenz aus aktuellem Preis und bestem Vergleichspreis multipliziert mit Menge und Packungslogik.";
+    source = "Preisvergleich und Empfehlungen";
+  } else if (lower.includes("preissteigerung") || lower.includes("jahreseffekt") || lower.includes("importjahre")) {
+    meaning = "Zeigt die Jahres- beziehungsweise Preisentwicklungslogik.";
+    formula = "Importjahre kommen aus Rechnungsdaten; Preissteigerungen werden nach freigegebenen historischen Artikelpreisen berechnet.";
+    source = "Rechnungsdatum, Preisverlauf und Jahresvergleich";
+  } else if (lower.includes("warenkorb") || lower.includes("bester korb") || lower.includes("fehlende")) {
+    meaning = "Zeigt den Stand des Warenkorbvergleichs.";
+    formula = "Vergleich freigegebener Artikelpositionen über Lieferantenpreise inklusive fehlender Artikel und Nebenkosten.";
+    source = "Freigegebene Rechnungspositionen, Lieferantenpreise und Warenkorblogik";
+  } else if (lower.includes("empfehlung") || lower.includes("maßnahmen")) {
+    meaning = "Zeigt priorisierte Einkaufs- oder Standortleiter-Maßnahmen.";
+    formula = "Empfehlungen entstehen aus Preisabweichung, Einsparpotenzial und Prioritätsklasse.";
+    source = "Empfehlungslogik nach freigegebenen Artikelpositionen";
+  }
+
+  const html = `
+    <p class="kpi-info-heading">Herleitung ${escapeHtml(label)}</p>
+    <div class="kpi-info-lines">
+      ${infoRow("Kachelwert", value, true)}
+      ${infoRow("Bedeutung", meaning)}
+      ${infoRow("Berechnung", formula)}
+      ${infoRow("Datenbasis", source)}
+      ${sub ? infoRow("Einordnung", sub) : ""}
+    </div>
+  `;
+  return { title: label, html };
 }
 
 function panel(title, body, sub = "") {
@@ -1114,7 +1206,37 @@ function warnings() {
   return entries.map(e => `<p><span class="tag ${e[2] === "bad" ? "red" : e[2] === "warn" ? "amber" : "blue"}">${e[0]}</span><br><span class="muted">${e[1]}</span></p>`).join("");
 }
 
+function closeKpiInfo() {
+  document.getElementById("kpiInfoOverlay")?.remove();
+}
+
+function openKpiInfo(title, html) {
+  closeKpiInfo();
+  const overlay = document.createElement("div");
+  overlay.className = "kpi-info-overlay";
+  overlay.id = "kpiInfoOverlay";
+  overlay.innerHTML = `
+    <button class="kpi-info-backdrop" type="button" aria-label="Info schließen"></button>
+    <section class="kpi-info-popover" role="dialog" aria-modal="true" aria-labelledby="kpiInfoTitle">
+      <div class="kpi-info-header">
+        <h2 id="kpiInfoTitle">${escapeHtml(title)}</h2>
+        <button class="kpi-info-close" type="button">Schließen</button>
+      </div>
+      <div class="kpi-info-body">${html}</div>
+    </section>
+  `;
+  overlay.querySelector(".kpi-info-backdrop").addEventListener("click", closeKpiInfo);
+  overlay.querySelector(".kpi-info-close").addEventListener("click", closeKpiInfo);
+  document.body.appendChild(overlay);
+}
+
 function bindViewEvents() {
+  document.querySelectorAll(".kpi-info-btn").forEach(btn => {
+    btn.addEventListener("click", event => {
+      event.stopPropagation();
+      openKpiInfo(btn.dataset.infoTitle || "KPI", decodeURIComponent(btn.dataset.infoHtml || ""));
+    });
+  });
   document.querySelectorAll("#search, #locationFilter, #supplierFilter").forEach(el => {
     el.addEventListener("input", event => {
       state[event.target.id] = event.target.value;
@@ -1159,7 +1281,10 @@ function init() {
   sidebarOverlay.addEventListener("click", closeMobileNav);
   reloadAppBtn.addEventListener("click", reloadCurrentView);
   window.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeMobileNav();
+    if (event.key === "Escape") {
+      closeMobileNav();
+      closeKpiInfo();
+    }
   });
   window.addEventListener("resize", () => {
     if (!window.matchMedia("(max-width: 860px)").matches && state.mobileNavOpen) {
