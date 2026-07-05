@@ -778,6 +778,36 @@ function scopeLabel() {
   return state.role === "location" ? activeLocationName() : "Alle Standorte";
 }
 
+function invoiceMonthKey(value) {
+  if (!value) return "";
+  const text = String(value);
+  let match = text.match(/^(\d{4})-(\d{2})/);
+  if (match) return `${match[1]}-${match[2]}`;
+  match = text.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+  if (match) return `${match[3]}-${match[2]}`;
+  return "";
+}
+
+function periodInfo(rows) {
+  const months = Array.from(new Set(rows.map(row => invoiceMonthKey(row.inv?.date || row.invoice_date || row.date)).filter(Boolean))).sort();
+  const monthCount = Math.max(1, months.length);
+  const label = months.length ? `${months[0]}${months.length > 1 ? ` bis ${months[months.length - 1]}` : ""}` : "Zeitraum offen";
+  return {
+    months,
+    monthCount,
+    label,
+    factor: 12 / monthCount,
+  };
+}
+
+function actualPotential(rows) {
+  return rows.reduce((sum, row) => sum + row.saving, 0);
+}
+
+function annualizedPotential(rows) {
+  return actualPotential(rows) * periodInfo(rows).factor;
+}
+
 function kpis() {
   const rows = locationScopeRows(calculatedItems());
   const comparableRows = locationScopeRows(comparableItems());
@@ -798,7 +828,7 @@ function kpis() {
     suppliers: suppliers.length,
     volume: volume || importedGross,
     monthly: potential,
-    yearly: potential * 12,
+    yearly: annualizedPotential(recommendationRows),
     deviation: avgDeviation,
     skonto: scopedInvoices.length ? scopedInvoices.filter(i => i.skontoUsed).length / scopedInvoices.length : 0,
     freight: netBase ? scopedInvoices.reduce((s, i) => s + i.freight, 0) / netBase : 0,
@@ -1239,7 +1269,7 @@ function metricInfo(label, value, sub = "") {
     source = "Freigegebene Rechnungspositionen und Gruppendurchschnitt";
   } else if (lower.includes("hochrechnung")) {
     meaning = "Zeigt das rechnerische Jahrespotenzial, wenn die eingelesene Bestellbasis über ein Jahr vergleichbar wiederkehrt.";
-    formula = "Potenzial der eingelesenen Bestellmengen multipliziert mit 12. Das ist eine Hochrechnung, kein bereits realisierter Jahreswert.";
+    formula = "Potenzial der eingelesenen Bestellmengen geteilt durch die erkannten Rechnungsmonate und danach auf 12 Monate hochgerechnet.";
     source = "Potenzialanalyse aus freigegebenen Rechnungspositionen";
   } else if (lower.includes("potenzial")) {
     meaning = "Zeigt rechnerisches Einspar- oder Verbesserungspotenzial.";
@@ -1571,7 +1601,7 @@ function recommendationsView() {
     metrics: [
       { label: "Potenziale", value: rows.length, sub: "aus Preislogik" },
       { label: "A-Fälle", value: rows.filter(row => row.className === "A-Fall").length, sub: "Priorität hoch" },
-      { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "hochgerechnet" },
+      { label: "Potenzial / Jahr", value: eur.format(annualizedPotential(rows)), sub: `${periodInfo(rows).monthCount} Monat(e)` },
       { label: "Betroffene Artikel", value: new Set(rows.map(row => row.productId)).size, sub: "Gruppenartikel" },
     ],
     analysis: panel("Auswertung", `<p class="muted">Diese Liste zeigt nur rechnerische Auffälligkeiten aus freigegebenen Artikelvergleichen. Es muss hier nichts manuell übernommen werden; die Werte dienen als Grundlage für Preisprüfung, Rahmenpreisgespräch oder Standortvergleich.</p>`),
@@ -1643,7 +1673,7 @@ function mobileComparisonCards(rows) {
         <div class="price-row"><span>Günstigste Quelle</span><strong>${bestSource}</strong></div>
         <div class="price-row"><span>Bestpreis</span><strong>${eur.format(best)} / ${row.product.unit}</strong></div>
         <div class="price-row"><span>Abweichung zur Gruppe</span><strong>${pct.format(deviation)}</strong></div>
-        <span class="tag ${row.className === "A-Fall" ? "red" : row.className === "B-Fall" ? "amber" : "blue"}">Potenzial ${eur.format(row.saving * 12)} pro Jahr</span>
+        <span class="tag ${row.className === "A-Fall" ? "red" : row.className === "B-Fall" ? "amber" : "blue"}">Potenzial ${eur.format(row.saving)} aus Bestellung</span>
       </article>
     `;
   }).join("");
@@ -1663,7 +1693,6 @@ function potentialLocationRows(rows) {
       top: null,
     };
     current.monthly += row.saving;
-    current.potential += row.saving * 12;
     current.count += 1;
     current.aCases += row.className === "A-Fall" ? 1 : 0;
     current.products.add(row.productId);
@@ -1673,10 +1702,15 @@ function potentialLocationRows(rows) {
 
   return Array.from(groups.values()).map(row => ({
     ...row,
+    potential: annualizedPotential(potentialRowsForLocation(rows, row.name)),
     productCount: row.products.size,
     topArticle: row.top?.product.name || "offen",
     topSupplier: row.top?.recommendedLabel || "offen",
   })).sort((a, b) => b.potential - a.potential || b.aCases - a.aCases);
+}
+
+function potentialRowsForLocation(rows, locationName) {
+  return rows.filter(row => (row.inv.location || "offen") === locationName);
 }
 
 function topPotentialArticleRows(rows) {
@@ -1749,8 +1783,9 @@ function mobileView() {
   const selectedRows = selectedPotentialRows();
   const activeScope = state.locationFilter === "Alle" ? scopeLabel() : state.locationFilter;
   const locationRows = potentialLocationRows(selectedRows);
-  const totalMonth = selectedRows.reduce((sum, row) => sum + row.saving, 0);
-  const totalYear = totalMonth * 12;
+  const info = periodInfo(selectedRows);
+  const totalMonth = actualPotential(selectedRows);
+  const totalYear = annualizedPotential(selectedRows);
   const topLocation = locationRows[0];
   const topArticle = selectedRows[0];
   const affectedProducts = new Set(selectedRows.map(row => row.productId)).size;
@@ -1759,13 +1794,13 @@ function mobileView() {
   return tabShell({
     metrics: [
       { label: "Potenzial Bestellungen", value: eur.format(totalMonth), sub: "aus eingelesener Ware" },
-      { label: "Hochrechnung / Jahr", value: eur.format(totalYear), sub: "auf Basis der Bestellungen" },
+      { label: "Hochrechnung / Jahr", value: eur.format(totalYear), sub: `${info.monthCount} Monat(e): ${info.label}` },
       { label: "Standorte mit Potenzial", value: locationRows.length, sub: "mit Abweichungen" },
       { label: "Top-Standort", value: topLocation?.name || "offen", sub: topLocation ? eur.format(topLocation.monthly) : "kein Potenzial" },
       { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchste Priorität" },
       { label: "Betroffene Artikel", value: affectedProducts, sub: topArticle ? `Top: ${topArticle.product.name}` : "keine Potenziale" },
     ],
-    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}${safePotentialToggle()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus. Mit aktivem Sicherheitsschalter werden nur sehr belastbare Vergleiche mit hoher Matchsicherheit und erkannter Basiseinheit gezeigt.</p><div class="grid">${cards}</div>`),
+    analysis: panel(`${activeScope}: Potenzialanalyse`, `${locationOnlyFilter()}${safePotentialToggle()}<div class="report-actions"><button class="btn primary" type="button" id="printPotentialReport">Top-20-Report drucken</button></div><p class="muted">Diese Seite beantwortet pro Standort: Was wurde tatsächlich bestellt, welcher effektive Preis wurde gezahlt, wie liegt der Standort zum gewichteten Gruppenschnitt, wo liegt derselbe freigegebene Artikel aktuell am günstigsten und welches Jahrespotenzial entsteht daraus. Die Jahreshochrechnung wird aus dem erkannten Rechnungszeitraum berechnet: ${info.monthCount} Monat(e), ${info.label}.</p><div class="grid">${cards}</div>`),
     charts: [
       panel("Potenzial je Standort", barChart(locationRows, "name", "monthly", 1)),
       panel("A-Fälle je Standort", barChartCount(locationRows, "name", "aCases")),
@@ -1906,6 +1941,7 @@ function potentialLocationTable(rows) {
 }
 
 function potentialAnalysisTable(rows) {
+  const factor = periodInfo(rows).factor;
   return table(["Artikel", "Standort", "Aktueller Lieferant", "Bestellmenge", "Standortpreis", "Gruppenschnitt", "Günstigste Quelle", "Bestpreis", "Potenzial/Jahr", "Begründung"], rows.map(r => {
     const baseQuantity = r.qty * r.product.pack;
     return [
@@ -1917,7 +1953,7 @@ function potentialAnalysisTable(rows) {
       `${eur.format(groupAverage(r.productId))} / ${r.product.unit}`,
       r.recommendedLabel,
       `${eur.format(bestPrice(r.productId))} / ${r.product.unit}`,
-      eur.format(r.saving * 12),
+      eur.format(r.saving * factor),
       `<span class="muted">${escapeHtml(potentialReason(r))}</span>`,
     ];
   }));
@@ -1928,6 +1964,8 @@ function potentialReportHtml(rows) {
   const currentTotal = rows.reduce((sum, row) => sum + row.comparisonPrice * row.qty * row.product.pack, 0);
   const bestTotal = rows.reduce((sum, row) => sum + bestPrice(row.productId) * row.qty * row.product.pack, 0);
   const savingTotal = Math.max(0, currentTotal - bestTotal);
+  const info = periodInfo(rows);
+  const annualSaving = savingTotal * info.factor;
   const savingPct = currentTotal ? savingTotal / currentTotal : 0;
   const today = new Date().toLocaleDateString("de-DE");
   const bodyRows = rows.map((row, index) => {
@@ -1996,9 +2034,9 @@ function potentialReportHtml(rows) {
           <div class="kpi"><span>Artikel im Report</span><strong>${rows.length}</strong></div>
           <div class="kpi"><span>Aktueller Einkauf</span><strong>${eur.format(currentTotal)}</strong></div>
           <div class="kpi"><span>Bestpreis-Vergleich</span><strong>${eur.format(bestTotal)}</strong></div>
-          <div class="kpi"><span>Einsparpotenzial</span><strong>${eur.format(savingTotal)} · ${pct.format(savingPct)}</strong></div>
+          <div class="kpi"><span>Potenzial / Jahr</span><strong>${eur.format(annualSaving)} · ${pct.format(savingPct)}</strong></div>
         </section>
-        <p>Der Report zeigt, welche bereits bestellten Artikel im aktuellen Datenstand rechnerisch günstiger bezogen werden könnten. Verglichen werden nur freigegebene, normalisierte Artikel mit erkannter Menge und Einheit.</p>
+        <p>Der Report zeigt, welche bereits bestellten Artikel im aktuellen Datenstand rechnerisch günstiger bezogen werden könnten. Verglichen werden nur freigegebene, normalisierte Artikel mit erkannter Menge und Einheit. Erkannter Zeitraum: ${info.monthCount} Monat(e), ${escapeHtml(info.label)}.</p>
         <h2>Top-20-Artikel nach absolutem Potenzial</h2>
         <table>
           <thead>
@@ -2008,7 +2046,7 @@ function potentialReportHtml(rows) {
           </thead>
           <tbody>${bodyRows || `<tr><td colspan="11">Keine Potenziale im aktuellen Filter.</td></tr>`}</tbody>
         </table>
-        <div class="note">Hinweis: Prozentwerte beziehen sich auf den Einkaufswert der jeweils eingelesenen Bestellmenge. Bei aktivem Sicherheitsschalter enthält der Report nur freigegebene, normalisierte Artikel mit hoher Matchsicherheit und mindestens zwei Vergleichspreisen. Die Jahres-Hochrechnung in der App basiert darauf, dass sich diese Bestellstruktur vergleichbar wiederholt.</div>
+        <div class="note">Hinweis: Das Potenzial der eingelesenen Bestellmengen beträgt ${eur.format(savingTotal)}. Die Jahres-Hochrechnung wird mit dem erkannten Zeitraum berechnet: Potenzial / ${info.monthCount} Monat(e) × 12. Bei aktivem Sicherheitsschalter enthält der Report nur freigegebene, normalisierte Artikel mit hoher Matchsicherheit und mindestens zwei Vergleichspreisen.</div>
       </body>
     </html>`;
 }
@@ -2027,11 +2065,14 @@ function reportTotals(rows) {
   const currentTotal = rows.reduce((sum, row) => sum + row.comparisonPrice * row.qty * row.product.pack, 0);
   const bestTotal = rows.reduce((sum, row) => sum + bestPrice(row.productId) * row.qty * row.product.pack, 0);
   const savingTotal = Math.max(0, currentTotal - bestTotal);
+  const info = periodInfo(rows);
   return {
     currentTotal,
     bestTotal,
     savingTotal,
+    annualSaving: savingTotal * info.factor,
     savingPct: currentTotal ? savingTotal / currentTotal : 0,
+    period: info,
     locations: new Set(rows.map(row => row.inv.location)).size,
     products: new Set(rows.map(row => row.productId)).size,
     suppliers: new Set(rows.map(row => row.inv.supplier)).size,
@@ -2118,17 +2159,17 @@ function reportHtml(type, rows) {
         <header>
           <div>
             <h1>${escapeHtml(title)}</h1>
-            <p class="muted">Erstellt am ${today} · sichere Potenziale</p>
+            <p class="muted">Erstellt am ${today} · sichere Potenziale · ${totals.period.monthCount} Monat(e), ${escapeHtml(totals.period.label)}</p>
           </div>
           <div><strong>ORISUS</strong><br><span class="muted">Materialpreis-Controlling</span></div>
         </header>
         <section class="kpis">
           <div class="kpi"><span>Positionen</span><strong>${rows.length}</strong></div>
           <div class="kpi"><span>Aktueller Einkauf</span><strong>${eur.format(totals.currentTotal)}</strong></div>
-          <div class="kpi"><span>Einsparpotenzial</span><strong>${eur.format(totals.savingTotal)} · ${pct.format(totals.savingPct)}</strong></div>
+          <div class="kpi"><span>Potenzial / Jahr</span><strong>${eur.format(totals.annualSaving)} · ${pct.format(totals.savingPct)}</strong></div>
           <div class="kpi"><span>Umfang</span><strong>${totals.locations} Standorte · ${totals.products} Artikel</strong></div>
         </section>
-        <p>Dieser Report zeigt ausschließlich sichere Vergleichspositionen mit freigegebenem Artikelmatching, normalisierter Einheit und belastbarem Bestpreisvergleich.</p>
+        <p>Dieser Report zeigt ausschließlich sichere Vergleichspositionen mit freigegebenem Artikelmatching, normalisierter Einheit und belastbarem Bestpreisvergleich. Das Potenzial der eingelesenen Bestellmengen beträgt ${eur.format(totals.savingTotal)}; die Jahreshochrechnung erfolgt über den erkannten Rechnungszeitraum.</p>
         ${locationSummary ? `<h2>Standort-Zusammenfassung</h2><table><thead><tr><th>Standort</th><th>Positionen</th><th>Potenzial Bestellungen</th><th>Hochrechnung/Jahr</th><th>Größter Hebel</th></tr></thead><tbody>${locationSummary}</tbody></table>` : ""}
         <h2>Detailpositionen</h2>
         <table>
@@ -2139,7 +2180,7 @@ function reportHtml(type, rows) {
           </thead>
           <tbody>${reportRowsHtml(rows) || `<tr><td colspan="11">Keine sicheren Potenziale im aktuellen Filter.</td></tr>`}</tbody>
         </table>
-        <div class="note">Die ausgewiesenen Potenziale beziehen sich auf die eingelesenen Bestellmengen. Die Hochrechnung pro Jahr setzt voraus, dass sich diese Bestellstruktur vergleichbar wiederholt.</div>
+        <div class="note">Die ausgewiesenen Potenziale beziehen sich auf die eingelesenen Bestellmengen. Jahreshochrechnung: Potenzial / ${totals.period.monthCount} Monat(e) × 12. Grundlage: ${escapeHtml(totals.period.label)}.</div>
       </body>
     </html>`;
 }
@@ -2206,20 +2247,23 @@ function yearTrendBox(row) {
 }
 
 function recommendationTable(rows) {
+  const factor = periodInfo(rows).factor;
   return table(["Priorität", "Artikel", "Standort", "Aktueller Lieferant", "Günstigste Quelle", "Abweichung", "Potenzial/Jahr"], filtered(rows).map(r => [
-    `<span class="tag ${r.className === "A-Fall" ? "red" : r.className === "B-Fall" ? "amber" : "blue"}">${r.className}</span>`, r.product.name, r.inv.location, r.inv.supplier, r.recommendedLabel, pct.format(r.deviation), eur.format(r.saving * 12)
+    `<span class="tag ${r.className === "A-Fall" ? "red" : r.className === "B-Fall" ? "amber" : "blue"}">${r.className}</span>`, r.product.name, r.inv.location, r.inv.supplier, r.recommendedLabel, pct.format(r.deviation), eur.format(r.saving * factor)
   ]));
 }
 
 function supplierTable(rows) {
+  const factor = periodInfo(locationScopeRows(recommendations())).factor;
   return table(["Lieferant", "Volumen", "Artikel", "Ø Abweichung", "Rabattquote", "Versandquote", "Stabilität", "Potenzial"], rows.map(s => [
-    s.name, eur.format(s.volume), s.articleCount, pct.format(s.deviation), pct.format(s.discountRate), pct.format(s.freightRate), `${Math.round(s.stability)} / 100`, eur.format(s.potential * 12)
+    s.name, eur.format(s.volume), s.articleCount, pct.format(s.deviation), pct.format(s.discountRate), pct.format(s.freightRate), `${Math.round(s.stability)} / 100`, eur.format(s.potential * factor)
   ]));
 }
 
 function locationTable(rows) {
+  const factor = periodInfo(locationScopeRows(recommendations())).factor;
   return table(["Standort", "Volumen", "Lieferanten", "Ø Bestellwert", "Kleinstbestellungen", "Skonto", "Versandquote", "Potenzial/Jahr"], rows.map(l => [
-    l.name, eur.format(l.volume), l.supplierMix, eur.format(l.avgOrder), l.smallOrders, pct.format(l.skonto), pct.format(l.freightRate), eur.format(l.potential * 12)
+    l.name, eur.format(l.volume), l.supplierMix, eur.format(l.avgOrder), l.smallOrders, pct.format(l.skonto), pct.format(l.freightRate), eur.format(l.potential * factor)
   ]));
 }
 
