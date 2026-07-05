@@ -4574,7 +4574,7 @@
       "id": "G-001",
       "name": "Injektionskanülen / Nadeln",
       "category": "Verbrauchsmaterial",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": false,
@@ -4584,7 +4584,7 @@
       "id": "G-002",
       "name": "Einmalhandtücher / Papierhandtücher",
       "category": "Hygiene",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": false,
@@ -4594,7 +4594,7 @@
       "id": "G-003",
       "name": "Komposit / Füllungsmaterial",
       "category": "Füllung",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": true,
@@ -4604,7 +4604,7 @@
       "id": "G-004",
       "name": "Polier- und Prophylaxepaste",
       "category": "Prophylaxe",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": false,
@@ -4614,7 +4614,7 @@
       "id": "G-005",
       "name": "Interdentalkeile / Wedges",
       "category": "Verbrauchsmaterial",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": false,
@@ -4654,7 +4654,7 @@
       "id": "G-009",
       "name": "Desinfektion / Reinigung",
       "category": "Hygiene",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": false,
@@ -4664,7 +4664,7 @@
       "id": "G-010",
       "name": "Endodontie-Feilen",
       "category": "Endodontie",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": true,
@@ -4684,7 +4684,7 @@
       "id": "G-012",
       "name": "Bohrer / Fräser",
       "category": "Praxislabor",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": false,
@@ -4694,7 +4694,7 @@
       "id": "G-013",
       "name": "Abform- und Bissmaterial",
       "category": "Prothetik",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": true,
@@ -4704,7 +4704,7 @@
       "id": "G-014",
       "name": "Bonding / Adhäsive",
       "category": "Füllung",
-      "unit": "Einheit",
+      "unit": "Basiseinheit",
       "pack": 1,
       "standard": true,
       "critical": true,
@@ -4714,7 +4714,7 @@
       "id": "P-10071",
       "name": "DryTips klein P50",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -4724,7 +4724,7 @@
       "id": "P-10188",
       "name": "Super Snap rot Np 50 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -4744,7 +4744,7 @@
       "id": "P-11019",
       "name": "sta-seal cat f Pa 10ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -4764,7 +4764,7 @@
       "id": "P-11573",
       "name": "Periotom P3 m wechselbaren Ein",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -4784,7 +4784,7 @@
       "id": "P-12045",
       "name": "Rundmagnete Splitcast 100 St.",
       "category": "Implantologie",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": true,
@@ -4844,7 +4844,7 @@
       "id": "P-13280",
       "name": "Durasoft pd 1,8x125mm 10St.",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -4934,7 +4934,7 @@
       "id": "P-18339",
       "name": "Optosil Comfort Putty 900ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -4954,7 +4954,7 @@
       "id": "P-19222",
       "name": "IPS e.max Ceram Dentin A3 P 20",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5064,7 +5064,7 @@
       "id": "P-22688",
       "name": "DIMO Mandrell Pa 10",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5104,7 +5104,7 @@
       "id": "P-24815",
       "name": "Chlorhexamed Praxis Gel 1% 50g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5124,7 +5124,7 @@
       "id": "P-26659",
       "name": "HS-Mundspülbecher 200 ml dunke",
       "category": "Praxisbedarf",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5154,7 +5154,7 @@
       "id": "P-27139",
       "name": "Optidam Anterior Refill Pack 3",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5204,7 +5204,7 @@
       "id": "P-29776",
       "name": "Omnitemp KB A3 Kartusche 50ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5234,7 +5234,7 @@
       "id": "P-30658",
       "name": "Aislar Fl 500 ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5244,7 +5244,7 @@
       "id": "P-30946",
       "name": "Takanishi Pinsel Gr. 8 Pa 2 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5254,7 +5254,7 @@
       "id": "P-31216",
       "name": "HS-Pappbecher 180ml recycelbar",
       "category": "Praxisbedarf",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5264,7 +5264,7 @@
       "id": "P-31921",
       "name": "Visalys Tooth Primer Flasche 4ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5274,7 +5274,7 @@
       "id": "P-32714",
       "name": "HS-Mundspülbecher 200 ml grün",
       "category": "Praxisbedarf",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5314,7 +5314,7 @@
       "id": "P-33191",
       "name": "OptraGate 2 Small 80St.",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5334,7 +5334,7 @@
       "id": "P-33739",
       "name": "Blue Micro-Ansatz, 100 St.",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5354,7 +5354,7 @@
       "id": "P-34879",
       "name": "Klammern J schräg 0,8 mm Pa 10",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5374,7 +5374,7 @@
       "id": "P-35203",
       "name": "Eltra 40 Extra Pa 8,3kg",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5384,7 +5384,7 @@
       "id": "P-36143",
       "name": "MEtherm 55 Neutralisator 5L",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5394,7 +5394,7 @@
       "id": "P-36285",
       "name": "Multi-Safe euro Matic 6000 f.6,0l",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5414,7 +5414,7 @@
       "id": "P-37575",
       "name": "Geo Wachsgussbirnen Pa 200St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5444,7 +5444,7 @@
       "id": "P-38309",
       "name": "OptraStick Refill Pa 48 Stck",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5534,7 +5534,7 @@
       "id": "P-41107",
       "name": "Tri Plaque ID Gel 40g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5574,7 +5574,7 @@
       "id": "P-42246",
       "name": "EDDY Irrigation Tip Pack 10 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5584,7 +5584,7 @@
       "id": "P-42528",
       "name": "Dyract A3 Compules Pa20x0,25g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5604,7 +5604,7 @@
       "id": "P-42726",
       "name": "Zahnlack BioC CHX Spri 4x1,2ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5614,7 +5614,7 @@
       "id": "P-43058",
       "name": "Remin Pro Mixed 3x40g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5634,7 +5634,7 @@
       "id": "P-43245",
       "name": "AlproJet-D Kanister 10l",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5644,7 +5644,7 @@
       "id": "P-43339",
       "name": "Occlutec Spray grün, Fla 75ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5684,7 +5684,7 @@
       "id": "P-44584",
       "name": "Filter für DAC Pa 6 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5714,7 +5714,7 @@
       "id": "P-44834",
       "name": "HS-Wurzelfüller No 1 25mm P4",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5724,7 +5724,7 @@
       "id": "P-45457",
       "name": "Okklusionsspray grün Fl 75 ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5744,7 +5744,7 @@
       "id": "P-46218",
       "name": "Profluorid Varnish Minze 10ml-Tube",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5764,7 +5764,7 @@
       "id": "P-46840",
       "name": "Zirc Pink Petal PAK 100 ST",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5774,7 +5774,7 @@
       "id": "P-47111",
       "name": "Care Oil Spray 300ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5794,7 +5794,7 @@
       "id": "P-48717",
       "name": "Orotol Plus Flas 2,5l",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5824,7 +5824,7 @@
       "id": "P-50515",
       "name": "Super Snap Mini violett Np 50",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5834,7 +5834,7 @@
       "id": "P-51163",
       "name": "Speedex light body Pa 140ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5844,7 +5844,7 @@
       "id": "P-51352",
       "name": "Protemp 4 A3 Pack 50ml+MK",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5854,7 +5854,7 @@
       "id": "P-53134",
       "name": "ORBIS Ätzgel Spritze 9x1,4ml (1,9g)",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5864,7 +5864,7 @@
       "id": "P-53957",
       "name": "ORBIS Wattekügelchen 5,5mm 4g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5914,7 +5914,7 @@
       "id": "P-58256",
       "name": "Klammern Nk 0,8 mm Pa 10 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5924,7 +5924,7 @@
       "id": "P-58260",
       "name": "Melag Seal Check Pa 100 Stck",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5934,7 +5934,7 @@
       "id": "P-59086",
       "name": "PROVISA Schutzhülsen Zinn 21 Pa 10",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5944,7 +5944,7 @@
       "id": "P-59151",
       "name": "Se Cushion Pa 100 Stck",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5964,7 +5964,7 @@
       "id": "P-59284",
       "name": "Mischbettharz für Meladem 40 2St.",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -5974,7 +5974,7 @@
       "id": "P-59855",
       "name": "ORBAT forte Lösung Flasche 20ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6004,7 +6004,7 @@
       "id": "P-60788",
       "name": "HS-Maxima Injektionskan 27G",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6064,7 +6064,7 @@
       "id": "P-64149",
       "name": "Apply-Tips blau regular Pa 500",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6164,7 +6164,7 @@
       "id": "P-66428",
       "name": "sta-seal f Spritze Pa 3x80ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6194,7 +6194,7 @@
       "id": "P-67637",
       "name": "Omni ProfiCups blau weich Pa 24",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6284,7 +6284,7 @@
       "id": "P-72500",
       "name": "Omni Kältespray Orange Dose 200ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6394,7 +6394,7 @@
       "id": "P-76598",
       "name": "Dentatec Flasche 1l",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6464,7 +6464,7 @@
       "id": "P-79199",
       "name": "Gelatamp 14X7X7mm Glas 50Stck",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6514,7 +6514,7 @@
       "id": "P-80807",
       "name": "Erkodur 1,50 120mm Pack 10Stck",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6574,7 +6574,7 @@
       "id": "P-85087",
       "name": "Paladur Flüssigkeit Pa 500 ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6604,7 +6604,7 @@
       "id": "P-86951",
       "name": "Calcimol LC Spr 2x2,5ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6624,7 +6624,7 @@
       "id": "P-87354",
       "name": "Super Snap Mini grün Np 50 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6744,7 +6744,7 @@
       "id": "P-92015",
       "name": "Miraject Endo Luer Pa 100St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6774,7 +6774,7 @@
       "id": "P-92351",
       "name": "Perio Mate Pulver Flasche Pa 2x160g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6794,7 +6794,7 @@
       "id": "P-92780",
       "name": "Zellstoffauflagen Pa 100 ST",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6834,7 +6834,7 @@
       "id": "P-94741",
       "name": "Super Snap Mini schwarz Np 50",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6844,7 +6844,7 @@
       "id": "P-94813",
       "name": "Fujivest Super 40x150 g Btl Pa",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6904,7 +6904,7 @@
       "id": "P-96309",
       "name": "Injekt Solo Einmalspritze 2ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6924,7 +6924,7 @@
       "id": "P-97109",
       "name": "Filterbeutel Pa 2 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6944,7 +6944,7 @@
       "id": "P-98175",
       "name": "Ultracain D-S 1:200.000 10x20ml",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "ml",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6954,7 +6954,7 @@
       "id": "P-98347",
       "name": "Resimix mittel 30 ml Pa 2 St",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "Stück",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -6964,7 +6964,7 @@
       "id": "P-98365",
       "name": "Ligosan Pa 4x0,26g",
       "category": "Material",
-      "unit": "Einheit",
+      "unit": "g",
       "pack": 1,
       "standard": false,
       "critical": false,
@@ -7176,7 +7176,7 @@
       "qty": 6.0,
       "list_price": 10.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Mira Clin hap Polierpaste, Pa",
+      "supplier_item_name": "Henry Schein: Mira Clin hap Polierpaste, Pa · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7185,16 +7185,16 @@
       "qty": 1.0,
       "list_price": 24.3,
       "item_discount": 0.35020576131687253,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-58260",
-      "qty": 1.0,
-      "list_price": 66.95,
+      "qty": 100.0,
+      "list_price": 0.6695,
       "item_discount": 0.2600448095593727,
-      "supplier_item_name": "Henry Schein: Melag Seal Check Pa 100 Stck",
+      "supplier_item_name": "Henry Schein: Melag Seal Check Pa 100 Stck · Basis: 100 St",
       "match_score": 0.78
     },
     {
@@ -7203,7 +7203,7 @@
       "qty": 2.0,
       "list_price": 55.95,
       "item_discount": 0.259964253798034,
-      "supplier_item_name": "Henry Schein: RISKONTROL NV Einwegansätze we",
+      "supplier_item_name": "Henry Schein: RISKONTROL NV Einwegansätze we · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7212,7 +7212,7 @@
       "qty": 1.0,
       "list_price": 34.9,
       "item_discount": 0.35014326647564464,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 75mm Sterireel R",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 75mm Sterireel R · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7221,7 +7221,7 @@
       "qty": 1.0,
       "list_price": 13.9,
       "item_discount": 0.25971223021582746,
-      "supplier_item_name": "Henry Schein: CanalPro farbige Spritzen blau",
+      "supplier_item_name": "Henry Schein: CanalPro farbige Spritzen blau · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7230,16 +7230,16 @@
       "qty": 1.0,
       "list_price": 13.9,
       "item_discount": 0.25971223021582746,
-      "supplier_item_name": "Henry Schein: CanalPro farbige Spritzen rot",
+      "supplier_item_name": "Henry Schein: CanalPro farbige Spritzen rot · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-59151",
-      "qty": 1.0,
-      "list_price": 28.6,
+      "qty": 100.0,
+      "list_price": 0.28600000000000003,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Se Cushion Pa 100 Stck",
+      "supplier_item_name": "Henry Schein: Se Cushion Pa 100 Stck · Basis: 100 St",
       "match_score": 0.78
     },
     {
@@ -7248,7 +7248,7 @@
       "qty": 1.0,
       "list_price": 8.75,
       "item_discount": 0.26057142857142856,
-      "supplier_item_name": "Henry Schein: Bohrerreinigungsbürste",
+      "supplier_item_name": "Henry Schein: Bohrerreinigungsbürste · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7257,7 +7257,7 @@
       "qty": 1.0,
       "list_price": 11.8,
       "item_discount": 0.2601694915254238,
-      "supplier_item_name": "Henry Schein: Diamantreinigungsbürste",
+      "supplier_item_name": "Henry Schein: Diamantreinigungsbürste · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7266,7 +7266,7 @@
       "qty": 6.0,
       "list_price": 19.93,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Cleanic Beerengeschmack mit Fl",
+      "supplier_item_name": "Henry Schein: Cleanic Beerengeschmack mit Fl · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7275,7 +7275,7 @@
       "qty": 4.0,
       "list_price": 28.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Cleanic kein Geschmack mit Flu",
+      "supplier_item_name": "Henry Schein: Cleanic kein Geschmack mit Flu · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7284,16 +7284,16 @@
       "qty": 1.0,
       "list_price": 91.35,
       "item_discount": 0.2599890530925014,
-      "supplier_item_name": "Henry Schein: Tork ex weiche Zickzack Handtü",
+      "supplier_item_name": "Henry Schein: Tork ex weiche Zickzack Handtü · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-48717",
-      "qty": 4.0,
-      "list_price": 42.13,
+      "qty": 10000.0,
+      "list_price": 0.016852000000000002,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Orotol Plus Flas 2,5l",
+      "supplier_item_name": "Henry Schein: Orotol Plus Flas 2,5l · Basis: 2.5 l",
       "match_score": 0.78
     },
     {
@@ -7302,7 +7302,7 @@
       "qty": 2.0,
       "list_price": 93.65,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: OptraGate 2 Small Refill",
+      "supplier_item_name": "Henry Schein: OptraGate 2 Small Refill · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7311,7 +7311,7 @@
       "qty": 2.0,
       "list_price": 93.65,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: OptraGate 2 Regular Refill",
+      "supplier_item_name": "Henry Schein: OptraGate 2 Regular Refill · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7320,7 +7320,7 @@
       "qty": 4.0,
       "list_price": 36.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Oxygenal 6 Flas 1 ltr.",
+      "supplier_item_name": "Henry Schein: Oxygenal 6 Flas 1 ltr. · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7329,7 +7329,7 @@
       "qty": 10.0,
       "list_price": 10.8,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Kugelstopfer mittel 1,2/1,6",
+      "supplier_item_name": "Henry Schein: HS-Kugelstopfer mittel 1,2/1,6 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7338,7 +7338,7 @@
       "qty": 10.0,
       "list_price": 10.2,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Füllungsinstrument Spatel N",
+      "supplier_item_name": "Henry Schein: HS-Füllungsinstrument Spatel N · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7347,7 +7347,7 @@
       "qty": 10.0,
       "list_price": 2.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Mundspiegelgriff RS hohl",
+      "supplier_item_name": "Henry Schein: HS-Mundspiegelgriff RS hohl · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7356,7 +7356,7 @@
       "qty": 2.0,
       "list_price": 25.6,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Mundspiegel Rhod 3 Plan, Mo",
+      "supplier_item_name": "Henry Schein: HS-Mundspiegel Rhod 3 Plan, Mo · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7365,7 +7365,7 @@
       "qty": 4.0,
       "list_price": 19.9,
       "item_discount": 0.26005025125628134,
-      "supplier_item_name": "Henry Schein: MD 550 Mundspülbeckenreiniger",
+      "supplier_item_name": "Henry Schein: MD 550 Mundspülbeckenreiniger · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7374,7 +7374,7 @@
       "qty": 1.0,
       "list_price": 82.95,
       "item_discount": 0.26003616636528026,
-      "supplier_item_name": "Henry Schein: Nitram Öl für DAC blau Fl 200",
+      "supplier_item_name": "Henry Schein: Nitram Öl für DAC blau Fl 200 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7383,7 +7383,7 @@
       "qty": 2.0,
       "list_price": 65.35,
       "item_discount": 0.25998469778117816,
-      "supplier_item_name": "Henry Schein: Steam Chemical Indicator",
+      "supplier_item_name": "Henry Schein: Steam Chemical Indicator · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7392,16 +7392,16 @@
       "qty": 1.0,
       "list_price": 16.2,
       "item_discount": 0.2598765432098765,
-      "supplier_item_name": "Henry Schein: Transcodent Injektionskanülen",
+      "supplier_item_name": "Henry Schein: Transcodent Injektionskanülen · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-33739",
-      "qty": 2.0,
-      "list_price": 53.6,
+      "qty": 200.0,
+      "list_price": 0.536,
       "item_discount": 0.25998134328358213,
-      "supplier_item_name": "Henry Schein: Blue Micro-Ansatz, 100 St.",
+      "supplier_item_name": "Henry Schein: Blue Micro-Ansatz, 100 St. · Basis: 100 St",
       "match_score": 0.78
     },
     {
@@ -7410,7 +7410,7 @@
       "qty": 2.0,
       "list_price": 3.46,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Applikationstips 22Ga blau",
+      "supplier_item_name": "Henry Schein: HS-Applikationstips 22Ga blau · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7419,7 +7419,7 @@
       "qty": 5.0,
       "list_price": 12.3,
       "item_discount": 0.35008130081300814,
-      "supplier_item_name": "Henry Schein: HS-Pinseleinsätze transp, weis",
+      "supplier_item_name": "Henry Schein: HS-Pinseleinsätze transp, weis · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7428,34 +7428,34 @@
       "qty": 2.0,
       "list_price": 16.95,
       "item_discount": 0.259882005899705,
-      "supplier_item_name": "Henry Schein: Super Snap doppelseitig violet",
+      "supplier_item_name": "Henry Schein: Super Snap doppelseitig violet · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-87354",
-      "qty": 1.0,
-      "list_price": 16.95,
+      "qty": 50.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.26017699115044246,
-      "supplier_item_name": "Henry Schein: Super Snap Mini grün Np 50 St",
+      "supplier_item_name": "Henry Schein: Super Snap Mini grün Np 50 St · Basis: 50 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-94741",
-      "qty": 2.0,
-      "list_price": 16.95,
+      "qty": 100.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.259882005899705,
-      "supplier_item_name": "Henry Schein: Super Snap Mini schwarz Np 50",
+      "supplier_item_name": "Henry Schein: Super Snap Mini schwarz Np 50 · Basis: 50 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-50515",
-      "qty": 2.0,
-      "list_price": 16.95,
+      "qty": 100.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.259882005899705,
-      "supplier_item_name": "Henry Schein: Super Snap Mini violett Np 50",
+      "supplier_item_name": "Henry Schein: Super Snap Mini violett Np 50 · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -7464,7 +7464,7 @@
       "qty": 5.0,
       "list_price": 29.05,
       "item_discount": 0.2600344234079174,
-      "supplier_item_name": "Henry Schein: Prophy Cup f Winkelstück grün",
+      "supplier_item_name": "Henry Schein: Prophy Cup f Winkelstück grün · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7473,7 +7473,7 @@
       "qty": 1.0,
       "list_price": 33.2,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten dklbla",
+      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten dklbla · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7482,7 +7482,7 @@
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
-      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten",
+      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7491,7 +7491,7 @@
       "qty": 4.0,
       "list_price": 12.65,
       "item_discount": 0.26007905138339926,
-      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten",
+      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7500,7 +7500,7 @@
       "qty": 6.0,
       "list_price": 12.9,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Schaumstoff Pellets GR 4 8x",
+      "supplier_item_name": "Henry Schein: HS-Schaumstoff Pellets GR 4 8x · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7509,7 +7509,7 @@
       "qty": 6.0,
       "list_price": 2.7,
       "item_discount": 2.220446049250313e-16,
-      "supplier_item_name": "Henry Schein: HS-Speichelsauger grün 13cm 10",
+      "supplier_item_name": "Henry Schein: HS-Speichelsauger grün 13cm 10 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7518,7 +7518,7 @@
       "qty": 6.0,
       "list_price": 2.45,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "Henry Schein: HS-Speichelsauger blau 13cm 10",
+      "supplier_item_name": "Henry Schein: HS-Speichelsauger blau 13cm 10 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7527,25 +7527,25 @@
       "qty": 4.0,
       "list_price": 4.2,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Trayeinlagen weiss 18x28, T",
+      "supplier_item_name": "Henry Schein: HS-Trayeinlagen weiss 18x28, T · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "G-004",
-      "qty": 4.0,
-      "list_price": 52.6,
+      "qty": 20.0,
+      "list_price": 10.52,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: LEDERMIX PASTE TUBE 5G",
+      "supplier_item_name": "Henry Schein: LEDERMIX PASTE TUBE 5G · Basis: 5 g",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-27139",
-      "qty": 1.0,
-      "list_price": 67.2,
+      "qty": 3.0,
+      "list_price": 22.400000000000002,
       "item_discount": 0.2599702380952382,
-      "supplier_item_name": "Henry Schein: Optidam Anterior Refill Pack 3",
+      "supplier_item_name": "Henry Schein: Optidam Anterior Refill Pack 3 · Basis: 3 St",
       "match_score": 0.78
     },
     {
@@ -7554,7 +7554,7 @@
       "qty": 1.0,
       "list_price": 35.8,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-EuroGauze Tupfer NS 20x20mm",
+      "supplier_item_name": "Henry Schein: HS-EuroGauze Tupfer NS 20x20mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7563,7 +7563,7 @@
       "qty": 1.0,
       "list_price": 135.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Relyx Unicem 2 Automix Stand R",
+      "supplier_item_name": "Henry Schein: Relyx Unicem 2 Automix Stand R · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7572,7 +7572,7 @@
       "qty": 1.0,
       "list_price": 26.05,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 100mm Sterireel",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 100mm Sterireel · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7581,7 +7581,7 @@
       "qty": 1.0,
       "list_price": 191.75,
       "item_discount": 0.260026075619296,
-      "supplier_item_name": "Henry Schein: MD 520 Abdruckdesinfektion Kan",
+      "supplier_item_name": "Henry Schein: MD 520 Abdruckdesinfektion Kan · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7590,25 +7590,25 @@
       "qty": 1.0,
       "list_price": 24.9,
       "item_discount": 0.3502008032128514,
-      "supplier_item_name": "Henry Schein: HS-Aufbewahrungsbox Sort. vers",
+      "supplier_item_name": "Henry Schein: HS-Aufbewahrungsbox Sort. vers · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-32714",
-      "qty": 1.0,
-      "list_price": 65.95,
+      "qty": 200.0,
+      "list_price": 0.32975,
       "item_discount": 0.349962092494314,
-      "supplier_item_name": "Henry Schein: HS-Mundspülbecher 200 ml grün",
+      "supplier_item_name": "Henry Schein: HS-Mundspülbecher 200 ml grün · Basis: 200 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-26659",
-      "qty": 1.0,
-      "list_price": 39.4,
+      "qty": 200.0,
+      "list_price": 0.19699999999999998,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Mundspülbecher 200 ml dunke",
+      "supplier_item_name": "Henry Schein: HS-Mundspülbecher 200 ml dunke · Basis: 200 ml",
       "match_score": 0.78
     },
     {
@@ -7617,25 +7617,25 @@
       "qty": 3.0,
       "list_price": 93.65,
       "item_discount": 2.220446049250313e-16,
-      "supplier_item_name": "Henry Schein: OptraGate 2 Small Refill",
+      "supplier_item_name": "Henry Schein: OptraGate 2 Small Refill · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-92780",
-      "qty": 1.0,
-      "list_price": 39.0,
+      "qty": 100.0,
+      "list_price": 0.39,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Zellstoffauflagen Pa 100 ST",
+      "supplier_item_name": "Henry Schein: Zellstoffauflagen Pa 100 ST · Basis: 100 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-42246",
-      "qty": 2.0,
-      "list_price": 42.31,
+      "qty": 20.0,
+      "list_price": 4.231,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: EDDY Irrigation Tip Pack 10 St",
+      "supplier_item_name": "Henry Schein: EDDY Irrigation Tip Pack 10 St · Basis: 10 St",
       "match_score": 0.78
     },
     {
@@ -7644,7 +7644,7 @@
       "qty": 1.0,
       "list_price": 8.9,
       "item_discount": 0.35056179775280893,
-      "supplier_item_name": "Henry Schein: HS-Watterollenspender weiß mit",
+      "supplier_item_name": "Henry Schein: HS-Watterollenspender weiß mit · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7653,7 +7653,7 @@
       "qty": 1.0,
       "list_price": 98.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Reiniger MEtherm51",
+      "supplier_item_name": "Henry Schein: Reiniger MEtherm51 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7662,7 +7662,7 @@
       "qty": 2.0,
       "list_price": 102.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Luxacore Z Smartmix Dual hell",
+      "supplier_item_name": "Henry Schein: Luxacore Z Smartmix Dual hell · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7671,7 +7671,7 @@
       "qty": 1.0,
       "list_price": 91.35,
       "item_discount": 0.2599890530925014,
-      "supplier_item_name": "Henry Schein: Tork ex weiche Zickzack Handtü",
+      "supplier_item_name": "Henry Schein: Tork ex weiche Zickzack Handtü · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7680,7 +7680,7 @@
       "qty": 1.0,
       "list_price": 84.7,
       "item_discount": 0.25997638724911454,
-      "supplier_item_name": "Henry Schein: Metal Dento-Infusor Tips with",
+      "supplier_item_name": "Henry Schein: Metal Dento-Infusor Tips with · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7689,7 +7689,7 @@
       "qty": 1.0,
       "list_price": 192.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ubistesin 1/400 000 Pack 6x50Z",
+      "supplier_item_name": "Henry Schein: Ubistesin 1/400 000 Pack 6x50Z · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7698,25 +7698,25 @@
       "qty": 2.0,
       "list_price": 16.95,
       "item_discount": 0.259882005899705,
-      "supplier_item_name": "Henry Schein: Super Snap doppelseitig violet",
+      "supplier_item_name": "Henry Schein: Super Snap doppelseitig violet · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-50515",
-      "qty": 2.0,
-      "list_price": 16.95,
+      "qty": 100.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.259882005899705,
-      "supplier_item_name": "Henry Schein: Super Snap Mini violett Np 50",
+      "supplier_item_name": "Henry Schein: Super Snap Mini violett Np 50 · Basis: 50 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-94741",
-      "qty": 2.0,
-      "list_price": 16.95,
+      "qty": 100.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.259882005899705,
-      "supplier_item_name": "Henry Schein: Super Snap Mini schwarz Np 50",
+      "supplier_item_name": "Henry Schein: Super Snap Mini schwarz Np 50 · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -7725,25 +7725,25 @@
       "qty": 5.0,
       "list_price": 12.3,
       "item_discount": 0.35008130081300814,
-      "supplier_item_name": "Henry Schein: HS-Pinseleinsätze transp, weis",
+      "supplier_item_name": "Henry Schein: HS-Pinseleinsätze transp, weis · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-33739",
-      "qty": 2.0,
-      "list_price": 53.6,
+      "qty": 200.0,
+      "list_price": 0.536,
       "item_discount": 0.25998134328358213,
-      "supplier_item_name": "Henry Schein: Blue Micro-Ansatz, 100 St.",
+      "supplier_item_name": "Henry Schein: Blue Micro-Ansatz, 100 St. · Basis: 100 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-42726",
-      "qty": 1.0,
-      "list_price": 46.95,
+      "qty": 4.8,
+      "list_price": 9.781250000000002,
       "item_discount": 0.2600638977635783,
-      "supplier_item_name": "Henry Schein: Zahnlack BioC CHX Spri 4x1,2ml",
+      "supplier_item_name": "Henry Schein: Zahnlack BioC CHX Spri 4x1,2ml · Basis: 4 x 1.2 ml",
       "match_score": 0.78
     },
     {
@@ -7752,7 +7752,7 @@
       "qty": 1.0,
       "list_price": 33.2,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten dklbla",
+      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten dklbla · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7761,7 +7761,7 @@
       "qty": 1.0,
       "list_price": 33.2,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten grün,",
+      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten grün, · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7770,7 +7770,7 @@
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
-      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten",
+      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7779,7 +7779,7 @@
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
-      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten",
+      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7788,7 +7788,7 @@
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
-      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten",
+      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7797,7 +7797,7 @@
       "qty": 2.0,
       "list_price": 36.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Oxygenal 6 Flas 1 ltr.",
+      "supplier_item_name": "Henry Schein: Oxygenal 6 Flas 1 ltr. · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7806,7 +7806,7 @@
       "qty": 1.0,
       "list_price": 10.1,
       "item_discount": 0.3504950495049505,
-      "supplier_item_name": "Henry Schein: HS-Papierspitzen 20, Paper poi",
+      "supplier_item_name": "Henry Schein: HS-Papierspitzen 20, Paper poi · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7815,7 +7815,7 @@
       "qty": 2.0,
       "list_price": 10.1,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Papierspitzen 35, Paper poi",
+      "supplier_item_name": "Henry Schein: HS-Papierspitzen 35, Paper poi · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7824,7 +7824,7 @@
       "qty": 2.0,
       "list_price": 10.1,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Papierspitzen 40, Paper poi",
+      "supplier_item_name": "Henry Schein: HS-Papierspitzen 40, Paper poi · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7833,7 +7833,7 @@
       "qty": 4.0,
       "list_price": 15.8,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Guttaperchaspitzen 20, GP p",
+      "supplier_item_name": "Henry Schein: HS-Guttaperchaspitzen 20, GP p · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7842,7 +7842,7 @@
       "qty": 2.0,
       "list_price": 16.95,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Sensodyne ProSchmelz Fluorid G",
+      "supplier_item_name": "Henry Schein: Sensodyne ProSchmelz Fluorid G · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7851,7 +7851,7 @@
       "qty": 2.0,
       "list_price": 80.9,
       "item_discount": 0.2600123609394315,
-      "supplier_item_name": "Henry Schein: Composi Tight 3D Matrix bands",
+      "supplier_item_name": "Henry Schein: Composi Tight 3D Matrix bands · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7860,7 +7860,7 @@
       "qty": 10.0,
       "list_price": 10.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Mira Clin hap Polierpaste, Pa",
+      "supplier_item_name": "Henry Schein: Mira Clin hap Polierpaste, Pa · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7869,7 +7869,7 @@
       "qty": 2.0,
       "list_price": 80.9,
       "item_discount": 0.2600123609394315,
-      "supplier_item_name": "Henry Schein: Matrizenb. Section klein 4,6mm",
+      "supplier_item_name": "Henry Schein: Matrizenb. Section klein 4,6mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7878,7 +7878,7 @@
       "qty": 2.0,
       "list_price": 80.9,
       "item_discount": 0.2600123609394315,
-      "supplier_item_name": "Henry Schein: Matrizenb. Ext. Sect. klein",
+      "supplier_item_name": "Henry Schein: Matrizenb. Ext. Sect. klein · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7887,7 +7887,7 @@
       "qty": 1.0,
       "list_price": 80.9,
       "item_discount": 0.2599505562422745,
-      "supplier_item_name": "Henry Schein: Matrizenband standard 6,4mm Pa",
+      "supplier_item_name": "Henry Schein: Matrizenband standard 6,4mm Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7896,7 +7896,7 @@
       "qty": 2.0,
       "list_price": 10.55,
       "item_discount": 0.35023696682464456,
-      "supplier_item_name": "Henry Schein: HS-Alginat-Adhäsiv Apfel P15ml",
+      "supplier_item_name": "Henry Schein: HS-Alginat-Adhäsiv Apfel P15ml · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7905,7 +7905,7 @@
       "qty": 10.0,
       "list_price": 9.7,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Sonde Nr 9 round handle",
+      "supplier_item_name": "Henry Schein: HS-Sonde Nr 9 round handle · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7914,7 +7914,7 @@
       "qty": 1.0,
       "list_price": 507.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Quad Sectional Matrix System I",
+      "supplier_item_name": "Henry Schein: Quad Sectional Matrix System I · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7923,16 +7923,16 @@
       "qty": 3.0,
       "list_price": 46.4,
       "item_discount": 0.34999999999999987,
-      "supplier_item_name": "Henry Schein: HS-Maxi-Gard VL Gr 2 Lichtschu",
+      "supplier_item_name": "Henry Schein: HS-Maxi-Gard VL Gr 2 Lichtschu · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053578",
       "product_id": "P-51352",
-      "qty": 1.0,
-      "list_price": 105.15,
+      "qty": 4.0,
+      "list_price": 26.2875,
       "item_discount": 0.2600095102234903,
-      "supplier_item_name": "Henry Schein: Protemp 4 A3 Pack 50ml+MK",
+      "supplier_item_name": "Henry Schein: Protemp 4 A3 Pack 50ml+MK · Basis: 4 St",
       "match_score": 0.78
     },
     {
@@ -7941,25 +7941,25 @@
       "qty": 3.0,
       "list_price": 17.85,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "Henry Schein: Hygieneschutzhülle Aufbiss P 1",
+      "supplier_item_name": "Henry Schein: Hygieneschutzhülle Aufbiss P 1 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-010",
-      "qty": 4.0,
-      "list_price": 78.71,
+      "qty": 24.0,
+      "list_price": 13.118333333333332,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Profile 04 31 mm 25 Pa 6St",
+      "supplier_item_name": "Henry Schein: Profile 04 31 mm 25 Pa 6St · Basis: 6 St",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-31216",
-      "qty": 2.0,
-      "list_price": 25.9,
+      "qty": 360.0,
+      "list_price": 0.14388888888888887,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Pappbecher 180ml recycelbar",
+      "supplier_item_name": "Henry Schein: HS-Pappbecher 180ml recycelbar · Basis: 180 ml",
       "match_score": 0.78
     },
     {
@@ -7968,7 +7968,7 @@
       "qty": 1.0,
       "list_price": 2.17,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Speichelsauger pink/rot 13c",
+      "supplier_item_name": "Henry Schein: HS-Speichelsauger pink/rot 13c · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -7977,7 +7977,7 @@
       "qty": 3.0,
       "list_price": 35.45,
       "item_discount": 0.2599905970850964,
-      "supplier_item_name": "Henry Schein: Sof Lex Finierstreifen gr/mi b",
+      "supplier_item_name": "Henry Schein: Sof Lex Finierstreifen gr/mi b · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -7986,16 +7986,16 @@
       "qty": 1.0,
       "list_price": 42.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Fender Wedge x-small, purple P",
+      "supplier_item_name": "Henry Schein: Fender Wedge x-small, purple P · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-005",
-      "qty": 1.0,
-      "list_price": 42.0,
+      "qty": 3.0,
+      "list_price": 14.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Fender Wedge small, orange P 3",
+      "supplier_item_name": "Henry Schein: Fender Wedge small, orange P 3 · Basis: 3 St",
       "match_score": 0.92
     },
     {
@@ -8004,16 +8004,16 @@
       "qty": 2.0,
       "list_price": 62.9,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: WL Clean Klinikpackung Pack 4x",
+      "supplier_item_name": "Henry Schein: WL Clean Klinikpackung Pack 4x · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-98365",
-      "qty": 1.0,
-      "list_price": 347.0,
+      "qty": 1.04,
+      "list_price": 333.65384615384613,
       "item_discount": 0.2600000000000001,
-      "supplier_item_name": "Henry Schein: Ligosan Pa 4x0,26g",
+      "supplier_item_name": "Henry Schein: Ligosan Pa 4x0,26g · Basis: 4 x 0.26 g",
       "match_score": 0.78
     },
     {
@@ -8022,7 +8022,7 @@
       "qty": 2.0,
       "list_price": 60.27,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: WL Cid Klinikpackung Pack 4x50",
+      "supplier_item_name": "Henry Schein: WL Cid Klinikpackung Pack 4x50 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8031,7 +8031,7 @@
       "qty": 1.0,
       "list_price": 73.29,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: VivaPen Aufsteckkanülen Refill",
+      "supplier_item_name": "Henry Schein: VivaPen Aufsteckkanülen Refill · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8040,7 +8040,7 @@
       "qty": 2.0,
       "list_price": 58.9,
       "item_discount": 0.2600169779286927,
-      "supplier_item_name": "Henry Schein: HUWA SAN DENT P KART 6FL",
+      "supplier_item_name": "Henry Schein: HUWA SAN DENT P KART 6FL · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8049,7 +8049,7 @@
       "qty": 1.0,
       "list_price": 149.29,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Adhese Universal Refill VivaPe",
+      "supplier_item_name": "Henry Schein: Adhese Universal Refill VivaPe · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8058,7 +8058,7 @@
       "qty": 1.0,
       "list_price": 311.7,
       "item_discount": 0.2599935835739493,
-      "supplier_item_name": "Henry Schein: Relyx Unicem 2 Automix Value P",
+      "supplier_item_name": "Henry Schein: Relyx Unicem 2 Automix Value P · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8067,7 +8067,7 @@
       "qty": 10.0,
       "list_price": 24.9,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-EuroSept OneStep Wipes 17,5",
+      "supplier_item_name": "Henry Schein: HS-EuroSept OneStep Wipes 17,5 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8076,16 +8076,16 @@
       "qty": 4.0,
       "list_price": 75.25,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Temp Bond NE Automix Spritze",
+      "supplier_item_name": "Henry Schein: Temp Bond NE Automix Spritze · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-009",
-      "qty": 2.0,
-      "list_price": 15.35,
+      "qty": 1600.0,
+      "list_price": 0.0191875,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Night Cleaner 800ml",
+      "supplier_item_name": "Henry Schein: Night Cleaner 800ml · Basis: 800 ml",
       "match_score": 0.92
     },
     {
@@ -8094,16 +8094,16 @@
       "qty": 3.0,
       "list_price": 2.35,
       "item_discount": 0.25957446808510654,
-      "supplier_item_name": "Henry Schein: Medibox 2,4 Liter",
+      "supplier_item_name": "Henry Schein: Medibox 2,4 Liter · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-79199",
-      "qty": 4.0,
-      "list_price": 43.25,
+      "qty": 200.0,
+      "list_price": 0.865,
       "item_discount": 0.2599999999999999,
-      "supplier_item_name": "Henry Schein: Gelatamp 14X7X7mm Glas 50Stck",
+      "supplier_item_name": "Henry Schein: Gelatamp 14X7X7mm Glas 50Stck · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -8112,7 +8112,7 @@
       "qty": 4.0,
       "list_price": 41.8,
       "item_discount": 0.25998803827751193,
-      "supplier_item_name": "Henry Schein: Epitex Finierstreifen Xfein ro",
+      "supplier_item_name": "Henry Schein: Epitex Finierstreifen Xfein ro · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8121,7 +8121,7 @@
       "qty": 4.0,
       "list_price": 12.8,
       "item_discount": 0.25996093750000004,
-      "supplier_item_name": "Henry Schein: Occlusionspapier mikrodünn bla",
+      "supplier_item_name": "Henry Schein: Occlusionspapier mikrodünn bla · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8130,7 +8130,7 @@
       "qty": 1.0,
       "list_price": 28.45,
       "item_discount": 0.2601054481546573,
-      "supplier_item_name": "Henry Schein: IMS Containerplomben blau M Pa",
+      "supplier_item_name": "Henry Schein: IMS Containerplomben blau M Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8139,7 +8139,7 @@
       "qty": 3.0,
       "list_price": 19.1,
       "item_discount": 0.2600349040139617,
-      "supplier_item_name": "Henry Schein: Sili Spray Haftlack Dose 250 m",
+      "supplier_item_name": "Henry Schein: Sili Spray Haftlack Dose 250 m · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8148,7 +8148,7 @@
       "qty": 4.0,
       "list_price": 23.3,
       "item_discount": 0.25997854077253224,
-      "supplier_item_name": "Henry Schein: Instrumentenschutzkappen, rd 2",
+      "supplier_item_name": "Henry Schein: Instrumentenschutzkappen, rd 2 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8157,16 +8157,16 @@
       "qty": 5.0,
       "list_price": 14.95,
       "item_discount": 0.3499665551839465,
-      "supplier_item_name": "Henry Schein: HS-Nitril Handschuhe pf pink X",
+      "supplier_item_name": "Henry Schein: HS-Nitril Handschuhe pf pink X · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-002",
-      "qty": 1.0,
-      "list_price": 52.75,
+      "qty": 2000.0,
+      "list_price": 0.026375,
       "item_discount": 0.26009478672985775,
-      "supplier_item_name": "Henry Schein: Tork Advanced Handtuch grün 2l",
+      "supplier_item_name": "Henry Schein: Tork Advanced Handtuch grün 2l · Basis: 2 l",
       "match_score": 0.92
     },
     {
@@ -8175,52 +8175,52 @@
       "qty": 1.0,
       "list_price": 192.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ubistesin 1/100 000 Pack 6x50Z",
+      "supplier_item_name": "Henry Schein: Ubistesin 1/100 000 Pack 6x50Z · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-44834",
-      "qty": 4.0,
-      "list_price": 11.7,
+      "qty": 16.0,
+      "list_price": 2.925,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Wurzelfüller No 1 25mm P4",
+      "supplier_item_name": "Henry Schein: HS-Wurzelfüller No 1 25mm P4 · Basis: 4 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-010",
-      "qty": 5.0,
-      "list_price": 54.48,
+      "qty": 30.0,
+      "list_price": 9.08,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Mtwo Taper 04 25 Mm/10 Pa 6 St",
+      "supplier_item_name": "Henry Schein: Mtwo Taper 04 25 Mm/10 Pa 6 St · Basis: 6 St",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-010",
-      "qty": 5.0,
-      "list_price": 54.48,
+      "qty": 30.0,
+      "list_price": 9.08,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Mtwo Taper 06 25 Mm/20 Pa 6 St",
+      "supplier_item_name": "Henry Schein: Mtwo Taper 06 25 Mm/20 Pa 6 St · Basis: 6 St",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-004",
-      "qty": 3.0,
-      "list_price": 52.6,
+      "qty": 15.0,
+      "list_price": 10.52,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: LEDERMIX PASTE TUBE 5G",
+      "supplier_item_name": "Henry Schein: LEDERMIX PASTE TUBE 5G · Basis: 5 g",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-86951",
-      "qty": 1.0,
-      "list_price": 51.75,
+      "qty": 5.0,
+      "list_price": 10.35,
       "item_discount": 0.260096618357488,
-      "supplier_item_name": "Henry Schein: Calcimol LC Spr 2x2,5ml",
+      "supplier_item_name": "Henry Schein: Calcimol LC Spr 2x2,5ml · Basis: 2 x 2.5 ml",
       "match_score": 0.78
     },
     {
@@ -8229,16 +8229,16 @@
       "qty": 4.0,
       "list_price": 53.46,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: SDR Flow Plus Refill Univ. Pa",
+      "supplier_item_name": "Henry Schein: SDR Flow Plus Refill Univ. Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-003",
-      "qty": 4.0,
-      "list_price": 27.79,
+      "qty": 8.0,
+      "list_price": 13.895,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Tetric EvoFlow Ref A3 P1x2g",
+      "supplier_item_name": "Henry Schein: Tetric EvoFlow Ref A3 P1x2g · Basis: 1 x 2 g",
       "match_score": 0.92
     },
     {
@@ -8247,7 +8247,7 @@
       "qty": 1.0,
       "list_price": 372.19,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: AIRFLOW Pulver PLUS Alufl., Pa",
+      "supplier_item_name": "Henry Schein: AIRFLOW Pulver PLUS Alufl., Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8256,34 +8256,34 @@
       "qty": 10.0,
       "list_price": 5.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr",
+      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-92015",
-      "qty": 3.0,
-      "list_price": 11.3,
+      "qty": 300.0,
+      "list_price": 0.113,
       "item_discount": 0.2598820058997051,
-      "supplier_item_name": "Henry Schein: Miraject Endo Luer Pa 100St",
+      "supplier_item_name": "Henry Schein: Miraject Endo Luer Pa 100St · Basis: 100 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "G-001",
-      "qty": 2.0,
-      "list_price": 55.6,
+      "qty": 100.0,
+      "list_price": 1.112,
       "item_discount": 0.2599820143884892,
-      "supplier_item_name": "Henry Schein: Penta Mischkanülen rot Pack 50",
+      "supplier_item_name": "Henry Schein: Penta Mischkanülen rot Pack 50 · Basis: 50 St",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-46840",
-      "qty": 1.0,
-      "list_price": 61.6,
+      "qty": 100.0,
+      "list_price": 0.616,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Zirc Pink Petal PAK 100 ST",
+      "supplier_item_name": "Henry Schein: Zirc Pink Petal PAK 100 ST · Basis: 100 St",
       "match_score": 0.78
     },
     {
@@ -8292,7 +8292,7 @@
       "qty": 1.0,
       "list_price": 13.84,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Comfit Mundscchutz blau Pa 40S",
+      "supplier_item_name": "Henry Schein: Comfit Mundscchutz blau Pa 40S · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8301,16 +8301,16 @@
       "qty": 1.0,
       "list_price": 76.05,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Coolpack Mini Kälte Kompresse",
+      "supplier_item_name": "Henry Schein: Coolpack Mini Kälte Kompresse · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053610",
       "product_id": "P-60788",
-      "qty": 3.0,
-      "list_price": 9.6,
+      "qty": 81.0,
+      "list_price": 0.35555555555555557,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Maxima Injektionskan 27G",
+      "supplier_item_name": "Henry Schein: HS-Maxima Injektionskan 27G · Basis: 27 g",
       "match_score": 0.78
     },
     {
@@ -8319,7 +8319,7 @@
       "qty": 20.0,
       "list_price": 5.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr",
+      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8328,7 +8328,7 @@
       "qty": 9.0,
       "list_price": 24.9,
       "item_discount": 0.3500223114680946,
-      "supplier_item_name": "Henry Schein: HS-EuroSept OneStep Wipes 17,5",
+      "supplier_item_name": "Henry Schein: HS-EuroSept OneStep Wipes 17,5 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8337,7 +8337,7 @@
       "qty": 1.0,
       "list_price": 192.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ubistesin 1/100 000 Pack 6x50Z",
+      "supplier_item_name": "Henry Schein: Ubistesin 1/100 000 Pack 6x50Z · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8346,7 +8346,7 @@
       "qty": 10.0,
       "list_price": 8.9,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Mundschutz Pro 3 Gummizug Lila",
+      "supplier_item_name": "Henry Schein: Mundschutz Pro 3 Gummizug Lila · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8355,25 +8355,25 @@
       "qty": 10.0,
       "list_price": 2.7,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Oral-B Satin Tape 50m",
+      "supplier_item_name": "Henry Schein: Oral-B Satin Tape 50m · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-97109",
-      "qty": 1.0,
-      "list_price": 74.2,
+      "qty": 2.0,
+      "list_price": 37.1,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Filterbeutel Pa 2 St",
+      "supplier_item_name": "Henry Schein: Filterbeutel Pa 2 St · Basis: 2 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-85087",
-      "qty": 1.0,
-      "list_price": 54.2,
+      "qty": 500.0,
+      "list_price": 0.10840000000000001,
       "item_discount": 0.2599630996309964,
-      "supplier_item_name": "Henry Schein: Paladur Flüssigkeit Pa 500 ml",
+      "supplier_item_name": "Henry Schein: Paladur Flüssigkeit Pa 500 ml · Basis: 500 St",
       "match_score": 0.78
     },
     {
@@ -8382,7 +8382,7 @@
       "qty": 2.0,
       "list_price": 18.5,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Destilliertes Wasser unster",
+      "supplier_item_name": "Henry Schein: HS-Destilliertes Wasser unster · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8391,7 +8391,7 @@
       "qty": 2.0,
       "list_price": 12.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Arbeitsschale 130 180x130x079",
+      "supplier_item_name": "Henry Schein: Arbeitsschale 130 180x130x079 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8400,7 +8400,7 @@
       "qty": 1.0,
       "list_price": 17.3,
       "item_discount": 0.2601156069364162,
-      "supplier_item_name": "Henry Schein: SEITENSCHNEIDER 18CM",
+      "supplier_item_name": "Henry Schein: SEITENSCHNEIDER 18CM · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8409,7 +8409,7 @@
       "qty": 2.0,
       "list_price": 192.7,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: IPS emax ZirCAD MT Multi A3,5",
+      "supplier_item_name": "Henry Schein: IPS emax ZirCAD MT Multi A3,5 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8418,7 +8418,7 @@
       "qty": 1.0,
       "list_price": 81.6,
       "item_discount": 0.2600490196078431,
-      "supplier_item_name": "Henry Schein: Erkodur 0,50 120mm Pack 100Stc",
+      "supplier_item_name": "Henry Schein: Erkodur 0,50 120mm Pack 100Stc · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8427,7 +8427,7 @@
       "qty": 1.0,
       "list_price": 64.2,
       "item_discount": 0.25996884735202497,
-      "supplier_item_name": "Henry Schein: Bur 1.0 Metal",
+      "supplier_item_name": "Henry Schein: Bur 1.0 Metal · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8436,7 +8436,7 @@
       "qty": 1.0,
       "list_price": 61.15,
       "item_discount": 0.2600163532297629,
-      "supplier_item_name": "Henry Schein: Bur 2.0 Metal",
+      "supplier_item_name": "Henry Schein: Bur 2.0 Metal · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8445,7 +8445,7 @@
       "qty": 1.0,
       "list_price": 66.5,
       "item_discount": 0.3500751879699249,
-      "supplier_item_name": "Henry Schein: HS-Löffelplatten rosa Impressi",
+      "supplier_item_name": "Henry Schein: HS-Löffelplatten rosa Impressi · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8454,16 +8454,16 @@
       "qty": 1.0,
       "list_price": 17.71,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: IPS Object Fix Flow P10ml",
+      "supplier_item_name": "Henry Schein: IPS Object Fix Flow P10ml · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "G-012",
-      "qty": 1.0,
-      "list_price": 208.75,
+      "qty": 6.0,
+      "list_price": 34.791666666666664,
       "item_discount": 0.2600239520958084,
-      "supplier_item_name": "Henry Schein: Step Bur 12 S Pa 6 ST",
+      "supplier_item_name": "Henry Schein: Step Bur 12 S Pa 6 ST · Basis: 6 St",
       "match_score": 0.92
     },
     {
@@ -8472,7 +8472,7 @@
       "qty": 2.0,
       "list_price": 30.0,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Filtereinheit für Standardwass",
+      "supplier_item_name": "Henry Schein: Filtereinheit für Standardwass · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8481,25 +8481,25 @@
       "qty": 2.0,
       "list_price": 213.35,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: IPS emax ZirCAD MT Multi A3,5",
+      "supplier_item_name": "Henry Schein: IPS emax ZirCAD MT Multi A3,5 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-34879",
-      "qty": 1.0,
-      "list_price": 26.15,
+      "qty": 10.0,
+      "list_price": 2.6149999999999998,
       "item_discount": 0.26003824091778194,
-      "supplier_item_name": "Henry Schein: Klammern J schräg 0,8 mm Pa 10",
+      "supplier_item_name": "Henry Schein: Klammern J schräg 0,8 mm Pa 10 · Basis: 10 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-58256",
-      "qty": 1.0,
-      "list_price": 28.45,
+      "qty": 10.0,
+      "list_price": 2.8449999999999998,
       "item_discount": 0.2601054481546573,
-      "supplier_item_name": "Henry Schein: Klammern Nk 0,8 mm Pa 10 St",
+      "supplier_item_name": "Henry Schein: Klammern Nk 0,8 mm Pa 10 St · Basis: 10 St",
       "match_score": 0.78
     },
     {
@@ -8508,16 +8508,16 @@
       "qty": 1.0,
       "list_price": 199.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Mucopren soft Basis Pa",
+      "supplier_item_name": "Henry Schein: Mucopren soft Basis Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-43339",
-      "qty": 1.0,
-      "list_price": 11.0,
+      "qty": 75.0,
+      "list_price": 0.14666666666666667,
       "item_discount": 0.2599999999999999,
-      "supplier_item_name": "Henry Schein: Occlutec Spray grün, Fla 75ml",
+      "supplier_item_name": "Henry Schein: Occlutec Spray grün, Fla 75ml · Basis: 75 ml",
       "match_score": 0.78
     },
     {
@@ -8526,16 +8526,16 @@
       "qty": 1.0,
       "list_price": 14.8,
       "item_discount": 0.2601351351351352,
-      "supplier_item_name": "Henry Schein: OCCLU SPRAY GRUEN P75ml",
+      "supplier_item_name": "Henry Schein: OCCLU SPRAY GRUEN P75ml · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-45457",
-      "qty": 1.0,
-      "list_price": 11.3,
+      "qty": 75.0,
+      "list_price": 0.15066666666666667,
       "item_discount": 0.26017699115044257,
-      "supplier_item_name": "Henry Schein: Okklusionsspray grün Fl 75 ml",
+      "supplier_item_name": "Henry Schein: Okklusionsspray grün Fl 75 ml · Basis: 75 ml",
       "match_score": 0.78
     },
     {
@@ -8544,7 +8544,7 @@
       "qty": 18.0,
       "list_price": 12.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Arbeitsschale 130 180x130x079",
+      "supplier_item_name": "Henry Schein: Arbeitsschale 130 180x130x079 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8553,7 +8553,7 @@
       "qty": 1.0,
       "list_price": 24.9,
       "item_discount": 0.3502008032128514,
-      "supplier_item_name": "Henry Schein: HS-Aufbewahrungsbox Sort. vers",
+      "supplier_item_name": "Henry Schein: HS-Aufbewahrungsbox Sort. vers · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8562,34 +8562,34 @@
       "qty": 5.0,
       "list_price": 6.4,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Flanellschwabbel m Kstkern 30/",
+      "supplier_item_name": "Henry Schein: Flanellschwabbel m Kstkern 30/ · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-94813",
-      "qty": 1.0,
-      "list_price": 167.95,
+      "qty": 6000.0,
+      "list_price": 0.027991666666666665,
       "item_discount": 0.2600178624590651,
-      "supplier_item_name": "Henry Schein: Fujivest Super 40x150 g Btl Pa",
+      "supplier_item_name": "Henry Schein: Fujivest Super 40x150 g Btl Pa · Basis: 40 x 150 g",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "G-009",
-      "qty": 1.0,
-      "list_price": 76.0,
+      "qty": 5000.0,
+      "list_price": 0.0152,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Green and Clean AD, Kan 5L",
+      "supplier_item_name": "Henry Schein: Green and Clean AD, Kan 5L · Basis: 5 l",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-47111",
-      "qty": 1.0,
-      "list_price": 20.0,
+      "qty": 300.0,
+      "list_price": 0.06666666666666667,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Care Oil Spray 300ml",
+      "supplier_item_name": "Henry Schein: Care Oil Spray 300ml · Basis: 300 ml",
       "match_score": 0.78
     },
     {
@@ -8598,16 +8598,16 @@
       "qty": 1.0,
       "list_price": 48.0,
       "item_discount": 0.2599999999999999,
-      "supplier_item_name": "Henry Schein: Teleskoppfosten 3,8mm",
+      "supplier_item_name": "Henry Schein: Teleskoppfosten 3,8mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231053773",
       "product_id": "P-37575",
-      "qty": 1.0,
-      "list_price": 26.6,
+      "qty": 200.0,
+      "list_price": 0.133,
       "item_discount": 0.2601503759398497,
-      "supplier_item_name": "Henry Schein: Geo Wachsgussbirnen Pa 200St",
+      "supplier_item_name": "Henry Schein: Geo Wachsgussbirnen Pa 200St · Basis: 200 St",
       "match_score": 0.78
     },
     {
@@ -8616,7 +8616,7 @@
       "qty": 1.0,
       "list_price": 242.1,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: IPS e.max ZirCAD Prime A3 98,5",
+      "supplier_item_name": "Henry Schein: IPS e.max ZirCAD Prime A3 98,5 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8625,7 +8625,7 @@
       "qty": 1.0,
       "list_price": 199.85,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: IPS e.max ZirCAD Prime Est A3",
+      "supplier_item_name": "Henry Schein: IPS e.max ZirCAD Prime Est A3 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8634,7 +8634,7 @@
       "qty": 1.0,
       "list_price": 26.8,
       "item_discount": 0.26007462686567173,
-      "supplier_item_name": "Henry Schein: Gray Wax 16mm",
+      "supplier_item_name": "Henry Schein: Gray Wax 16mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8643,7 +8643,7 @@
       "qty": 1.0,
       "list_price": 112.5,
       "item_discount": 0.3500444444444444,
-      "supplier_item_name": "Henry Schein: HS-Edelkorund 110my, Alublast",
+      "supplier_item_name": "Henry Schein: HS-Edelkorund 110my, Alublast · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8652,7 +8652,7 @@
       "qty": 1.0,
       "list_price": 30.05,
       "item_discount": 0.2599001663893512,
-      "supplier_item_name": "Henry Schein: CAD/CAM Wax Disc Z 98mm H16mm",
+      "supplier_item_name": "Henry Schein: CAD/CAM Wax Disc Z 98mm H16mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8661,7 +8661,7 @@
       "qty": 1.0,
       "list_price": 125.65,
       "item_discount": 0.260007958615201,
-      "supplier_item_name": "Henry Schein: Bur 1,0 ZrO2 DC ST",
+      "supplier_item_name": "Henry Schein: Bur 1,0 ZrO2 DC ST · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8670,7 +8670,7 @@
       "qty": 2.0,
       "list_price": 14.15,
       "item_discount": 0.2600706713780918,
-      "supplier_item_name": "Henry Schein: Arti Fol Plastic schwarz/rot S",
+      "supplier_item_name": "Henry Schein: Arti Fol Plastic schwarz/rot S · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8679,25 +8679,25 @@
       "qty": 1.0,
       "list_price": 86.8,
       "item_discount": 0.26002304147465427,
-      "supplier_item_name": "Henry Schein: Dryz Unit-Dose Gingival Retrac",
+      "supplier_item_name": "Henry Schein: Dryz Unit-Dose Gingival Retrac · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-60788",
-      "qty": 1.0,
-      "list_price": 14.8,
+      "qty": 30.0,
+      "list_price": 0.49333333333333335,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Maxima Injektionskan 30G",
+      "supplier_item_name": "Henry Schein: HS-Maxima Injektionskan 30G · Basis: 30 g",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "G-001",
-      "qty": 1.0,
-      "list_price": 17.55,
+      "qty": 27.0,
+      "list_price": 0.65,
       "item_discount": 0.2598290598290598,
-      "supplier_item_name": "Henry Schein: Septoject XL Nadeln 27G 35mm",
+      "supplier_item_name": "Henry Schein: Septoject XL Nadeln 27G 35mm · Basis: 27 g",
       "match_score": 0.92
     },
     {
@@ -8706,7 +8706,7 @@
       "qty": 2.0,
       "list_price": 76.1,
       "item_discount": 0.2599868593955321,
-      "supplier_item_name": "Henry Schein: Flairesse Gel Erdbeere",
+      "supplier_item_name": "Henry Schein: Flairesse Gel Erdbeere · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8715,7 +8715,7 @@
       "qty": 1.0,
       "list_price": 55.97,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ah Temp Kit Set kompl",
+      "supplier_item_name": "Henry Schein: Ah Temp Kit Set kompl · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8724,7 +8724,7 @@
       "qty": 4.0,
       "list_price": 16.2,
       "item_discount": 0.26003086419753074,
-      "supplier_item_name": "Henry Schein: Transcodent Injektionskanülen",
+      "supplier_item_name": "Henry Schein: Transcodent Injektionskanülen · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8733,16 +8733,16 @@
       "qty": 6.0,
       "list_price": 4.2,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "Henry Schein: HS-Trayeinlagen weiss 18x28, T",
+      "supplier_item_name": "Henry Schein: HS-Trayeinlagen weiss 18x28, T · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "G-002",
-      "qty": 1.0,
-      "list_price": 84.3,
+      "qty": 2000.0,
+      "list_price": 0.04215,
       "item_discount": 0.260023724792408,
-      "supplier_item_name": "Henry Schein: Tork Advanced Handtuch weiß 2l",
+      "supplier_item_name": "Henry Schein: Tork Advanced Handtuch weiß 2l · Basis: 2 l",
       "match_score": 0.92
     },
     {
@@ -8751,16 +8751,16 @@
       "qty": 4.0,
       "list_price": 36.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Oxygenal 6 Flas 1 ltr.",
+      "supplier_item_name": "Henry Schein: Oxygenal 6 Flas 1 ltr. · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-94741",
-      "qty": 1.0,
-      "list_price": 16.95,
+      "qty": 50.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.26017699115044246,
-      "supplier_item_name": "Henry Schein: Super Snap Mini schwarz Np 50",
+      "supplier_item_name": "Henry Schein: Super Snap Mini schwarz Np 50 · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -8769,7 +8769,7 @@
       "qty": 6.0,
       "list_price": 29.05,
       "item_discount": 0.26001147446930595,
-      "supplier_item_name": "Henry Schein: Prophy Cup f Winkelstück grün",
+      "supplier_item_name": "Henry Schein: Prophy Cup f Winkelstück grün · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8778,7 +8778,7 @@
       "qty": 1.0,
       "list_price": 7.9,
       "item_discount": 0.35063291139240516,
-      "supplier_item_name": "Henry Schein: HS-Serviettenhalter verchromt",
+      "supplier_item_name": "Henry Schein: HS-Serviettenhalter verchromt · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8787,7 +8787,7 @@
       "qty": 2.0,
       "list_price": 66.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Silkam schwarz 4/0 HS21 Pack 1",
+      "supplier_item_name": "Henry Schein: Silkam schwarz 4/0 HS21 Pack 1 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8796,25 +8796,25 @@
       "qty": 1.0,
       "list_price": 16.95,
       "item_discount": 0.26017699115044246,
-      "supplier_item_name": "Henry Schein: Super Snap doppelseitig violet",
+      "supplier_item_name": "Henry Schein: Super Snap doppelseitig violet · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-42726",
-      "qty": 2.0,
-      "list_price": 46.95,
+      "qty": 9.6,
+      "list_price": 9.781250000000002,
       "item_discount": 0.2599574014909479,
-      "supplier_item_name": "Henry Schein: Zahnlack BioC CHX Spri 4x1,2ml",
+      "supplier_item_name": "Henry Schein: Zahnlack BioC CHX Spri 4x1,2ml · Basis: 4 x 1.2 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-48717",
-      "qty": 2.0,
-      "list_price": 42.13,
+      "qty": 5000.0,
+      "list_price": 0.016852000000000002,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Orotol Plus Flas 2,5l",
+      "supplier_item_name": "Henry Schein: Orotol Plus Flas 2,5l · Basis: 2.5 l",
       "match_score": 0.78
     },
     {
@@ -8823,7 +8823,7 @@
       "qty": 2.0,
       "list_price": 65.35,
       "item_discount": 0.25998469778117816,
-      "supplier_item_name": "Henry Schein: Steam Chemical Indicator",
+      "supplier_item_name": "Henry Schein: Steam Chemical Indicator · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8832,7 +8832,7 @@
       "qty": 2.0,
       "list_price": 15.9,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Mundspiegel 3 Plan, Mouthmi",
+      "supplier_item_name": "Henry Schein: HS-Mundspiegel 3 Plan, Mouthmi · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8841,7 +8841,7 @@
       "qty": 1.0,
       "list_price": 33.2,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten dklbla",
+      "supplier_item_name": "Henry Schein: HS-Papier Pe Servietten dklbla · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8850,7 +8850,7 @@
       "qty": 5.0,
       "list_price": 6.45,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Medizinbecher graduiert 30ccm",
+      "supplier_item_name": "Henry Schein: Medizinbecher graduiert 30ccm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8859,25 +8859,25 @@
       "qty": 1.0,
       "list_price": 82.95,
       "item_discount": 0.26003616636528026,
-      "supplier_item_name": "Henry Schein: Nitram Öl für DAC blau Fl 200",
+      "supplier_item_name": "Henry Schein: Nitram Öl für DAC blau Fl 200 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-87354",
-      "qty": 1.0,
-      "list_price": 16.95,
+      "qty": 50.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.26017699115044246,
-      "supplier_item_name": "Henry Schein: Super Snap Mini grün Np 50 St",
+      "supplier_item_name": "Henry Schein: Super Snap Mini grün Np 50 St · Basis: 50 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-10188",
-      "qty": 1.0,
-      "list_price": 16.95,
+      "qty": 50.0,
+      "list_price": 0.33899999999999997,
       "item_discount": 0.26017699115044246,
-      "supplier_item_name": "Henry Schein: Super Snap rot Np 50 St",
+      "supplier_item_name": "Henry Schein: Super Snap rot Np 50 St · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -8886,7 +8886,7 @@
       "qty": 1.0,
       "list_price": 16.95,
       "item_discount": 0.26017699115044246,
-      "supplier_item_name": "Henry Schein: Super Snap Mini doppelseiti ro",
+      "supplier_item_name": "Henry Schein: Super Snap Mini doppelseiti ro · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8895,7 +8895,7 @@
       "qty": 4.0,
       "list_price": 10.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Mira Clin hap Polierpaste, Pa",
+      "supplier_item_name": "Henry Schein: Mira Clin hap Polierpaste, Pa · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8904,7 +8904,7 @@
       "qty": 6.0,
       "list_price": 41.8,
       "item_discount": 0.2600079744816586,
-      "supplier_item_name": "Henry Schein: Epitex Finierstreifen grob bla",
+      "supplier_item_name": "Henry Schein: Epitex Finierstreifen grob bla · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8913,7 +8913,7 @@
       "qty": 6.0,
       "list_price": 30.89,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Epitex Finierstreifen mittel g",
+      "supplier_item_name": "Henry Schein: Epitex Finierstreifen mittel g · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8922,7 +8922,7 @@
       "qty": 3.0,
       "list_price": 93.65,
       "item_discount": 2.220446049250313e-16,
-      "supplier_item_name": "Henry Schein: OptraGate 2 Regular Refill",
+      "supplier_item_name": "Henry Schein: OptraGate 2 Regular Refill · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8931,7 +8931,7 @@
       "qty": 2.0,
       "list_price": 56.15,
       "item_discount": 0.26001780943900266,
-      "supplier_item_name": "Henry Schein: MD 555 Spezialreiniger Flas",
+      "supplier_item_name": "Henry Schein: MD 555 Spezialreiniger Flas · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8940,7 +8940,7 @@
       "qty": 2.0,
       "list_price": 19.9,
       "item_discount": 0.26005025125628134,
-      "supplier_item_name": "Henry Schein: MD 550 Mundspülbeckenreiniger",
+      "supplier_item_name": "Henry Schein: MD 550 Mundspülbeckenreiniger · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8949,16 +8949,16 @@
       "qty": 1.0,
       "list_price": 4.94,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Watterollen G2 Cotton Cell",
+      "supplier_item_name": "Henry Schein: HS-Watterollen G2 Cotton Cell · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-44584",
-      "qty": 1.0,
-      "list_price": 52.5,
+      "qty": 6.0,
+      "list_price": 8.75,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Filter für DAC Pa 6 St",
+      "supplier_item_name": "Henry Schein: Filter für DAC Pa 6 St · Basis: 6 St",
       "match_score": 0.78
     },
     {
@@ -8967,7 +8967,7 @@
       "qty": 1.0,
       "list_price": 24.3,
       "item_discount": 0.35020576131687253,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -8976,7 +8976,7 @@
       "qty": 4.0,
       "list_price": 15.8,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Einmalzahnbürsten mit Zahnp",
+      "supplier_item_name": "Henry Schein: HS-Einmalzahnbürsten mit Zahnp · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8985,7 +8985,7 @@
       "qty": 10.0,
       "list_price": 10.2,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Pinzette College gerieft, l",
+      "supplier_item_name": "Henry Schein: HS-Pinzette College gerieft, l · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -8994,16 +8994,16 @@
       "qty": 1.0,
       "list_price": 235.1,
       "item_discount": 0.2600170140365802,
-      "supplier_item_name": "Henry Schein: Mollosil plus Standardpackung",
+      "supplier_item_name": "Henry Schein: Mollosil plus Standardpackung · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-36143",
-      "qty": 1.0,
-      "list_price": 64.0,
+      "qty": 5000.0,
+      "list_price": 0.0128,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: MEtherm 55 Neutralisator 5L",
+      "supplier_item_name": "Henry Schein: MEtherm 55 Neutralisator 5L · Basis: 5 l",
       "match_score": 0.78
     },
     {
@@ -9012,16 +9012,16 @@
       "qty": 5.0,
       "list_price": 22.15,
       "item_discount": 0.2600451467268623,
-      "supplier_item_name": "Henry Schein: Artikulationspapier blau Kass",
+      "supplier_item_name": "Henry Schein: Artikulationspapier blau Kass · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-11573",
-      "qty": 1.0,
-      "list_price": 125.9,
+      "qty": 3.0,
+      "list_price": 41.96666666666667,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Periotom P3 m wechselbaren Ein",
+      "supplier_item_name": "Henry Schein: Periotom P3 m wechselbaren Ein · Basis: 3 St",
       "match_score": 0.78
     },
     {
@@ -9030,7 +9030,7 @@
       "qty": 1.0,
       "list_price": 124.55,
       "item_discount": 0.2599759132878362,
-      "supplier_item_name": "Henry Schein: RISKONTROL Adapter LU Inox",
+      "supplier_item_name": "Henry Schein: RISKONTROL Adapter LU Inox · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9039,7 +9039,7 @@
       "qty": 6.0,
       "list_price": 11.65,
       "item_discount": 0.25994277539341926,
-      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten",
+      "supplier_item_name": "Henry Schein: HS-Acclean Interdentalbürsten · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9048,16 +9048,16 @@
       "qty": 1.0,
       "list_price": 102.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Luxacore Z Smartmix Dual hell",
+      "supplier_item_name": "Henry Schein: Luxacore Z Smartmix Dual hell · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "P-10071",
-      "qty": 4.0,
-      "list_price": 16.15,
+      "qty": 200.0,
+      "list_price": 0.32299999999999995,
       "item_discount": 0.26006191950464397,
-      "supplier_item_name": "Henry Schein: DryTips klein P50",
+      "supplier_item_name": "Henry Schein: DryTips klein P50 · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -9066,7 +9066,7 @@
       "qty": 1.0,
       "list_price": 11.15,
       "item_discount": 0.2600896860986547,
-      "supplier_item_name": "Henry Schein: Patientenumhänge PE 2-lg dkl-b",
+      "supplier_item_name": "Henry Schein: Patientenumhänge PE 2-lg dkl-b · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9075,7 +9075,7 @@
       "qty": 1.0,
       "list_price": 13.9,
       "item_discount": 0.25971223021582746,
-      "supplier_item_name": "Henry Schein: CanalPro farbige Spritzen blau",
+      "supplier_item_name": "Henry Schein: CanalPro farbige Spritzen blau · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9084,7 +9084,7 @@
       "qty": 2.0,
       "list_price": 14.85,
       "item_discount": 0.2599326599326599,
-      "supplier_item_name": "Henry Schein: Papiersp. Greater Tap. SB 0.06",
+      "supplier_item_name": "Henry Schein: Papiersp. Greater Tap. SB 0.06 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9093,7 +9093,7 @@
       "qty": 1.0,
       "list_price": 91.35,
       "item_discount": 0.2599890530925014,
-      "supplier_item_name": "Henry Schein: Tork ex weiche Zickzack Handtü",
+      "supplier_item_name": "Henry Schein: Tork ex weiche Zickzack Handtü · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9102,7 +9102,7 @@
       "qty": 1.0,
       "list_price": 16.2,
       "item_discount": 0.2598765432098765,
-      "supplier_item_name": "Henry Schein: Transcodent Injektionskanülen",
+      "supplier_item_name": "Henry Schein: Transcodent Injektionskanülen · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9111,16 +9111,16 @@
       "qty": 4.0,
       "list_price": 55.95,
       "item_discount": 0.2600089365504915,
-      "supplier_item_name": "Henry Schein: RISKONTROL NV Einwegansätze we",
+      "supplier_item_name": "Henry Schein: RISKONTROL NV Einwegansätze we · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082251",
       "product_id": "G-009",
-      "qty": 1.0,
-      "list_price": 23.95,
+      "qty": 5.0,
+      "list_price": 4.79,
       "item_discount": 0.26012526096033406,
-      "supplier_item_name": "Henry Schein: Nitraclean Reinigungstabs Pa 5",
+      "supplier_item_name": "Henry Schein: Nitraclean Reinigungstabs Pa 5 · Basis: 5 St",
       "match_score": 0.92
     },
     {
@@ -9129,7 +9129,7 @@
       "qty": 1.0,
       "list_price": 192.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ubistesin 1/400 000 Pack 6x50Z",
+      "supplier_item_name": "Henry Schein: Ubistesin 1/400 000 Pack 6x50Z · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9138,7 +9138,7 @@
       "qty": 6.0,
       "list_price": 4.2,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "Henry Schein: HS-Trayeinlagen weiss 18x28, T",
+      "supplier_item_name": "Henry Schein: HS-Trayeinlagen weiss 18x28, T · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9147,7 +9147,7 @@
       "qty": 10.0,
       "list_price": 2.7,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Oral-B Satin Tape 50m",
+      "supplier_item_name": "Henry Schein: Oral-B Satin Tape 50m · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9156,16 +9156,16 @@
       "qty": 1.0,
       "list_price": 58.9,
       "item_discount": 0.2599320882852292,
-      "supplier_item_name": "Henry Schein: HUWA SAN DENT P KART 6FL",
+      "supplier_item_name": "Henry Schein: HUWA SAN DENT P KART 6FL · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "G-010",
-      "qty": 8.0,
-      "list_price": 8.65,
+      "qty": 48.0,
+      "list_price": 1.4416666666666667,
       "item_discount": 0.25997109826589593,
-      "supplier_item_name": "Henry Schein: Mani K Feilen 25mm 15 P 6St",
+      "supplier_item_name": "Henry Schein: Mani K Feilen 25mm 15 P 6St · Basis: 6 St",
       "match_score": 0.92
     },
     {
@@ -9174,7 +9174,7 @@
       "qty": 1.0,
       "list_price": 24.3,
       "item_discount": 0.35020576131687253,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9183,25 +9183,25 @@
       "qty": 4.0,
       "list_price": 53.46,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: SDR Flow Plus Refill Univ. Pa",
+      "supplier_item_name": "Henry Schein: SDR Flow Plus Refill Univ. Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "G-002",
-      "qty": 1.0,
-      "list_price": 52.75,
+      "qty": 2000.0,
+      "list_price": 0.026375,
       "item_discount": 0.26009478672985775,
-      "supplier_item_name": "Henry Schein: Tork Advanced Handtuch grün 2l",
+      "supplier_item_name": "Henry Schein: Tork Advanced Handtuch grün 2l · Basis: 2 l",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "G-009",
-      "qty": 2.0,
-      "list_price": 15.35,
+      "qty": 1600.0,
+      "list_price": 0.0191875,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Night Cleaner 800ml",
+      "supplier_item_name": "Henry Schein: Night Cleaner 800ml · Basis: 800 ml",
       "match_score": 0.92
     },
     {
@@ -9210,7 +9210,7 @@
       "qty": 6.0,
       "list_price": 54.48,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Mtwo Taper 06 25 Mm/25 Ab 16 M",
+      "supplier_item_name": "Henry Schein: Mtwo Taper 06 25 Mm/25 Ab 16 M · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9219,7 +9219,7 @@
       "qty": 1.0,
       "list_price": 192.8,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ubistesin 1/100 000 Pack 6x50Z",
+      "supplier_item_name": "Henry Schein: Ubistesin 1/100 000 Pack 6x50Z · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9228,7 +9228,7 @@
       "qty": 5.0,
       "list_price": 2.45,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Speichelsauger blau 13cm 10",
+      "supplier_item_name": "Henry Schein: HS-Speichelsauger blau 13cm 10 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9237,7 +9237,7 @@
       "qty": 4.0,
       "list_price": 21.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Mtwo Papierspitzen Taper 06 25",
+      "supplier_item_name": "Henry Schein: Mtwo Papierspitzen Taper 06 25 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9246,7 +9246,7 @@
       "qty": 2.0,
       "list_price": 38.68,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Mischkanülen mit Intraoral-Tip",
+      "supplier_item_name": "Henry Schein: Mischkanülen mit Intraoral-Tip · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9255,7 +9255,7 @@
       "qty": 2.0,
       "list_price": 149.29,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Adhese Universal Refill VivaPe",
+      "supplier_item_name": "Henry Schein: Adhese Universal Refill VivaPe · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9264,7 +9264,7 @@
       "qty": 10.0,
       "list_price": 5.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr",
+      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9273,16 +9273,16 @@
       "qty": 2.0,
       "list_price": 99.27,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Ketac Cem Aplicap Pack 50Kaps",
+      "supplier_item_name": "Henry Schein: Ketac Cem Aplicap Pack 50Kaps · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "G-004",
-      "qty": 1.0,
-      "list_price": 72.9,
+      "qty": 25.0,
+      "list_price": 2.9160000000000004,
       "item_discount": 0.2599451303155007,
-      "supplier_item_name": "Henry Schein: DMG Retraktionspaste 2 Pack 25",
+      "supplier_item_name": "Henry Schein: DMG Retraktionspaste 2 Pack 25 · Basis: 25 St",
       "match_score": 0.92
     },
     {
@@ -9291,7 +9291,7 @@
       "qty": 10.0,
       "list_price": 10.45,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: PINKALGIN 5, Pa453g",
+      "supplier_item_name": "Henry Schein: PINKALGIN 5, Pa453g · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9300,7 +9300,7 @@
       "qty": 4.0,
       "list_price": 36.4,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Mischkanüle T-Mixer gelb PA",
+      "supplier_item_name": "Henry Schein: HS-Mischkanüle T-Mixer gelb PA · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9309,7 +9309,7 @@
       "qty": 5.0,
       "list_price": 16.45,
       "item_discount": 0.35003039513677814,
-      "supplier_item_name": "Henry Schein: HS-Nitril Handschuhe pf pink S",
+      "supplier_item_name": "Henry Schein: HS-Nitril Handschuhe pf pink S · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9318,7 +9318,7 @@
       "qty": 2.0,
       "list_price": 3.95,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Nitril Handslight pf weiß C",
+      "supplier_item_name": "Henry Schein: HS-Nitril Handslight pf weiß C · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9327,7 +9327,7 @@
       "qty": 10.0,
       "list_price": 5.82,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Pop-up Wipes 20x30",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Pop-up Wipes 20x30 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9336,7 +9336,7 @@
       "qty": 3.0,
       "list_price": 80.5,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Amalgam-Rotor grau",
+      "supplier_item_name": "Henry Schein: Amalgam-Rotor grau · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9345,7 +9345,7 @@
       "qty": 30.0,
       "list_price": 5.82,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Pop-up Wipes 20x30",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Pop-up Wipes 20x30 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9354,7 +9354,7 @@
       "qty": 10.0,
       "list_price": 3.95,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Nitril Handslight pf weiß C",
+      "supplier_item_name": "Henry Schein: HS-Nitril Handslight pf weiß C · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9363,7 +9363,7 @@
       "qty": 50.0,
       "list_price": 5.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr",
+      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9372,7 +9372,7 @@
       "qty": 20.0,
       "list_price": 6.24,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr",
+      "supplier_item_name": "Henry Schein: HS-Latex Hands.ExtraGrip pf Cr · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9381,7 +9381,7 @@
       "qty": 2.0,
       "list_price": 37.95,
       "item_discount": 0.3500658761528328,
-      "supplier_item_name": "Henry Schein: HS-CRITERION PF SURGEON GLOV 6",
+      "supplier_item_name": "Henry Schein: HS-CRITERION PF SURGEON GLOV 6 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9390,7 +9390,7 @@
       "qty": 20.0,
       "list_price": 2.45,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Speichelsauger blau 13cm 10",
+      "supplier_item_name": "Henry Schein: HS-Speichelsauger blau 13cm 10 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9399,16 +9399,16 @@
       "qty": 10.0,
       "list_price": 15.6,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Mundspiegel Rhod 4 Plan, Mo",
+      "supplier_item_name": "Henry Schein: HS-Mundspiegel Rhod 4 Plan, Mo · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "P-60788",
-      "qty": 5.0,
-      "list_price": 9.6,
+      "qty": 135.0,
+      "list_price": 0.35555555555555557,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Maxima Injektionskan 27G",
+      "supplier_item_name": "Henry Schein: HS-Maxima Injektionskan 27G · Basis: 27 g",
       "match_score": 0.78
     },
     {
@@ -9417,7 +9417,7 @@
       "qty": 4.0,
       "list_price": 9.83,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Wipes Lemon S Refi",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Wipes Lemon S Refi · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9426,7 +9426,7 @@
       "qty": 2.0,
       "list_price": 37.3,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Bur Disinf",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Bur Disinf · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9435,7 +9435,7 @@
       "qty": 10.0,
       "list_price": 15.95,
       "item_discount": 0.35003134796238244,
-      "supplier_item_name": "Henry Schein: HS-Nitril Handschuhe pf pink S",
+      "supplier_item_name": "Henry Schein: HS-Nitril Handschuhe pf pink S · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9444,7 +9444,7 @@
       "qty": 2.0,
       "list_price": 10.1,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-EuroseptPlus Orangenöl 250",
+      "supplier_item_name": "Henry Schein: HS-EuroseptPlus Orangenöl 250 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9453,7 +9453,7 @@
       "qty": 3.0,
       "list_price": 36.4,
       "item_discount": 0.34999999999999987,
-      "supplier_item_name": "Henry Schein: HS-Mischkanüle T-Mixer gelb PA",
+      "supplier_item_name": "Henry Schein: HS-Mischkanüle T-Mixer gelb PA · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9462,7 +9462,7 @@
       "qty": 5.0,
       "list_price": 24.83,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Mischkanüle T-Mixer rosa PA",
+      "supplier_item_name": "Henry Schein: HS-Mischkanüle T-Mixer rosa PA · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9471,7 +9471,7 @@
       "qty": 2.0,
       "list_price": 24.3,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 50mm Sterireel R · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9480,7 +9480,7 @@
       "qty": 4.0,
       "list_price": 2.0,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Kältespray mint, Endo Cold",
+      "supplier_item_name": "Henry Schein: HS-Kältespray mint, Endo Cold · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9489,7 +9489,7 @@
       "qty": 5.0,
       "list_price": 10.2,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Watterollen G3 Cotton Cell",
+      "supplier_item_name": "Henry Schein: HS-Watterollen G3 Cotton Cell · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9498,7 +9498,7 @@
       "qty": 10.0,
       "list_price": 13.1,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Schaumstoffpellets Gr 2 Foa",
+      "supplier_item_name": "Henry Schein: HS-Schaumstoffpellets Gr 2 Foa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9507,7 +9507,7 @@
       "qty": 1.0,
       "list_price": 42.12,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Surface Desi",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Surface Desi · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9516,7 +9516,7 @@
       "qty": 10.0,
       "list_price": 15.9,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Handdesinfekt",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Handdesinfekt · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9525,16 +9525,16 @@
       "qty": 4.0,
       "list_price": 3.54,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Handdesinfekt",
+      "supplier_item_name": "Henry Schein: HS-EuroSept Xtra Handdesinfekt · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "P-79199",
-      "qty": 4.0,
-      "list_price": 43.25,
+      "qty": 200.0,
+      "list_price": 0.865,
       "item_discount": 0.2599999999999999,
-      "supplier_item_name": "Henry Schein: Gelatamp 14X7X7mm Glas 50Stck",
+      "supplier_item_name": "Henry Schein: Gelatamp 14X7X7mm Glas 50Stck · Basis: 50 St",
       "match_score": 0.78
     },
     {
@@ -9543,16 +9543,16 @@
       "qty": 2.0,
       "list_price": 110.4,
       "item_discount": 0.2600090579710146,
-      "supplier_item_name": "Henry Schein: Polierer W1 montiert weiß Pa 1",
+      "supplier_item_name": "Henry Schein: Polierer W1 montiert weiß Pa 1 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "G-010",
-      "qty": 10.0,
-      "list_price": 11.95,
+      "qty": 60.0,
+      "list_price": 1.9916666666666665,
       "item_discount": 0.2599999999999999,
-      "supplier_item_name": "Henry Schein: K-Feilen 20 25 mm Pa 6 St",
+      "supplier_item_name": "Henry Schein: K-Feilen 20 25 mm Pa 6 St · Basis: 6 St",
       "match_score": 0.92
     },
     {
@@ -9561,7 +9561,7 @@
       "qty": 1.0,
       "list_price": 11.15,
       "item_discount": 0.34977578475336324,
-      "supplier_item_name": "Henry Schein: HS-Maxima Wurzelfüller No 1 ro",
+      "supplier_item_name": "Henry Schein: HS-Maxima Wurzelfüller No 1 ro · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9570,7 +9570,7 @@
       "qty": 2.0,
       "list_price": 21.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Silikon Stopper Gelb Spen 200",
+      "supplier_item_name": "Henry Schein: Silikon Stopper Gelb Spen 200 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9579,7 +9579,7 @@
       "qty": 1.0,
       "list_price": 21.13,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Silikon Stopper Schwarz Spen 2",
+      "supplier_item_name": "Henry Schein: Silikon Stopper Schwarz Spen 2 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9588,7 +9588,7 @@
       "qty": 1.0,
       "list_price": 62.9,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: WL Clean Klinikpackung Pack 4x",
+      "supplier_item_name": "Henry Schein: WL Clean Klinikpackung Pack 4x · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9597,7 +9597,7 @@
       "qty": 1.0,
       "list_price": 60.27,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: WL Cid Klinikpackung Pack 4x50",
+      "supplier_item_name": "Henry Schein: WL Cid Klinikpackung Pack 4x50 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9606,7 +9606,7 @@
       "qty": 10.0,
       "list_price": 3.45,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Meridol Zahnseide gewachst Pac",
+      "supplier_item_name": "Henry Schein: Meridol Zahnseide gewachst Pac · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9615,7 +9615,7 @@
       "qty": 2.0,
       "list_price": 34.9,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 75mm Sterireel R",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 75mm Sterireel R · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9624,16 +9624,16 @@
       "qty": 1.0,
       "list_price": 15.8,
       "item_discount": 0.3500000000000001,
-      "supplier_item_name": "Henry Schein: HS-Einmalzahnbürsten mit Zahnp",
+      "supplier_item_name": "Henry Schein: HS-Einmalzahnbürsten mit Zahnp · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "P-31216",
-      "qty": 2.0,
-      "list_price": 25.9,
+      "qty": 360.0,
+      "list_price": 0.14388888888888887,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Pappbecher 180ml recycelbar",
+      "supplier_item_name": "Henry Schein: HS-Pappbecher 180ml recycelbar · Basis: 180 ml",
       "match_score": 0.78
     },
     {
@@ -9642,7 +9642,7 @@
       "qty": 2.0,
       "list_price": 26.05,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: HS-Sterifolie 100mm Sterireel",
+      "supplier_item_name": "Henry Schein: HS-Sterifolie 100mm Sterireel · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9651,7 +9651,7 @@
       "qty": 5.0,
       "list_price": 157.72,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: SDR Flow Plus Eco Refill Univ.",
+      "supplier_item_name": "Henry Schein: SDR Flow Plus Eco Refill Univ. · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9660,7 +9660,7 @@
       "qty": 1.0,
       "list_price": 7.25,
       "item_discount": 0.2606896551724137,
-      "supplier_item_name": "Henry Schein: Diacera W16DCMF grün mittel Sp",
+      "supplier_item_name": "Henry Schein: Diacera W16DCMF grün mittel Sp · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9669,7 +9669,7 @@
       "qty": 1.0,
       "list_price": 115.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Opalescence Boost 40% Patient",
+      "supplier_item_name": "Henry Schein: Opalescence Boost 40% Patient · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9678,16 +9678,16 @@
       "qty": 1.0,
       "list_price": 24.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Fleximeter Strips sortiert Pa",
+      "supplier_item_name": "Henry Schein: Fleximeter Strips sortiert Pa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "P-38309",
-      "qty": 1.0,
-      "list_price": 21.27,
+      "qty": 48.0,
+      "list_price": 0.443125,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: OptraStick Refill Pa 48 Stck",
+      "supplier_item_name": "Henry Schein: OptraStick Refill Pa 48 Stck · Basis: 48 St",
       "match_score": 0.78
     },
     {
@@ -9696,16 +9696,16 @@
       "qty": 1.0,
       "list_price": 192.35,
       "item_discount": 0.2599948011437483,
-      "supplier_item_name": "Henry Schein: GC Tooth Mousse Erdbeere",
+      "supplier_item_name": "Henry Schein: GC Tooth Mousse Erdbeere · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231082265",
       "product_id": "G-014",
-      "qty": 2.0,
-      "list_price": 39.0,
+      "qty": 10.0,
+      "list_price": 7.8,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Luxatemp Glaze+Bond Fl 5 ml",
+      "supplier_item_name": "Henry Schein: Luxatemp Glaze+Bond Fl 5 ml · Basis: 5 ml",
       "match_score": 0.92
     },
     {
@@ -9714,7 +9714,7 @@
       "qty": 1.0,
       "list_price": 472.4,
       "item_discount": 0.2599915325994919,
-      "supplier_item_name": "Henry Schein: Imprint 4 PentaTM Heavy Value",
+      "supplier_item_name": "Henry Schein: Imprint 4 PentaTM Heavy Value · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9723,7 +9723,7 @@
       "qty": 4.0,
       "list_price": 42.25,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Quattrocare Plus Spray Dose 50",
+      "supplier_item_name": "Henry Schein: Quattrocare Plus Spray Dose 50 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9732,7 +9732,7 @@
       "qty": 1.0,
       "list_price": 2.8,
       "item_discount": 0.2607142857142857,
-      "supplier_item_name": "Henry Schein: HS-Alginat Messbesteck Löffel",
+      "supplier_item_name": "Henry Schein: HS-Alginat Messbesteck Löffel · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9741,7 +9741,7 @@
       "qty": 1.0,
       "list_price": 120.1,
       "item_discount": 0.2600333055786843,
-      "supplier_item_name": "Henry Schein: Opalescence Endo Kit",
+      "supplier_item_name": "Henry Schein: Opalescence Endo Kit · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9750,7 +9750,7 @@
       "qty": 1.0,
       "list_price": 68.5,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Staubbeutelset vollsynthetisch",
+      "supplier_item_name": "Henry Schein: Staubbeutelset vollsynthetisch · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9759,7 +9759,7 @@
       "qty": 1.0,
       "list_price": 30.95,
       "item_discount": 0.260096930533118,
-      "supplier_item_name": "Henry Schein: Fujivest Super Flüssigkeit Fla",
+      "supplier_item_name": "Henry Schein: Fujivest Super Flüssigkeit Fla · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9768,7 +9768,7 @@
       "qty": 1.0,
       "list_price": 157.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: IPS Ivocolor Glaze Paste FLUO",
+      "supplier_item_name": "Henry Schein: IPS Ivocolor Glaze Paste FLUO · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9777,7 +9777,7 @@
       "qty": 2.0,
       "list_price": 18.5,
       "item_discount": 0.35,
-      "supplier_item_name": "Henry Schein: HS-Destilliertes Wasser unster",
+      "supplier_item_name": "Henry Schein: HS-Destilliertes Wasser unster · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9786,7 +9786,7 @@
       "qty": 2.0,
       "list_price": 69.7,
       "item_discount": 0.25997130559540893,
-      "supplier_item_name": "Henry Schein: Bur 2,5 PMMA ST",
+      "supplier_item_name": "Henry Schein: Bur 2,5 PMMA ST · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9795,7 +9795,7 @@
       "qty": 1.0,
       "list_price": 72.0,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Bur 0,5 PMMA ST",
+      "supplier_item_name": "Henry Schein: Bur 0,5 PMMA ST · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9804,7 +9804,7 @@
       "qty": 1.0,
       "list_price": 66.9,
       "item_discount": 0.25994020926756367,
-      "supplier_item_name": "Henry Schein: Bur 1,0 PMMA ST",
+      "supplier_item_name": "Henry Schein: Bur 1,0 PMMA ST · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9813,7 +9813,7 @@
       "qty": 1.0,
       "list_price": 125.65,
       "item_discount": 0.260007958615201,
-      "supplier_item_name": "Henry Schein: Bur 2,5 ZrO2 DC ST",
+      "supplier_item_name": "Henry Schein: Bur 2,5 ZrO2 DC ST · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9822,25 +9822,25 @@
       "qty": 1.0,
       "list_price": 47.05,
       "item_discount": 0.2599362380446333,
-      "supplier_item_name": "Henry Schein: Erkoloc Pro 120 2mm Pack 10Stc",
+      "supplier_item_name": "Henry Schein: Erkoloc Pro 120 2mm Pack 10Stc · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-80807",
-      "qty": 1.0,
-      "list_price": 26.25,
+      "qty": 10.0,
+      "list_price": 2.625,
       "item_discount": 0.2601904761904761,
-      "supplier_item_name": "Henry Schein: Erkodur 1,50 120mm Pack 10Stck",
+      "supplier_item_name": "Henry Schein: Erkodur 1,50 120mm Pack 10Stck · Basis: 10 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-30658",
-      "qty": 1.0,
-      "list_price": 56.0,
+      "qty": 500.0,
+      "list_price": 0.112,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Aislar Fl 500 ml",
+      "supplier_item_name": "Henry Schein: Aislar Fl 500 ml · Basis: 500 ml",
       "match_score": 0.78
     },
     {
@@ -9849,34 +9849,34 @@
       "qty": 1.0,
       "list_price": 66.5,
       "item_discount": 0.3500751879699249,
-      "supplier_item_name": "Henry Schein: HS-Löffelplatten rosa Impressi",
+      "supplier_item_name": "Henry Schein: HS-Löffelplatten rosa Impressi · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-30946",
-      "qty": 1.0,
-      "list_price": 35.0,
+      "qty": 2.0,
+      "list_price": 17.5,
       "item_discount": 0.26,
-      "supplier_item_name": "Henry Schein: Takanishi Pinsel Gr. 8 Pa 2 St",
+      "supplier_item_name": "Henry Schein: Takanishi Pinsel Gr. 8 Pa 2 St · Basis: 2 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-30946",
-      "qty": 1.0,
-      "list_price": 16.75,
+      "qty": 2.0,
+      "list_price": 8.375,
       "item_discount": 0.26029850746268657,
-      "supplier_item_name": "Henry Schein: Takanishi Pinsel Gr. 1/0 Pa 2",
+      "supplier_item_name": "Henry Schein: Takanishi Pinsel Gr. 1/0 Pa 2 · Basis: 2 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-30946",
-      "qty": 1.0,
-      "list_price": 17.1,
+      "qty": 2.0,
+      "list_price": 8.55,
       "item_discount": 0.26023391812865504,
-      "supplier_item_name": "Henry Schein: Takanishi Pinsel Gr. 2 Pa 2 St",
+      "supplier_item_name": "Henry Schein: Takanishi Pinsel Gr. 2 Pa 2 St · Basis: 2 St",
       "match_score": 0.78
     },
     {
@@ -9885,7 +9885,7 @@
       "qty": 2.0,
       "list_price": 13.85,
       "item_discount": 0.25992779783393505,
-      "supplier_item_name": "Henry Schein: Sekundenkleber 1733-0100",
+      "supplier_item_name": "Henry Schein: Sekundenkleber 1733-0100 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9894,7 +9894,7 @@
       "qty": 1.0,
       "list_price": 57.8,
       "item_discount": 0.2600346020761245,
-      "supplier_item_name": "Henry Schein: IPS e.max Ceram Transpa Incisa",
+      "supplier_item_name": "Henry Schein: IPS e.max Ceram Transpa Incisa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9903,25 +9903,25 @@
       "qty": 1.0,
       "list_price": 57.8,
       "item_discount": 0.2600346020761245,
-      "supplier_item_name": "Henry Schein: IPS e.max Ceram Transpa Incisa",
+      "supplier_item_name": "Henry Schein: IPS e.max Ceram Transpa Incisa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-19222",
-      "qty": 1.0,
-      "list_price": 57.8,
+      "qty": 20.0,
+      "list_price": 2.8899999999999997,
       "item_discount": 0.2600346020761245,
-      "supplier_item_name": "Henry Schein: IPS e.max Ceram Dentin A3 P 20",
+      "supplier_item_name": "Henry Schein: IPS e.max Ceram Dentin A3 P 20 · Basis: 20 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "G-009",
-      "qty": 2.0,
-      "list_price": 19.05,
+      "qty": 2000.0,
+      "list_price": 0.01905,
       "item_discount": 0.2601049868766404,
-      "supplier_item_name": "Henry Schein: Speedo Clean Liquid Flas 1l",
+      "supplier_item_name": "Henry Schein: Speedo Clean Liquid Flas 1l · Basis: 1 l",
       "match_score": 0.92
     },
     {
@@ -9930,7 +9930,7 @@
       "qty": 1.0,
       "list_price": 24.9,
       "item_discount": 0.3502008032128514,
-      "supplier_item_name": "Henry Schein: HS-Aufbewahrungsbox Sort. vers",
+      "supplier_item_name": "Henry Schein: HS-Aufbewahrungsbox Sort. vers · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9939,7 +9939,7 @@
       "qty": 2.0,
       "list_price": 93.65,
       "item_discount": 0.2600106780565937,
-      "supplier_item_name": "Henry Schein: DentaLub",
+      "supplier_item_name": "Henry Schein: DentaLub · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9948,16 +9948,16 @@
       "qty": 1.0,
       "list_price": 22.15,
       "item_discount": 0.2600451467268622,
-      "supplier_item_name": "Henry Schein: Takanishi Opakerpinsel",
+      "supplier_item_name": "Henry Schein: Takanishi Opakerpinsel · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-231083648",
       "product_id": "P-98347",
-      "qty": 1.0,
-      "list_price": 30.55,
+      "qty": 2.0,
+      "list_price": 15.275,
       "item_discount": 0.25990180032733223,
-      "supplier_item_name": "Henry Schein: Resimix mittel 30 ml Pa 2 St",
+      "supplier_item_name": "Henry Schein: Resimix mittel 30 ml Pa 2 St · Basis: 2 St",
       "match_score": 0.78
     },
     {
@@ -9966,7 +9966,7 @@
       "qty": 1.0,
       "list_price": 24.85,
       "item_discount": 0.2599597585513078,
-      "supplier_item_name": "Henry Schein: Resimix Anmischbecher gross 70",
+      "supplier_item_name": "Henry Schein: Resimix Anmischbecher gross 70 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -9975,7 +9975,7 @@
       "qty": 1.0,
       "list_price": 36.55,
       "item_discount": 0.25991792065663466,
-      "supplier_item_name": "Henry Schein: Erkoflex 3,0 120mm transparent",
+      "supplier_item_name": "Henry Schein: Erkoflex 3,0 120mm transparent · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9984,7 +9984,7 @@
       "qty": 1.0,
       "list_price": 75.2,
       "item_discount": 0.0,
-      "supplier_item_name": "Henry Schein: Aesthetic Blue Polymer Farbe 3",
+      "supplier_item_name": "Henry Schein: Aesthetic Blue Polymer Farbe 3 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -9993,7 +9993,7 @@
       "qty": -8.0,
       "list_price": 52.01,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Filtek Easy Match Universal Natural",
+      "supplier_item_name": "Plandent: Filtek Easy Match Universal Natural · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10002,7 +10002,7 @@
       "qty": 2.0,
       "list_price": 10.21,
       "item_discount": 0.0004897159647405669,
-      "supplier_item_name": "Plandent: ORBIject Kanülen grün 13mm G30",
+      "supplier_item_name": "Plandent: ORBIject Kanülen grün 13mm G30 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10011,16 +10011,16 @@
       "qty": 2.0,
       "list_price": 13.09,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Interdentalkeile 822.10 orange",
+      "supplier_item_name": "Plandent: Interdentalkeile 822.10 orange · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-24815",
-      "qty": 1.0,
-      "list_price": 7.47,
+      "qty": 50.0,
+      "list_price": 0.1494,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Chlorhexamed Praxis Gel 1% 50g",
+      "supplier_item_name": "Plandent: Chlorhexamed Praxis Gel 1% 50g · Basis: 50 g",
       "match_score": 0.78
     },
     {
@@ -10029,43 +10029,43 @@
       "qty": 3.0,
       "list_price": 9.62,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Interdentalbürsten gelb Gr. 0,7mm",
+      "supplier_item_name": "Plandent: Interdentalbürsten gelb Gr. 0,7mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "G-001",
-      "qty": 2.0,
-      "list_price": 46.97,
+      "qty": 20.0,
+      "list_price": 4.697,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Eddy Spülkanülen 5x2St.",
+      "supplier_item_name": "Plandent: Eddy Spülkanülen 5x2St. · Basis: 5 x 2 st",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "G-010",
-      "qty": 3.0,
-      "list_price": 87.5,
+      "qty": 18.0,
+      "list_price": 14.583333333333334,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Reciproc Feilen 21 mm R40 6 St.",
+      "supplier_item_name": "Plandent: Reciproc Feilen 21 mm R40 6 St. · Basis: 6 St",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "G-009",
-      "qty": 1.0,
-      "list_price": 119.67,
+      "qty": 500.0,
+      "list_price": 0.23934,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Calcinase 500 ml",
+      "supplier_item_name": "Plandent: Calcinase 500 ml · Basis: 500 ml",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "G-001",
-      "qty": 2.0,
-      "list_price": 43.95,
+      "qty": 100.0,
+      "list_price": 0.879,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Penta Mischkanülen 50St.",
+      "supplier_item_name": "Plandent: Penta Mischkanülen 50St. · Basis: 50 St",
       "match_score": 0.92
     },
     {
@@ -10074,7 +10074,7 @@
       "qty": 1.0,
       "list_price": 8.56,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Miraject PL für Luer-Spritzen gelb 22",
+      "supplier_item_name": "Plandent: Miraject PL für Luer-Spritzen gelb 22 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10083,7 +10083,7 @@
       "qty": 1.0,
       "list_price": 33.83,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: ORBIS Mischkanülen blau/orange",
+      "supplier_item_name": "Plandent: ORBIS Mischkanülen blau/orange · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10092,7 +10092,7 @@
       "qty": 2.0,
       "list_price": 34.64,
       "item_discount": 0.00014434180138578334,
-      "supplier_item_name": "Plandent: ORBIS Mischkanülen rosa stumpf",
+      "supplier_item_name": "Plandent: ORBIS Mischkanülen rosa stumpf · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10101,7 +10101,7 @@
       "qty": 1.0,
       "list_price": 34.55,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Einmalhandtücher 2-lagig hochweiß",
+      "supplier_item_name": "Plandent: Einmalhandtücher 2-lagig hochweiß · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10110,16 +10110,16 @@
       "qty": 1.0,
       "list_price": 19.57,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: ORBIS Schutzservietten dunkelblau",
+      "supplier_item_name": "Plandent: ORBIS Schutzservietten dunkelblau · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-53957",
-      "qty": 2.0,
-      "list_price": 6.99,
+      "qty": 8.0,
+      "list_price": 1.7475,
       "item_discount": 0.0007153075822603494,
-      "supplier_item_name": "Plandent: ORBIS Wattekügelchen 5,5mm 4g",
+      "supplier_item_name": "Plandent: ORBIS Wattekügelchen 5,5mm 4g · Basis: 4 g",
       "match_score": 0.78
     },
     {
@@ -10128,7 +10128,7 @@
       "qty": 1.0,
       "list_price": 8.96,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: ORBIS Traypapier blau 36x28cm",
+      "supplier_item_name": "Plandent: ORBIS Traypapier blau 36x28cm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10137,61 +10137,61 @@
       "qty": 12.0,
       "list_price": 7.88,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: ORBI-Sept Wet Wipes Sensitive",
+      "supplier_item_name": "Plandent: ORBI-Sept Wet Wipes Sensitive · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "G-010",
-      "qty": 4.0,
-      "list_price": 87.5,
+      "qty": 24.0,
+      "list_price": 14.583333333333334,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Reciproc Feilen 25 mm R25 6 St.",
+      "supplier_item_name": "Plandent: Reciproc Feilen 25 mm R25 6 St. · Basis: 6 St",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-18339",
-      "qty": 2.0,
-      "list_price": 39.19,
+      "qty": 1800.0,
+      "list_price": 0.04354444444444444,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Optosil Comfort Putty 900ml",
+      "supplier_item_name": "Plandent: Optosil Comfort Putty 900ml · Basis: 900 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-53134",
-      "qty": 1.0,
-      "list_price": 27.54,
+      "qty": 12.6,
+      "list_price": 2.1857142857142855,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: ORBIS Ätzgel Spritze 9x1,4ml (1,9g)",
+      "supplier_item_name": "Plandent: ORBIS Ätzgel Spritze 9x1,4ml (1,9g) · Basis: 9 x 1.4 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-98175",
-      "qty": 1.0,
-      "list_price": 85.19,
+      "qty": 200.0,
+      "list_price": 0.42595,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Ultracain D-S 1:200.000 10x20ml",
+      "supplier_item_name": "Plandent: Ultracain D-S 1:200.000 10x20ml · Basis: 10 x 20 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-46218",
-      "qty": 5.0,
-      "list_price": 23.56,
+      "qty": 50.0,
+      "list_price": 2.356,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Profluorid Varnish Minze 10ml-Tube",
+      "supplier_item_name": "Plandent: Profluorid Varnish Minze 10ml-Tube · Basis: 10 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-41107",
-      "qty": 2.0,
-      "list_price": 45.51,
+      "qty": 80.0,
+      "list_price": 1.13775,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Tri Plaque ID Gel 40g",
+      "supplier_item_name": "Plandent: Tri Plaque ID Gel 40g · Basis: 40 g",
       "match_score": 0.78
     },
     {
@@ -10200,34 +10200,34 @@
       "qty": 5.0,
       "list_price": 9.62,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Interdentalbürsten pink Gr. 0,4mm",
+      "supplier_item_name": "Plandent: Interdentalbürsten pink Gr. 0,4mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-43058",
-      "qty": 2.0,
-      "list_price": 41.43,
+      "qty": 240.0,
+      "list_price": 0.34525,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Remin Pro Mixed 3x40g",
+      "supplier_item_name": "Plandent: Remin Pro Mixed 3x40g · Basis: 3 x 40 g",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "P-33191",
-      "qty": 3.0,
-      "list_price": 106.26,
+      "qty": 240.0,
+      "list_price": 1.3282500000000002,
       "item_discount": 2.220446049250313e-16,
-      "supplier_item_name": "Plandent: OptraGate 2 Small 80St.",
+      "supplier_item_name": "Plandent: OptraGate 2 Small 80St. · Basis: 80 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7298107",
       "product_id": "G-004",
-      "qty": 1.0,
-      "list_price": 21.71,
+      "qty": 60.0,
+      "list_price": 0.36183333333333334,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Activator Universal Plus Paste 60ml",
+      "supplier_item_name": "Plandent: Activator Universal Plus Paste 60ml · Basis: 60 ml",
       "match_score": 0.92
     },
     {
@@ -10236,7 +10236,7 @@
       "qty": 2.0,
       "list_price": 2.62,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Monoart Einmal-Dappenbecher rot",
+      "supplier_item_name": "Plandent: Monoart Einmal-Dappenbecher rot · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10245,7 +10245,7 @@
       "qty": 1.0,
       "list_price": 409.0,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Ti-Max X55 Prophy-Winkelstück 4:1",
+      "supplier_item_name": "Plandent: Ti-Max X55 Prophy-Winkelstück 4:1 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10254,7 +10254,7 @@
       "qty": 2.0,
       "list_price": 11.53,
       "item_discount": 0.0004336513443190526,
-      "supplier_item_name": "Plandent: ORBIS Schaumstoffpellets 8mm",
+      "supplier_item_name": "Plandent: ORBIS Schaumstoffpellets 8mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10263,25 +10263,25 @@
       "qty": 1.0,
       "list_price": 34.55,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Einmalhandtücher 2-lagig hochweiß",
+      "supplier_item_name": "Plandent: Einmalhandtücher 2-lagig hochweiß · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7309817",
       "product_id": "G-001",
-      "qty": 4.0,
-      "list_price": 26.84,
+      "qty": 120.0,
+      "list_price": 0.8946666666666666,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Endo Absaugkanülen Luer 30G",
+      "supplier_item_name": "Plandent: Endo Absaugkanülen Luer 30G · Basis: 30 g",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-7309817",
       "product_id": "P-59284",
-      "qty": 1.0,
-      "list_price": 53.9,
+      "qty": 2.0,
+      "list_price": 26.95,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Mischbettharz für Meladem 40 2St.",
+      "supplier_item_name": "Plandent: Mischbettharz für Meladem 40 2St. · Basis: 2 St",
       "match_score": 0.78
     },
     {
@@ -10290,7 +10290,7 @@
       "qty": 18.0,
       "list_price": 7.88,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: ORBI-Sept Wet Wipes Sensitive",
+      "supplier_item_name": "Plandent: ORBI-Sept Wet Wipes Sensitive · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10299,7 +10299,7 @@
       "qty": 2.0,
       "list_price": 5.4,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: FW 90 Grad Bogen",
+      "supplier_item_name": "Plandent: FW 90 Grad Bogen · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10308,16 +10308,16 @@
       "qty": 2.0,
       "list_price": 1.35,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: FW Sicherungsring",
+      "supplier_item_name": "Plandent: FW Sicherungsring · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7309826",
       "product_id": "P-12045",
-      "qty": 1.0,
-      "list_price": 52.8,
+      "qty": 100.0,
+      "list_price": 0.528,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Rundmagnete Splitcast 100 St.",
+      "supplier_item_name": "Plandent: Rundmagnete Splitcast 100 St. · Basis: 100 St",
       "match_score": 0.78
     },
     {
@@ -10326,16 +10326,16 @@
       "qty": 3.0,
       "list_price": 33.27,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Durasplint LC 3er-Riegel",
+      "supplier_item_name": "Plandent: Durasplint LC 3er-Riegel · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-7309826",
       "product_id": "P-13280",
-      "qty": 2.0,
-      "list_price": 47.79,
+      "qty": 20.0,
+      "list_price": 4.779,
       "item_discount": 0.0,
-      "supplier_item_name": "Plandent: Durasoft pd 1,8x125mm 10St.",
+      "supplier_item_name": "Plandent: Durasoft pd 1,8x125mm 10St. · Basis: 10 St",
       "match_score": 0.78
     },
     {
@@ -10344,7 +10344,7 @@
       "qty": 1.0,
       "list_price": 258.58,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Prophy-Mate neo Handstück m.60°",
+      "supplier_item_name": "GERL: Prophy-Mate neo Handstück m.60° · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10353,16 +10353,16 @@
       "qty": 2.0,
       "list_price": 115.92,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: KATANA Zirconia Block STML 12Z A3",
+      "supplier_item_name": "GERL: KATANA Zirconia Block STML 12Z A3 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "G-013",
-      "qty": 2.0,
-      "list_price": 210.94,
+      "qty": 1200.0,
+      "list_price": 0.35156666666666664,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Impregum Penta 2x300ml",
+      "supplier_item_name": "GERL: Impregum Penta 2x300ml · Basis: 2 x 300 ml",
       "match_score": 0.92
     },
     {
@@ -10371,16 +10371,16 @@
       "qty": 1.0,
       "list_price": 115.72,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Ketac Univ.Aplicap weiß",
+      "supplier_item_name": "GERL: Ketac Univ.Aplicap weiß · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "G-003",
-      "qty": 1.0,
-      "list_price": 39.22,
+      "qty": 8.0,
+      "list_price": 4.9025,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Clip Spritze Pa 2x4g",
+      "supplier_item_name": "GERL: Clip Spritze Pa 2x4g · Basis: 2 x 4 g",
       "match_score": 0.92
     },
     {
@@ -10389,7 +10389,7 @@
       "qty": 2.0,
       "list_price": 109.97,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: PANAVIA V5 universal A2",
+      "supplier_item_name": "GERL: PANAVIA V5 universal A2 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10398,7 +10398,7 @@
       "qty": 4.0,
       "list_price": 27.99,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omnibite Vanilla",
+      "supplier_item_name": "GERL: Omnibite Vanilla · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10407,7 +10407,7 @@
       "qty": 5.0,
       "list_price": 16.65,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Sopira Free Flow 0,3/12 kurz ansch",
+      "supplier_item_name": "GERL: Sopira Free Flow 0,3/12 kurz ansch · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10416,7 +10416,7 @@
       "qty": 5.0,
       "list_price": 29.65,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Septanest m.Epinephrin 1:200.000",
+      "supplier_item_name": "GERL: Septanest m.Epinephrin 1:200.000 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10425,7 +10425,7 @@
       "qty": 2.0,
       "list_price": 8.99,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Mira-2-Ton Plaquetest flüssig",
+      "supplier_item_name": "GERL: Mira-2-Ton Plaquetest flüssig · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10434,7 +10434,7 @@
       "qty": 2.0,
       "list_price": 15.82,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: ProphyCare Paste rot RDA 120",
+      "supplier_item_name": "GERL: ProphyCare Paste rot RDA 120 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10443,7 +10443,7 @@
       "qty": 2.0,
       "list_price": 15.82,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: ProphyCare Paste grün RDA 170",
+      "supplier_item_name": "GERL: ProphyCare Paste grün RDA 170 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10452,7 +10452,7 @@
       "qty": 1.0,
       "list_price": 3.5,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Temperaturstabiler Transport",
+      "supplier_item_name": "GERL: Temperaturstabiler Transport · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10461,7 +10461,7 @@
       "qty": 1.0,
       "list_price": 38.79,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain",
+      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10470,16 +10470,16 @@
       "qty": 1.0,
       "list_price": 64.14,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain",
+      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "G-004",
-      "qty": 1.0,
-      "list_price": 38.79,
+      "qty": 3.0,
+      "list_price": 12.93,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain A+ Pa 3g",
+      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain A+ Pa 3g · Basis: 3 g",
       "match_score": 0.92
     },
     {
@@ -10488,25 +10488,25 @@
       "qty": 1.0,
       "list_price": 8.9,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Porto und Verpackung",
+      "supplier_item_name": "GERL: Porto und Verpackung · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-72500",
-      "qty": 4.0,
-      "list_price": 3.69,
+      "qty": 800.0,
+      "list_price": 0.01845,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Kältespray Orange Dose 200ml",
+      "supplier_item_name": "GERL: Omni Kältespray Orange Dose 200ml · Basis: 200 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-72500",
-      "qty": 9.0,
-      "list_price": 3.69,
+      "qty": 1800.0,
+      "list_price": 0.01845,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Kältespray Orange Dose 200ml",
+      "supplier_item_name": "GERL: Omni Kältespray Orange Dose 200ml · Basis: 200 ml",
       "match_score": 0.78
     },
     {
@@ -10515,7 +10515,7 @@
       "qty": 1.0,
       "list_price": 50.85,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: EVE DIAPOL TWIST Polierer RA",
+      "supplier_item_name": "GERL: EVE DIAPOL TWIST Polierer RA · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10524,7 +10524,7 @@
       "qty": 1.0,
       "list_price": 50.85,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: EVE DIAPOL TWIST Polierer RA",
+      "supplier_item_name": "GERL: EVE DIAPOL TWIST Polierer RA · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10533,7 +10533,7 @@
       "qty": 1.0,
       "list_price": 50.85,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: EVE DIAPOL TWIST Polierer RA",
+      "supplier_item_name": "GERL: EVE DIAPOL TWIST Polierer RA · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10542,7 +10542,7 @@
       "qty": 2.0,
       "list_price": 115.92,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: KATANA Zirconia Block STML 12Z",
+      "supplier_item_name": "GERL: KATANA Zirconia Block STML 12Z · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10551,7 +10551,7 @@
       "qty": 1.0,
       "list_price": 144.08,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Oraqix Parodontal-Gel",
+      "supplier_item_name": "GERL: Oraqix Parodontal-Gel · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10560,7 +10560,7 @@
       "qty": 1.0,
       "list_price": 2.94,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Speichelsauger rot",
+      "supplier_item_name": "GERL: Omni Speichelsauger rot · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10569,7 +10569,7 @@
       "qty": 1.0,
       "list_price": 2.94,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Speichelsauger orange",
+      "supplier_item_name": "GERL: Omni Speichelsauger orange · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10578,7 +10578,7 @@
       "qty": 1.0,
       "list_price": 2.94,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Speichelsauger lila",
+      "supplier_item_name": "GERL: Omni Speichelsauger lila · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10587,7 +10587,7 @@
       "qty": 1.0,
       "list_price": 2.94,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Speichelsauger grün",
+      "supplier_item_name": "GERL: Omni Speichelsauger grün · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10596,7 +10596,7 @@
       "qty": 1.0,
       "list_price": 2.94,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Speichelsauger gelb",
+      "supplier_item_name": "GERL: Omni Speichelsauger gelb · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10605,7 +10605,7 @@
       "qty": 1.0,
       "list_price": 2.94,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Speichelsauger blau",
+      "supplier_item_name": "GERL: Omni Speichelsauger blau · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10614,7 +10614,7 @@
       "qty": 1.0,
       "list_price": 3.5,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Temperaturstabiler Transport",
+      "supplier_item_name": "GERL: Temperaturstabiler Transport · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10623,7 +10623,7 @@
       "qty": 1.0,
       "list_price": 28.44,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: thermosept alka clean forte",
+      "supplier_item_name": "GERL: thermosept alka clean forte · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10632,52 +10632,52 @@
       "qty": 1.0,
       "list_price": 41.69,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain",
+      "supplier_item_name": "GERL: CERABIEN ZR FC Paste Stain · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-96309",
-      "qty": 2.0,
-      "list_price": 9.57,
+      "qty": 4.0,
+      "list_price": 4.785,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Injekt Solo Einmalspritze 2ml",
+      "supplier_item_name": "GERL: Injekt Solo Einmalspritze 2ml · Basis: 2 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-64149",
-      "qty": 2.0,
-      "list_price": 20.57,
+      "qty": 1000.0,
+      "list_price": 0.04114,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Apply-Tips blau regular Pa 500",
+      "supplier_item_name": "GERL: Apply-Tips blau regular Pa 500 · Basis: 500 St",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-42528",
-      "qty": 1.0,
-      "list_price": 81.56,
+      "qty": 5.0,
+      "list_price": 16.312,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Dyract A3 Compules Pa20x0,25g",
+      "supplier_item_name": "GERL: Dyract A3 Compules Pa20x0,25g · Basis: 20 x 0.25 g",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "G-014",
-      "qty": 3.0,
-      "list_price": 27.14,
+      "qty": 150.0,
+      "list_price": 0.5428000000000001,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: TempBond 50g Zement-Basism.,15g",
+      "supplier_item_name": "GERL: TempBond 50g Zement-Basism.,15g · Basis: 50 g",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-67637",
-      "qty": 5.0,
-      "list_price": 8.4,
+      "qty": 120.0,
+      "list_price": 0.35000000000000003,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni ProfiCups blau weich Pa 24",
+      "supplier_item_name": "GERL: Omni ProfiCups blau weich Pa 24 · Basis: 24 St",
       "match_score": 0.78
     },
     {
@@ -10686,7 +10686,7 @@
       "qty": 10.0,
       "list_price": 4.33,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: TANDEX Prevent GEL 0,12% CHX u.",
+      "supplier_item_name": "GERL: TANDEX Prevent GEL 0,12% CHX u. · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10695,7 +10695,7 @@
       "qty": 3.0,
       "list_price": 9.9,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "GERL: Monoart Schaumstoffpellets rund",
+      "supplier_item_name": "GERL: Monoart Schaumstoffpellets rund · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10704,7 +10704,7 @@
       "qty": 10.0,
       "list_price": 1.9,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Oral-B Threader Superfloss",
+      "supplier_item_name": "GERL: Oral-B Threader Superfloss · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10713,16 +10713,16 @@
       "qty": 2.0,
       "list_price": 69.87,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: PROPHYflex Perio Pulver",
+      "supplier_item_name": "GERL: PROPHYflex Perio Pulver · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-36285",
-      "qty": 5.0,
-      "list_price": 5.06,
+      "qty": 30000.0,
+      "list_price": 0.0008433333333333333,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Multi-Safe euro Matic 6000 f.6,0l",
+      "supplier_item_name": "GERL: Multi-Safe euro Matic 6000 f.6,0l · Basis: 6 l",
       "match_score": 0.78
     },
     {
@@ -10731,34 +10731,34 @@
       "qty": 1.0,
       "list_price": 3.5,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Temperaturstabiler Transport",
+      "supplier_item_name": "GERL: Temperaturstabiler Transport · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-43245",
-      "qty": 1.0,
-      "list_price": 40.15,
+      "qty": 10000.0,
+      "list_price": 0.0040149999999999995,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: AlproJet-D Kanister 10l",
+      "supplier_item_name": "GERL: AlproJet-D Kanister 10l · Basis: 10 l",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "P-43245",
-      "qty": 1.0,
-      "list_price": 47.73,
+      "qty": 10000.0,
+      "list_price": 0.0047729999999999995,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: AlproJet-W Kanister 10l",
+      "supplier_item_name": "GERL: AlproJet-W Kanister 10l · Basis: 10 l",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "G-014",
-      "qty": 2.0,
-      "list_price": 40.33,
+      "qty": 12.0,
+      "list_price": 6.721666666666667,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: TempBond clear Automix Spritze 6g",
+      "supplier_item_name": "GERL: TempBond clear Automix Spritze 6g · Basis: 6 g",
       "match_score": 0.92
     },
     {
@@ -10767,16 +10767,16 @@
       "qty": 5.0,
       "list_price": 31.97,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Wedge Wands Kunststoffkeile",
+      "supplier_item_name": "GERL: Wedge Wands Kunststoffkeile · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
       "invoice_id": "INV-1026136155",
       "product_id": "G-003",
-      "qty": 6.0,
-      "list_price": 39.22,
+      "qty": 48.0,
+      "list_price": 4.9025,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Clip Spritze Pa 2x4g",
+      "supplier_item_name": "GERL: Clip Spritze Pa 2x4g · Basis: 2 x 4 g",
       "match_score": 0.92
     },
     {
@@ -10785,7 +10785,7 @@
       "qty": 8.0,
       "list_price": 11.62,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Matrizenspanner 7mm St",
+      "supplier_item_name": "GERL: Omni Matrizenspanner 7mm St · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10794,7 +10794,7 @@
       "qty": 8.0,
       "list_price": 6.47,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Zementspatel Nr. 2 mittel",
+      "supplier_item_name": "GERL: Omni Zementspatel Nr. 2 mittel · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10803,16 +10803,16 @@
       "qty": 1.0,
       "list_price": 24.18,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Ausschneidemesser St",
+      "supplier_item_name": "GERL: Ausschneidemesser St · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-35203",
-      "qty": -1.0,
-      "list_price": 90.26,
+      "qty": -8.0,
+      "list_price": 11.2825,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Eltra 40 Extra Pa 8,3kg",
+      "supplier_item_name": "GERL: Eltra 40 Extra Pa 8,3kg · Basis: 8 St",
       "match_score": 0.78
     },
     {
@@ -10821,16 +10821,16 @@
       "qty": 1.0,
       "list_price": 2.71,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Bearbeitungsgebühr",
+      "supplier_item_name": "GERL: Bearbeitungsgebühr · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "G-012",
-      "qty": 1.0,
-      "list_price": 36.26,
+      "qty": 10000.0,
+      "list_price": 0.003626,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omnidrill Bohrerbad Kanister 10l",
+      "supplier_item_name": "GERL: Omnidrill Bohrerbad Kanister 10l · Basis: 10 l",
       "match_score": 0.92
     },
     {
@@ -10839,7 +10839,7 @@
       "qty": 2.0,
       "list_price": 69.15,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Tetric EvoCeram Composite A3",
+      "supplier_item_name": "GERL: Tetric EvoCeram Composite A3 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10848,7 +10848,7 @@
       "qty": 3.0,
       "list_price": 15.82,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: ProphyCare Paste rot RDA 120",
+      "supplier_item_name": "GERL: ProphyCare Paste rot RDA 120 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10857,7 +10857,7 @@
       "qty": 3.0,
       "list_price": 15.82,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: ProphyCare Paste grün RDA 170",
+      "supplier_item_name": "GERL: ProphyCare Paste grün RDA 170 · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10866,7 +10866,7 @@
       "qty": 1.0,
       "list_price": 49.77,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Dontisolon D Zylinderampullen",
+      "supplier_item_name": "GERL: Dontisolon D Zylinderampullen · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10875,7 +10875,7 @@
       "qty": 3.0,
       "list_price": 58.71,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: GuttaFlow2 o.Silber ROEKO Refillpa",
+      "supplier_item_name": "GERL: GuttaFlow2 o.Silber ROEKO Refillpa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10884,16 +10884,16 @@
       "qty": 1.0,
       "list_price": 29.89,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: GuttaFlow2 Mischspitzen Refillpa",
+      "supplier_item_name": "GERL: GuttaFlow2 Mischspitzen Refillpa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "G-004",
-      "qty": 3.0,
-      "list_price": 50.85,
+      "qty": 15.0,
+      "list_price": 10.17,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Ledermix Paste Tube 5g",
+      "supplier_item_name": "GERL: Ledermix Paste Tube 5g · Basis: 5 g",
       "match_score": 0.92
     },
     {
@@ -10902,7 +10902,7 @@
       "qty": 2.0,
       "list_price": 117.06,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Visalys CemCore Universal A2/A3",
+      "supplier_item_name": "GERL: Visalys CemCore Universal A2/A3 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10911,7 +10911,7 @@
       "qty": 5.0,
       "list_price": 27.99,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omnibite Vanilla",
+      "supplier_item_name": "GERL: Omnibite Vanilla · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10920,16 +10920,16 @@
       "qty": 1.0,
       "list_price": 3.5,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Temperaturstabiler Transport",
+      "supplier_item_name": "GERL: Temperaturstabiler Transport · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-35203",
-      "qty": 1.0,
-      "list_price": 90.26,
+      "qty": 8.0,
+      "list_price": 11.2825,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Eltra 40 Extra Pa 8,3kg",
+      "supplier_item_name": "GERL: Eltra 40 Extra Pa 8,3kg · Basis: 8 St",
       "match_score": 0.78
     },
     {
@@ -10938,7 +10938,7 @@
       "qty": 1.0,
       "list_price": 29.89,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: GuttaFlow2 Mischspitzen Refillpa",
+      "supplier_item_name": "GERL: GuttaFlow2 Mischspitzen Refillpa · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -10947,16 +10947,16 @@
       "qty": 1.0,
       "list_price": 24.18,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Ausschneidemesser St",
+      "supplier_item_name": "GERL: Ausschneidemesser St · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-59086",
-      "qty": 1.0,
-      "list_price": 8.77,
+      "qty": 10.0,
+      "list_price": 0.877,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: PROVISA Schutzhülsen Zinn 21 Pa 10",
+      "supplier_item_name": "GERL: PROVISA Schutzhülsen Zinn 21 Pa 10 · Basis: 10 St",
       "match_score": 0.78
     },
     {
@@ -10965,7 +10965,7 @@
       "qty": 3.0,
       "list_price": 19.52,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Activator Universal Plus Paste",
+      "supplier_item_name": "GERL: Activator Universal Plus Paste · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -10974,16 +10974,16 @@
       "qty": 2.0,
       "list_price": 61.78,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Visalys Restorative Primer",
+      "supplier_item_name": "GERL: Visalys Restorative Primer · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-31921",
-      "qty": 2.0,
-      "list_price": 61.78,
+      "qty": 8.0,
+      "list_price": 15.445,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Visalys Tooth Primer Flasche 4ml",
+      "supplier_item_name": "GERL: Visalys Tooth Primer Flasche 4ml · Basis: 4 ml",
       "match_score": 0.78
     },
     {
@@ -10992,7 +10992,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11001,7 +11001,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11010,7 +11010,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11019,7 +11019,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11028,7 +11028,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11037,7 +11037,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11046,7 +11046,7 @@
       "qty": 5.0,
       "list_price": 0.84,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene",
+      "supplier_item_name": "GERL: Omni Schienendose f.Erwachsene · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11055,7 +11055,7 @@
       "qty": 6.0,
       "list_price": 4.12,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Zahnwatterollen Comp Gr.2",
+      "supplier_item_name": "GERL: Omni Zahnwatterollen Comp Gr.2 · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11064,7 +11064,7 @@
       "qty": 3.0,
       "list_price": 10.22,
       "item_discount": 1.1102230246251565e-16,
-      "supplier_item_name": "GERL: Omni Einmal-Patientenumhang",
+      "supplier_item_name": "GERL: Omni Einmal-Patientenumhang · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11073,16 +11073,16 @@
       "qty": 2.0,
       "list_price": 49.96,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Lichtschutzhüllen Plus Gr.2 schwarz",
+      "supplier_item_name": "GERL: Lichtschutzhüllen Plus Gr.2 schwarz · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-29776",
-      "qty": 5.0,
-      "list_price": 56.62,
+      "qty": 250.0,
+      "list_price": 1.1323999999999999,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omnitemp KB A3 Kartusche 50ml",
+      "supplier_item_name": "GERL: Omnitemp KB A3 Kartusche 50ml · Basis: 50 ml",
       "match_score": 0.78
     },
     {
@@ -11091,16 +11091,16 @@
       "qty": 1.0,
       "list_price": 3.5,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Temperaturstabiler Transport",
+      "supplier_item_name": "GERL: Temperaturstabiler Transport · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-59086",
-      "qty": 1.0,
-      "list_price": 12.37,
+      "qty": 10.0,
+      "list_price": 1.2369999999999999,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: PROVISA Schutzhülsen Zinn 16 Pa 10",
+      "supplier_item_name": "GERL: PROVISA Schutzhülsen Zinn 16 Pa 10 · Basis: 10 St",
       "match_score": 0.78
     },
     {
@@ -11109,25 +11109,25 @@
       "qty": 1.0,
       "list_price": 6.85,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: PERIO.AID Intensive Care Gel",
+      "supplier_item_name": "GERL: PERIO.AID Intensive Care Gel · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-92351",
-      "qty": 3.0,
-      "list_price": 48.14,
+      "qty": 960.0,
+      "list_price": 0.1504375,
       "item_discount": 2.220446049250313e-16,
-      "supplier_item_name": "GERL: Perio Mate Pulver Flasche Pa 2x160g",
+      "supplier_item_name": "GERL: Perio Mate Pulver Flasche Pa 2x160g · Basis: 2 x 160 g",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-67637",
-      "qty": 10.0,
-      "list_price": 8.4,
+      "qty": 240.0,
+      "list_price": 0.35000000000000003,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni ProfiCups blau weich Pa 24",
+      "supplier_item_name": "GERL: Omni ProfiCups blau weich Pa 24 · Basis: 24 St",
       "match_score": 0.78
     },
     {
@@ -11136,7 +11136,7 @@
       "qty": 4.0,
       "list_price": 4.87,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Omni Schaumstoffeinsatz 50x5mm",
+      "supplier_item_name": "GERL: Omni Schaumstoffeinsatz 50x5mm · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11145,7 +11145,7 @@
       "qty": 2.0,
       "list_price": 49.96,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Lichtschutzhüllen Plus Gr.2 schwarz",
+      "supplier_item_name": "GERL: Lichtschutzhüllen Plus Gr.2 schwarz · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11154,16 +11154,16 @@
       "qty": 1.0,
       "list_price": 7.65,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Spar-Zahn St",
+      "supplier_item_name": "GERL: Spar-Zahn St · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-22688",
-      "qty": 1.0,
-      "list_price": 21.32,
+      "qty": 10.0,
+      "list_price": 2.132,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: DIMO Mandrell Pa 10",
+      "supplier_item_name": "GERL: DIMO Mandrell Pa 10 · Basis: 10 St",
       "match_score": 0.78
     },
     {
@@ -11172,16 +11172,16 @@
       "qty": 3.0,
       "list_price": 21.15,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Staubfilter St",
+      "supplier_item_name": "GERL: Staubfilter St · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-51163",
-      "qty": 2.0,
-      "list_price": 11.43,
+      "qty": 280.0,
+      "list_price": 0.08164285714285714,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Speedex light body Pa 140ml",
+      "supplier_item_name": "GERL: Speedex light body Pa 140ml · Basis: 140 ml",
       "match_score": 0.78
     },
     {
@@ -11190,43 +11190,43 @@
       "qty": 2.0,
       "list_price": 15.93,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Speedex universal Aktivator",
+      "supplier_item_name": "GERL: Speedex universal Aktivator · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-66428",
-      "qty": 1.0,
-      "list_price": 49.28,
+      "qty": 240.0,
+      "list_price": 0.20533333333333334,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: sta-seal f Spritze Pa 3x80ml",
+      "supplier_item_name": "GERL: sta-seal f Spritze Pa 3x80ml · Basis: 3 x 80 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-11019",
-      "qty": 1.0,
-      "list_price": 10.92,
+      "qty": 10.0,
+      "list_price": 1.092,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: sta-seal cat f Pa 10ml",
+      "supplier_item_name": "GERL: sta-seal cat f Pa 10ml · Basis: 10 ml",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-76598",
-      "qty": 2.0,
-      "list_price": 50.39,
+      "qty": 2000.0,
+      "list_price": 0.05039,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Dentatec Flasche 1l",
+      "supplier_item_name": "GERL: Dentatec Flasche 1l · Basis: 1 l",
       "match_score": 0.78
     },
     {
       "invoice_id": "INV-1026167513",
       "product_id": "P-59855",
-      "qty": 1.0,
-      "list_price": 38.6,
+      "qty": 20.0,
+      "list_price": 1.9300000000000002,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: ORBAT forte Lösung Flasche 20ml",
+      "supplier_item_name": "GERL: ORBAT forte Lösung Flasche 20ml · Basis: 20 ml",
       "match_score": 0.78
     },
     {
@@ -11235,7 +11235,7 @@
       "qty": 1.0,
       "list_price": 3.5,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Temperaturstabiler Transport",
+      "supplier_item_name": "GERL: Temperaturstabiler Transport · Basis: 1 Einheit",
       "match_score": 0.78
     },
     {
@@ -11244,7 +11244,7 @@
       "qty": 2.0,
       "list_price": 115.92,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: KATANA Zirconia Block STML 12Z",
+      "supplier_item_name": "GERL: KATANA Zirconia Block STML 12Z · Basis: 1 Einheit",
       "match_score": 0.92
     },
     {
@@ -11253,7 +11253,7 @@
       "qty": 1.0,
       "list_price": 8.9,
       "item_discount": 0.0,
-      "supplier_item_name": "GERL: Porto und Verpackung",
+      "supplier_item_name": "GERL: Porto und Verpackung · Basis: 1 Einheit",
       "match_score": 0.78
     }
   ],
@@ -11266,12 +11266,12 @@
     {
       "supplier_name": "GERL",
       "product_id": "G-003",
-      "price": 49.1967
+      "price": 26.3183
     },
     {
       "supplier_name": "GERL",
       "product_id": "G-004",
-      "price": 53.7925
+      "price": 48.2475
     },
     {
       "supplier_name": "GERL",
@@ -11296,22 +11296,22 @@
     {
       "supplier_name": "GERL",
       "product_id": "G-012",
-      "price": 36.26
+      "price": 0.0036
     },
     {
       "supplier_name": "GERL",
       "product_id": "G-013",
-      "price": 88.9733
+      "price": 18.7772
     },
     {
       "supplier_name": "GERL",
       "product_id": "G-014",
-      "price": 59.1467
+      "price": 39.0782
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-11019",
-      "price": 10.92
+      "price": 1.092
     },
     {
       "supplier_name": "GERL",
@@ -11346,7 +11346,7 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-22688",
-      "price": 21.32
+      "price": 2.132
     },
     {
       "supplier_name": "GERL",
@@ -11361,12 +11361,12 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-29776",
-      "price": 56.62
+      "price": 1.1324
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-31921",
-      "price": 61.78
+      "price": 15.445
     },
     {
       "supplier_name": "GERL",
@@ -11381,12 +11381,12 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-35203",
-      "price": 90.26
+      "price": 11.2825
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-36285",
-      "price": 5.06
+      "price": 0.0008
     },
     {
       "supplier_name": "GERL",
@@ -11401,12 +11401,12 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-42528",
-      "price": 81.56
+      "price": 16.312
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-43245",
-      "price": 43.94
+      "price": 0.0044
     },
     {
       "supplier_name": "GERL",
@@ -11421,17 +11421,17 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-51163",
-      "price": 11.43
+      "price": 0.0816
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-59086",
-      "price": 10.57
+      "price": 1.057
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-59855",
-      "price": 38.6
+      "price": 1.93
     },
     {
       "supplier_name": "GERL",
@@ -11441,7 +11441,7 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-64149",
-      "price": 20.57
+      "price": 0.0411
     },
     {
       "supplier_name": "GERL",
@@ -11466,12 +11466,12 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-66428",
-      "price": 49.28
+      "price": 0.2053
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-67637",
-      "price": 8.4
+      "price": 0.35
     },
     {
       "supplier_name": "GERL",
@@ -11486,12 +11486,12 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-72500",
-      "price": 3.69
+      "price": 0.0185
     },
     {
       "supplier_name": "GERL",
       "product_id": "P-76598",
-      "price": 50.39
+      "price": 0.0504
     },
     {
       "supplier_name": "GERL",
@@ -11516,7 +11516,7 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-92351",
-      "price": 48.14
+      "price": 0.1504
     },
     {
       "supplier_name": "GERL",
@@ -11531,32 +11531,32 @@
     {
       "supplier_name": "GERL",
       "product_id": "P-96309",
-      "price": 9.57
+      "price": 4.785
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-001",
-      "price": 33.135
+      "price": 25.9962
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-002",
-      "price": 77.3083
+      "price": 45.6908
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-003",
-      "price": 27.79
+      "price": 13.895
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-004",
-      "price": 50.13
+      "price": 34.7156
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-005",
-      "price": 42.0
+      "price": 28.0
     },
     {
       "supplier_name": "Henry Schein",
@@ -11576,12 +11576,12 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-009",
-      "price": 31.5932
+      "price": 26.4205
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-010",
-      "price": 40.5543
+      "price": 15.7602
     },
     {
       "supplier_name": "Henry Schein",
@@ -11591,7 +11591,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-012",
-      "price": 89.1944
+      "price": 69.8657
     },
     {
       "supplier_name": "Henry Schein",
@@ -11601,17 +11601,17 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "G-014",
-      "price": 57.125
+      "price": 41.525
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-10071",
-      "price": 16.15
+      "price": 0.323
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-10188",
-      "price": 16.95
+      "price": 0.339
     },
     {
       "supplier_name": "Henry Schein",
@@ -11621,7 +11621,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-11573",
-      "price": 125.9
+      "price": 41.9667
     },
     {
       "supplier_name": "Henry Schein",
@@ -11676,7 +11676,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-19222",
-      "price": 57.8
+      "price": 2.89
     },
     {
       "supplier_name": "Henry Schein",
@@ -11746,7 +11746,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-26659",
-      "price": 39.4
+      "price": 0.197
     },
     {
       "supplier_name": "Henry Schein",
@@ -11756,7 +11756,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-27139",
-      "price": 67.2
+      "price": 22.4
     },
     {
       "supplier_name": "Henry Schein",
@@ -11781,22 +11781,22 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-30658",
-      "price": 56.0
+      "price": 0.112
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-30946",
-      "price": 22.95
+      "price": 11.475
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-31216",
-      "price": 25.9
+      "price": 0.1439
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-32714",
-      "price": 65.95
+      "price": 0.3297
     },
     {
       "supplier_name": "Henry Schein",
@@ -11816,7 +11816,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-33739",
-      "price": 53.6
+      "price": 0.536
     },
     {
       "supplier_name": "Henry Schein",
@@ -11826,12 +11826,12 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-34879",
-      "price": 26.15
+      "price": 2.615
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-36143",
-      "price": 64.0
+      "price": 0.0128
     },
     {
       "supplier_name": "Henry Schein",
@@ -11841,7 +11841,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-37575",
-      "price": 26.6
+      "price": 0.133
     },
     {
       "supplier_name": "Henry Schein",
@@ -11851,7 +11851,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-38309",
-      "price": 21.27
+      "price": 0.4431
     },
     {
       "supplier_name": "Henry Schein",
@@ -11896,7 +11896,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-42246",
-      "price": 42.31
+      "price": 4.231
     },
     {
       "supplier_name": "Henry Schein",
@@ -11906,7 +11906,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-42726",
-      "price": 46.95
+      "price": 9.7813
     },
     {
       "supplier_name": "Henry Schein",
@@ -11916,7 +11916,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-43339",
-      "price": 11.0
+      "price": 0.1467
     },
     {
       "supplier_name": "Henry Schein",
@@ -11936,7 +11936,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-44584",
-      "price": 52.5
+      "price": 8.75
     },
     {
       "supplier_name": "Henry Schein",
@@ -11951,12 +11951,12 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-44834",
-      "price": 11.7
+      "price": 2.925
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-45457",
-      "price": 11.3
+      "price": 0.1507
     },
     {
       "supplier_name": "Henry Schein",
@@ -11971,12 +11971,12 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-46840",
-      "price": 61.6
+      "price": 0.616
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-47111",
-      "price": 20.0
+      "price": 0.0667
     },
     {
       "supplier_name": "Henry Schein",
@@ -11986,17 +11986,17 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-48717",
-      "price": 42.13
+      "price": 0.0169
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-50515",
-      "price": 16.95
+      "price": 0.339
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-51352",
-      "price": 105.15
+      "price": 26.2875
     },
     {
       "supplier_name": "Henry Schein",
@@ -12016,17 +12016,17 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-58256",
-      "price": 28.45
+      "price": 2.845
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-58260",
-      "price": 66.95
+      "price": 0.6695
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-59151",
-      "price": 28.6
+      "price": 0.286
     },
     {
       "supplier_name": "Henry Schein",
@@ -12046,7 +12046,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-60788",
-      "price": 11.3333
+      "price": 0.4015
     },
     {
       "supplier_name": "Henry Schein",
@@ -12211,7 +12211,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-79199",
-      "price": 43.25
+      "price": 0.865
     },
     {
       "supplier_name": "Henry Schein",
@@ -12236,7 +12236,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-80807",
-      "price": 26.25
+      "price": 2.625
     },
     {
       "supplier_name": "Henry Schein",
@@ -12256,7 +12256,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-85087",
-      "price": 54.2
+      "price": 0.1084
     },
     {
       "supplier_name": "Henry Schein",
@@ -12266,12 +12266,12 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-86951",
-      "price": 51.75
+      "price": 10.35
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-87354",
-      "price": 16.95
+      "price": 0.339
     },
     {
       "supplier_name": "Henry Schein",
@@ -12316,7 +12316,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-92015",
-      "price": 11.3
+      "price": 0.113
     },
     {
       "supplier_name": "Henry Schein",
@@ -12336,7 +12336,7 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-92780",
-      "price": 39.0
+      "price": 0.39
     },
     {
       "supplier_name": "Henry Schein",
@@ -12346,12 +12346,12 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-94741",
-      "price": 16.95
+      "price": 0.339
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-94813",
-      "price": 167.95
+      "price": 0.028
     },
     {
       "supplier_name": "Henry Schein",
@@ -12386,17 +12386,17 @@
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-97109",
-      "price": 74.2
+      "price": 37.1
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-98347",
-      "price": 30.55
+      "price": 15.275
     },
     {
       "supplier_name": "Henry Schein",
       "product_id": "P-98365",
-      "price": 347.0
+      "price": 333.6538
     },
     {
       "supplier_name": "Henry Schein",
@@ -12416,7 +12416,7 @@
     {
       "supplier_name": "Plandent",
       "product_id": "G-001",
-      "price": 32.74
+      "price": 14.1918
     },
     {
       "supplier_name": "Plandent",
@@ -12426,7 +12426,7 @@
     {
       "supplier_name": "Plandent",
       "product_id": "G-004",
-      "price": 215.355
+      "price": 204.6809
     },
     {
       "supplier_name": "Plandent",
@@ -12436,27 +12436,27 @@
     {
       "supplier_name": "Plandent",
       "product_id": "G-009",
-      "price": 45.1433
+      "price": 5.3331
     },
     {
       "supplier_name": "Plandent",
       "product_id": "G-010",
-      "price": 87.5
+      "price": 14.5833
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-12045",
-      "price": 52.8
+      "price": 0.528
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-13280",
-      "price": 47.79
+      "price": 4.779
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-18339",
-      "price": 39.19
+      "price": 0.0435
     },
     {
       "supplier_name": "Plandent",
@@ -12466,7 +12466,7 @@
     {
       "supplier_name": "Plandent",
       "product_id": "P-24815",
-      "price": 7.47
+      "price": 0.1494
     },
     {
       "supplier_name": "Plandent",
@@ -12476,7 +12476,7 @@
     {
       "supplier_name": "Plandent",
       "product_id": "P-33191",
-      "price": 106.26
+      "price": 1.3283
     },
     {
       "supplier_name": "Plandent",
@@ -12491,27 +12491,27 @@
     {
       "supplier_name": "Plandent",
       "product_id": "P-41107",
-      "price": 45.51
+      "price": 1.1378
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-43058",
-      "price": 41.43
+      "price": 0.3453
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-46218",
-      "price": 23.56
+      "price": 2.356
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-53134",
-      "price": 27.54
+      "price": 2.1857
     },
     {
       "supplier_name": "Plandent",
       "product_id": "P-53957",
-      "price": 6.99
+      "price": 1.7475
     },
     {
       "supplier_name": "Plandent",
@@ -12521,7 +12521,7 @@
     {
       "supplier_name": "Plandent",
       "product_id": "P-59284",
-      "price": 53.9
+      "price": 26.95
     },
     {
       "supplier_name": "Plandent",
@@ -12551,7 +12551,7 @@
     {
       "supplier_name": "Plandent",
       "product_id": "P-98175",
-      "price": 85.19
+      "price": 0.4259
     },
     {
       "supplier_name": "Plandent",

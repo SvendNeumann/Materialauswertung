@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXTRACTOR_PATH = ROOT / "scripts" / "extract-sample-invoices.py"
 SUPABASE_URL = "https://rxiboswudbunvjqgpnyc.supabase.co"
 SUPABASE_KEY = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY"
+seed_warnings: list[str] = []
 
 
 spec = importlib.util.spec_from_file_location("extract_sample_invoices", EXTRACTOR_PATH)
@@ -83,6 +84,52 @@ def match_key(item: dict) -> tuple[str, str, str, float]:
     return f"P-{stable_id}", item["description"][:64], category_for(item["description"]), 0.78
 
 
+def parse_decimal(value: str) -> float:
+    return float(value.replace(".", "").replace(",", "."))
+
+
+def pack_basis(description: str) -> tuple[float, str, str]:
+    text = description.casefold().replace("stck", "st").replace("stk", "st")
+    text = text.replace("stück", "st")
+
+    multi = re.search(r"(\d+)\s*x\s*(\d+(?:[,.]\d+)?)\s*(ml|g|kg|l|st)\b", text)
+    if multi:
+        count = int(multi.group(1))
+        amount = parse_decimal(multi.group(2))
+        unit = multi.group(3)
+        factor = count * amount
+        if unit == "kg":
+            return factor * 1000, "g", f"{count} x {amount:g} kg"
+        if unit == "l":
+            return factor * 1000, "ml", f"{count} x {amount:g} l"
+        return max(factor, 1), "Stück" if unit == "st" else unit, f"{count} x {amount:g} {unit}"
+
+    pieces = re.search(r"(?:pa|p|pack|packung)\s*\.?\s*(\d+)\s*(?:st)?\b", text)
+    if pieces:
+        amount = int(pieces.group(1))
+        if amount > 1:
+            return amount, "Stück", f"{amount} St"
+
+    pieces = re.search(r"\b(\d+)\s*st\b", text)
+    if pieces:
+        amount = int(pieces.group(1))
+        if amount > 1:
+            return amount, "Stück", f"{amount} St"
+
+    amount_match = re.search(r"\b(\d+(?:[,.]\d+)?)\s*(ml|g|kg|l)\b", text)
+    if amount_match:
+        amount = parse_decimal(amount_match.group(1))
+        unit = amount_match.group(2)
+        if unit == "kg":
+            return amount * 1000, "g", f"{amount:g} kg"
+        if unit == "l":
+            return amount * 1000, "ml", f"{amount:g} l"
+        if amount > 0:
+            return amount, unit, f"{amount:g} {unit}"
+
+    return 1, "Einheit", "1 Einheit"
+
+
 def iso_date(value: str | None) -> str:
     if not value:
         return ""
@@ -128,27 +175,32 @@ def build_payload(input_dir: Path) -> dict:
         })
         for item in summary["items"]:
             product_id, product_name, category, score = match_key(item)
+            pack_factor, unit, pack_note = pack_basis(item["description"])
             products_by_id.setdefault(product_id, {
                 "id": product_id,
                 "name": product_name,
                 "category": category,
-                "unit": "Einheit",
+                "unit": unit,
                 "pack": 1,
                 "standard": product_id.startswith("G-"),
                 "critical": category in {"Füllung", "Endodontie", "Prothetik", "Implantologie"},
                 "approved": score >= 0.9,
             })
+            if products_by_id[product_id]["unit"] != unit:
+                products_by_id[product_id]["unit"] = "Basiseinheit"
+            normalized_qty = item["quantity"] * pack_factor
+            normalized_unit_price = item["unit_price"] / pack_factor if pack_factor else item["unit_price"]
             item_rows.append({
                 "invoice_id": inv_id,
                 "product_id": product_id,
-                "qty": item["quantity"],
-                "list_price": item["unit_price"],
+                "qty": normalized_qty,
+                "list_price": normalized_unit_price,
                 "item_discount": item_discount(item),
-                "supplier_item_name": f'{summary["supplier"]}: {item["description"]}',
+                "supplier_item_name": f'{summary["supplier"]}: {item["description"]} · Basis: {pack_note}',
                 "match_score": score,
             })
             if item["unit_price"]:
-                supplier_price_values[(summary["supplier"], product_id)].append(abs(item["unit_price"]))
+                supplier_price_values[(summary["supplier"], product_id)].append(abs(normalized_unit_price))
 
     supplier_price_rows = [
         {"supplier_name": supplier, "product_id": product_id, "price": round(mean(values), 4)}
@@ -209,10 +261,13 @@ def seed_supabase(payload: dict) -> None:
 
     for update in payload["sample_updates"]:
         file_filter = urllib.parse.quote(update["file"], safe="")
-        request_json("PATCH", f"sample_imports?file=eq.{file_filter}", {
-            "sample_items": update["sample_items"],
-            "extracted_items": update["extracted_items"],
-        })
+        try:
+            request_json("PATCH", f"sample_imports?file=eq.{file_filter}", {
+                "sample_items": update["sample_items"],
+                "extracted_items": update["extracted_items"],
+            })
+        except RuntimeError as error:
+            seed_warnings.append(str(error))
 
 
 def main() -> None:
@@ -234,6 +289,7 @@ def main() -> None:
         "invoice_items": len(payload["invoice_items"]),
         "supplier_prices": len(payload["supplier_prices"]),
         "seeded": args.seed,
+        "warnings": len(seed_warnings),
     }, ensure_ascii=False, indent=2))
 
 

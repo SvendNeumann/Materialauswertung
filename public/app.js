@@ -2,6 +2,7 @@ const eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" 
 const pct = new Intl.NumberFormat("de-DE", { style: "percent", maximumFractionDigits: 1 });
 const sidebarStorageKey = "orisus-material-sidebar-collapsed";
 const reloadViewStorageKey = "orisus-material-reload-view";
+const matchReviewStorageKey = "orisus-material-reviewed-matches";
 const supabaseUrl = "https://rxiboswudbunvjqgpnyc.supabase.co";
 const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
 const invoiceBucket = "material-invoices";
@@ -21,6 +22,7 @@ const state = {
   openNavSection: "overview",
   sidebarCollapsed: localStorage.getItem(sidebarStorageKey) === "true",
   mobileNavOpen: false,
+  reviewedMatches: new Set(JSON.parse(localStorage.getItem(matchReviewStorageKey) || "[]")),
 };
 
 const navSections = [
@@ -833,6 +835,7 @@ function invoicesView() {
 
 function reviewView() {
   const inv = invoices[2];
+  const reviewRows = matchingReviewRows();
   if (!inv) {
     return `<section class="panel"><h2>Prüfcenter</h2><p class="muted">Noch keine vollständig ausgelesene Rechnung mit Positionsdaten vorhanden. Die importierten PDFs liegen im Rechnungsupload bereit.</p></section>
     <section class="panel tab-section"><div class="toolbar"><h2>Prüfliste</h2><span class="tag blue">${state.sampleImports.length || 0} PDFs</span></div>${sampleImportTable(state.sampleImports)}</section>`;
@@ -858,7 +861,15 @@ function reviewView() {
         ${itemsTable(rows)}
         <div class="toolbar" style="margin-top:14px"><button class="btn">Position hinzufügen</button><button class="btn primary">Rechnung freigeben</button></div>
       </section>
-    </div>`;
+    </div>
+    <section class="panel tab-section">
+      <div class="toolbar">
+        <h2>Matching-Prüfliste</h2>
+        <span class="tag amber">${reviewRows.filter(row => !isMatchReviewed(row)).length} offen</span>
+      </div>
+      <p class="muted panel-sub">Hier landen Positionen mit niedriger Sicherheit oder unklarer Gruppenartikel-Zuordnung. Die Preise sind bereits auf erkennbare Packungsinhalte wie Stück, ml oder g normalisiert.</p>
+      ${matchingReviewTable(reviewRows)}
+    </section>`;
 }
 
 function productsView() {
@@ -874,7 +885,7 @@ function productsView() {
       { label: "Kritische Artikel", value: critical, sub: "prüfpflichtig" },
       { label: "Ø Matching", value: pct.format(avgMatch), sub: "Positionssicherheit" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Die PDF-Positionen wurden in Gruppenartikel überführt. Direkte Gruppenmatches sind freigegeben, Einzelartikel bleiben sichtbar in Prüfung.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Die PDF-Positionen wurden in Gruppenartikel überführt. Direkte Gruppenmatches sind freigegeben, unsichere Zuordnungen landen im Prüfcenter. Packungsinhalte werden soweit erkennbar auf Stück, ml oder g normalisiert.</p>`),
     charts: [
       panel("Artikel nach Kategorie", barChartCount(importGroups(products, row => row.category), "name", "count")),
       panel("Matching-Status", barChartCount(importGroups(products, row => row.approved ? "Freigegeben" : "In Prüfung"), "name", "count")),
@@ -915,7 +926,7 @@ function pricesView() {
       { label: "Potenzial / Monat", value: eur.format(recs.reduce((sum, row) => sum + row.saving, 0)), sub: "aus Positionen" },
       { label: "Ø Abweichung", value: pct.format(kpis().deviation), sub: "vs. Gruppe" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Der Preisvergleich arbeitet nur mit freigegebenen Positionsdaten. Damit erscheinen hier keine Schätzwerte, sondern nur belastbare Artikelpreise.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Der Preisvergleich nutzt gematchte Rechnungspositionen und normalisierte Packungsinhalte. Eine 400er-Packung wird dadurch nicht stumpf mit einer 200er-Packung als Paketpreis verglichen.</p>`),
     charts: [
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
       panel("Volumen nach Lieferant", barChart(supplierStats(), "name", "volume", 1)),
@@ -1085,9 +1096,45 @@ function sampleImportTable(rows) {
   ]));
 }
 
+function matchReviewKey(row) {
+  return [row.invoiceId, row.productId, row.supplierName].join("|");
+}
+
+function isMatchReviewed(row) {
+  return state.reviewedMatches.has(matchReviewKey(row));
+}
+
+function matchingReviewRows() {
+  return calculatedItems()
+    .filter(row => row.match < 0.9 || !row.product.approved)
+    .sort((a, b) => {
+      const reviewedDiff = Number(isMatchReviewed(a)) - Number(isMatchReviewed(b));
+      return reviewedDiff || a.match - b.match;
+    });
+}
+
+function matchingReviewTable(rows) {
+  if (!rows.length) {
+    return `<p class="muted">Keine unsicheren Matches vorhanden.</p>`;
+  }
+  return table(["Status", "Lieferantenartikel", "Vorschlag", "Standort", "Lieferant", "Basismenge", "Sicherheit", "Aktion"], rows.map(row => {
+    const reviewed = isMatchReviewed(row);
+    return [
+      reviewed ? status("Geprüft") : status("In Prüfung"),
+      row.supplierName,
+      row.product.name,
+      row.inv.location,
+      row.inv.supplier,
+      `${row.qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`,
+      matchTag(row.match),
+      reviewed ? `<button class="btn small match-review-action" data-match-key="${escapeHtml(matchReviewKey(row))}" data-reviewed="true">Zurücknehmen</button>` : `<button class="btn primary small match-review-action" data-match-key="${escapeHtml(matchReviewKey(row))}">Abhaken</button>`,
+    ];
+  }));
+}
+
 function itemsTable(rows) {
   return table(["Lieferantenartikel", "Gruppenartikel", "Menge", "Match", "Auffälligkeit"], rows.map(r => [
-    r.supplierName, r.product.name, r.qty, matchTag(r.match), r.match < 0.8 ? status("In Prüfung") : status("Freigegeben")
+    r.supplierName, r.product.name, `${r.qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${r.product.unit}`, matchTag(r.match), r.match < 0.8 ? status("In Prüfung") : status("Freigegeben")
   ]));
 }
 
@@ -1244,6 +1291,17 @@ function bindViewEvents() {
     });
   });
   document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
+  document.querySelectorAll(".match-review-action").forEach(btn => btn.addEventListener("click", () => {
+    const key = btn.dataset.matchKey;
+    if (!key) return;
+    if (state.reviewedMatches.has(key)) {
+      state.reviewedMatches.delete(key);
+    } else {
+      state.reviewedMatches.add(key);
+    }
+    localStorage.setItem(matchReviewStorageKey, JSON.stringify(Array.from(state.reviewedMatches)));
+    render();
+  }));
   const fileInput = document.getElementById("invoiceFileInput");
   const chooseFiles = document.getElementById("chooseInvoiceFiles");
   const dropzone = document.getElementById("dropzone");
