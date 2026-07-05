@@ -856,6 +856,12 @@ function bestPrice(productId) {
   return productPriceStats()[productId]?.best || 0;
 }
 
+function bestInternalRow(productId) {
+  return comparableItems()
+    .filter(row => row.productId === productId)
+    .sort((a, b) => a.comparisonPrice - b.comparisonPrice)[0] || null;
+}
+
 function groupAverage(productId) {
   return productPriceStats()[productId]?.average || 0;
 }
@@ -1647,7 +1653,7 @@ function pricesView() {
       { label: "Potenzial / Monat", value: eur.format(recs.reduce((sum, row) => sum + row.saving, 0)), sub: "aus Positionen" },
       { label: "Ø Abweichung", value: pct.format(kpis().deviation), sub: "vs. Gruppe" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Der Preisvergleich nutzt gematchte Rechnungspositionen und normalisierte Packungsinhalte. Eine 400er-Packung wird dadurch nicht stumpf mit einer 200er-Packung als Paketpreis verglichen.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Der Artikelpreisvergleich zeigt den internen Orisus-Vergleich je erkanntem Artikel oder Variantenartikel. Du siehst direkt, welcher Standort denselben Artikel aktuell am günstigsten eingekauft hat und wie groß die Differenz zum gefilterten Standort ist.</p>`),
     charts: [
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
       panel("Volumen nach Lieferant", barChart(supplierStats(), "name", "volume", 1)),
@@ -2172,9 +2178,23 @@ function productTable(rows) {
 
 function priceTable(rows, applyFilters = true) {
   const visibleRows = applyFilters ? filtered(rows) : rows;
-  return table(["Artikel", "Standort", "Lieferant", "Standortpreis", "Bestpreis", "Ø Gruppe", "Abweichung", "Potenzial"], visibleRows.map(r => [
-    r.product.name, r.inv.location, r.inv.supplier, eur.format(r.comparisonPrice), eur.format(bestPrice(r.productId)), eur.format(groupAverage(r.productId)), pct.format(groupAverage(r.productId) ? r.comparisonPrice / groupAverage(r.productId) - 1 : 0), eur.format(Math.max(0, r.comparisonPrice - bestPrice(r.productId)) * r.qty * r.product.pack)
-  ]));
+  return table(["Artikel", "Standort", "Interner Beststandort", "Aktueller Preis", "Interner Bestpreis", "Differenz", "Ø Gruppe", "Abweichung"], visibleRows.map(r => {
+    const best = bestInternalRow(r.productId);
+    const bestLabel = best ? `${best.inv.location} · ${best.inv.supplier}` : "offen";
+    const bestValue = best?.comparisonPrice || 0;
+    const diff = bestValue ? r.comparisonPrice - bestValue : 0;
+    const average = groupAverage(r.productId);
+    return [
+      r.product.name,
+      `${r.inv.location}<br><span class="muted">${escapeHtml(r.inv.supplier)}</span>`,
+      bestLabel,
+      `${eur.format(r.comparisonPrice)} / ${r.product.unit}`,
+      bestValue ? `${eur.format(bestValue)} / ${r.product.unit}` : "offen",
+      diff > 0 ? `<span class="tag red">+${eur.format(diff)}</span>` : diff < 0 ? `<span class="tag green">${eur.format(diff)}</span>` : `<span class="tag blue">Bestpreis</span>`,
+      `${eur.format(average)} / ${r.product.unit}`,
+      pct.format(average ? r.comparisonPrice / average - 1 : 0),
+    ];
+  }));
 }
 
 function priceTrendTable(rows) {
