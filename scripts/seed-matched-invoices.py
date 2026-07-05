@@ -44,6 +44,46 @@ CATEGORY_RULES = [
     ("Praxislabor", ["zirconia", "zircad", "emax", "block", "bohrer", "bur ", "fräser", "pmma", "zro2"]),
 ]
 
+AUTO_MATCH_RULES = [
+    {
+        "key": "ledermix-paste-5g",
+        "name": "Ledermix Paste Tube 5 g",
+        "category": "Endodontie",
+        "patterns": [r"\bledermix\b.*\bpaste\b.*\b(?:tube\b)?.*\b5\s*g\b"],
+    },
+    {
+        "key": "penta-mischkanuelen-50",
+        "name": "Penta Mischkanülen 50 St",
+        "category": "Prothetik",
+        "patterns": [r"\bpenta\b.*\bmischkan[üu]len\b.*(?:50|pack\s*50)"],
+    },
+    {
+        "key": "optragate-2-small",
+        "name": "OptraGate 2 Small",
+        "category": "Verbrauchsmaterial",
+        "patterns": [r"\boptragate\b.*\b2\b.*\bsmall\b"],
+    },
+    {
+        "key": "eddy-irrigation-tip-10",
+        "name": "EDDY Irrigation Tips 10 St",
+        "category": "Endodontie",
+        "patterns": [r"\beddy\b.*(?:irrigation|sp[üu]lkan[üu]len).*(?:10|5\s*x\s*2)"],
+    },
+    {
+        "key": "activator-universal-plus-paste-60ml",
+        "name": "Activator Universal Plus Paste 60 ml",
+        "category": "Prothetik",
+        "patterns": [r"\bactivator\b.*\buniversal\b.*\bplus\b.*\bpaste\b"],
+    },
+]
+
+REVIEW_PATTERNS = [
+    (r"\bketac\b.*\b(?:cem|univ|universal|aplicap)\b", "Ketac-Variante mit Herstellerdaten prüfen"),
+    (r"\bmiraject\b.*\bluer\b", "Miraject-Kanülenvariante prüfen"),
+    (r"\btemp\s*bond\b.*\bautomix\b", "TempBond-Variante prüfen"),
+    (r"\btetric\b.*\b(?:evoflow|evoceram)\b", "Tetric-Materialvariante prüfen"),
+]
+
 
 def normalize_text(value: str) -> str:
     text = value.casefold()
@@ -66,6 +106,31 @@ def category_for(description: str) -> str:
     return "Material"
 
 
+def normalized_for_rules(value: str) -> str:
+    text = value.casefold()
+    text = text.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("ß", "ss")
+    text = text.replace("®", "")
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def auto_match_rule(description: str) -> dict | None:
+    original = description.casefold().replace("®", "")
+    normalized = normalized_for_rules(description)
+    for rule in AUTO_MATCH_RULES:
+        if any(re.search(pattern, original, re.I) or re.search(pattern, normalized, re.I) for pattern in rule["patterns"]):
+            return rule
+    return None
+
+
+def needs_review(description: str) -> str | None:
+    original = description.casefold().replace("®", "")
+    normalized = normalized_for_rules(description)
+    for pattern, reason in REVIEW_PATTERNS:
+        if re.search(pattern, original, re.I) or re.search(pattern, normalized, re.I):
+            return reason
+    return None
+
+
 def catalog_key(description: str) -> str:
     text = description.casefold()
     text = text.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("ß", "ss")
@@ -78,9 +143,16 @@ def catalog_key(description: str) -> str:
 
 
 def match_key(item: dict) -> tuple[str, str, str, float]:
+    rule = auto_match_rule(item["description"])
+    if rule:
+        stable_id = hashlib.sha1(rule["key"].encode("utf-8")).hexdigest()[:12].upper()
+        return f"G-{stable_id}", rule["name"], rule["category"], 0.97
+
+    review_reason = needs_review(item["description"])
     key = catalog_key(item["description"])
     stable_id = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12].upper()
-    return f"P-{stable_id}", item["description"][:64], category_for(item["description"]), 0.78
+    score = 0.82 if review_reason else 0.94
+    return f"P-{stable_id}", item["description"][:64], category_for(item["description"]), score
 
 
 def parse_decimal(value: str) -> float:
@@ -129,6 +201,21 @@ def pack_basis(description: str) -> tuple[float, str, str]:
     return 1, "Einheit", "1 Einheit"
 
 
+def catalog_pack_override(item: dict, pack_factor: float, unit: str, pack_note: str) -> tuple[float, str, str]:
+    if pack_factor != 1 or unit != "Einheit":
+        return pack_factor, unit, pack_note
+
+    rule = auto_match_rule(item["description"])
+    if not rule:
+        return pack_factor, unit, pack_note
+
+    if rule["key"] == "optragate-2-small":
+        return 80, "Stück", "80 St (Katalogbasis)"
+    if rule["key"] == "activator-universal-plus-paste-60ml":
+        return 60, "ml", "60 ml (Katalogbasis)"
+    return pack_factor, unit, pack_note
+
+
 def iso_date(value: str | None) -> str:
     if not value:
         return ""
@@ -175,6 +262,7 @@ def build_payload(input_dir: Path) -> dict:
         for item in summary["items"]:
             product_id, product_name, category, score = match_key(item)
             pack_factor, unit, pack_note = pack_basis(item["description"])
+            pack_factor, unit, pack_note = catalog_pack_override(item, pack_factor, unit, pack_note)
             products_by_id.setdefault(product_id, {
                 "id": product_id,
                 "name": product_name,
@@ -195,7 +283,7 @@ def build_payload(input_dir: Path) -> dict:
                 "qty": normalized_qty,
                 "list_price": normalized_unit_price,
                 "item_discount": item_discount(item),
-                "supplier_item_name": f'{summary["supplier"]}: {item["description"]} · Basis: {pack_note}',
+                "supplier_item_name": f'{summary["supplier"]} ArtNr {item["article_no"]}: {item["description"]} · Basis: {pack_note}',
                 "match_score": score,
             })
             if item["unit_price"]:
