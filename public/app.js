@@ -791,9 +791,33 @@ function calculatedItems() {
   return derivedCache.calculatedItems;
 }
 
+function supplierArticleFingerprint(row) {
+  const match = String(row.supplierName || "").match(/ArtNr\s+([^:]+):\s*(.+?)(?:\s+·\s+Basis:|$)/i);
+  if (match) {
+    return `${row.inv.supplier}|${match[1].trim()}|${match[2].trim()}|${row.product.unit}`.toLowerCase();
+  }
+  return `${row.inv.supplier}|${row.productId}|${row.product.name}|${row.product.unit}`.toLowerCase();
+}
+
+function repeatedExactSupplierArticle(row) {
+  if (!derivedCache.repeatedArticleCounts) {
+    const counts = new Map();
+    calculatedItems().forEach(item => {
+      const key = supplierArticleFingerprint(item);
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    derivedCache.repeatedArticleCounts = counts;
+  }
+  return (derivedCache.repeatedArticleCounts.get(supplierArticleFingerprint(row)) || 0) >= 2;
+}
+
+function itemIsComparable(row) {
+  return (row.product.approved && row.match >= 0.9) || repeatedExactSupplierArticle(row);
+}
+
 function comparableItems() {
   if (derivedCache.comparableItems) return derivedCache.comparableItems;
-  derivedCache.comparableItems = calculatedItems().filter(row => row.product.approved && row.match >= 0.9);
+  derivedCache.comparableItems = calculatedItems().filter(itemIsComparable);
   return derivedCache.comparableItems;
 }
 
@@ -1529,7 +1553,7 @@ function invoicesView() {
 
 function reviewView() {
   const reviewRows = matchingReviewRows();
-  const reviewInvoices = invoices.filter(inv => calculatedItems().some(item => item.invoiceId === inv.id && (item.match < 0.9 || !item.product.approved)));
+  const reviewInvoices = invoices.filter(inv => calculatedItems().some(item => item.invoiceId === inv.id && !itemIsComparable(item)));
   if (!invoices.length) {
     return `<section class="panel"><h2>Prüfcenter</h2><p class="muted">Noch keine vollständig ausgelesene Rechnung mit Positionsdaten vorhanden. Die importierten PDFs liegen im Rechnungsupload bereit.</p></section>
     <section class="panel tab-section"><div class="toolbar"><h2>Prüfliste</h2><span class="tag blue">${state.sampleImports.length || 0} PDFs</span></div>${sampleImportTable(state.sampleImports)}</section>`;
@@ -1926,10 +1950,8 @@ function potentialComparisonRows(productId) {
 
 function isSafePotential(row) {
   const comparisons = potentialComparisonRows(row.productId);
-  return row.product.approved
-    && row.match >= 0.9
+  return itemIsComparable(row)
     && row.product.unit
-    && row.product.unit !== "Einheit"
     && row.comparisonPrice > bestPrice(row.productId)
     && comparisons.length >= 2;
 }
@@ -1937,10 +1959,11 @@ function isSafePotential(row) {
 function potentialReason(row) {
   const comparisons = potentialComparisonRows(row.productId);
   const basis = `${(row.qty * row.product.pack).toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`;
+  const matchText = repeatedExactSupplierArticle(row) && row.match < 0.9 ? "exakte Lieferantenartikel-Wiederholung" : `${Math.round(row.match * 100)}% Match`;
   const supplierText = row.recommendedSupplier === row.inv.supplier
     ? "beste Kondition beim gleichen Lieferanten"
     : `günstigste Quelle: ${row.recommendedSupplier}`;
-  return `Freigegebenes Gruppenprodukt, ${Math.round(row.match * 100)}% Match, normalisiert auf ${basis}, ${comparisons.length} Vergleichspreise, ${supplierText}.`;
+  return `Freigegebenes Gruppenprodukt, ${matchText}, normalisiert auf ${basis}, ${comparisons.length} Vergleichspreise, ${supplierText}.`;
 }
 
 function safePotentialToggle() {
@@ -2066,7 +2089,7 @@ function sampleImportTable(rows) {
 
 function matchingReviewRows() {
   return calculatedItems()
-    .filter(row => row.match < 0.9 || !row.product.approved)
+    .filter(row => !itemIsComparable(row))
     .sort((a, b) => a.match - b.match);
 }
 
@@ -2103,14 +2126,14 @@ function reviewInvoiceTable(rows) {
     return `<p class="muted">Keine Rechnung mit zurückgestellten Positionen vorhanden.</p>`;
   }
   return table(["Rechnung", "Datum", "Standort", "Lieferant", "Netto", "Zurückgestellt"], rows.map(inv => {
-    const count = calculatedItems().filter(item => item.invoiceId === inv.id && (item.match < 0.9 || !item.product.approved)).length;
+    const count = calculatedItems().filter(item => item.invoiceId === inv.id && !itemIsComparable(item)).length;
     return [inv.no, inv.date, inv.location, inv.supplier, eur.format(inv.net), count];
   }));
 }
 
 function itemsTable(rows) {
   return table(["Lieferantenartikel", "Gruppenartikel", "Menge", "Match", "Auffälligkeit"], rows.map(r => [
-    r.supplierName, r.product.name, `${r.qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${r.product.unit}`, matchTag(r.match), r.match < 0.8 ? status("In Prüfung") : status("Freigegeben")
+    r.supplierName, r.product.name, `${r.qty.toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${r.product.unit}`, matchTag(r.match), itemIsComparable(r) ? status("Freigegeben") : status("In Prüfung")
   ]));
 }
 
