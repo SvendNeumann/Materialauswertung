@@ -34,21 +34,14 @@ sys.modules[spec.name] = extractor
 spec.loader.exec_module(extractor)
 
 
-MATCH_RULES = [
-    ("G-001", "Injektionskanülen / Nadeln", "Verbrauchsmaterial", ["kanül", "kanu", "nadel", "septoject", "orbiject", "sopira"]),
-    ("G-002", "Einmalhandtücher / Papierhandtücher", "Hygiene", ["handtuch", "handtücher", "tork"]),
-    ("G-003", "Komposit / Füllungsmaterial", "Füllung", ["komposit", "composite", "filtek", "tetric", "clip spritze", "easy match"]),
-    ("G-004", "Polier- und Prophylaxepaste", "Prophylaxe", ["prophy", "polierpaste", "flairesse", "paste"]),
-    ("G-005", "Interdentalkeile / Wedges", "Verbrauchsmaterial", ["interdentalkeil", "fender wedge", "wedge"]),
-    ("G-006", "Absaugkanülen / Sauger", "Verbrauchsmaterial", ["absaugkan", "speichelsauger", "sauger"]),
-    ("G-007", "Sterilisationsfolie / Sterireel", "Hygiene", ["sterifolie", "sterireel"]),
-    ("G-008", "Mischkanülen / Anmischspitzen", "Prothetik", ["mischkan", "penta misch", "anmisch"]),
-    ("G-009", "Desinfektion / Reinigung", "Hygiene", ["desinf", "clean", "cleaner", "sept", "calcinase", "huwa san"]),
-    ("G-010", "Endodontie-Feilen", "Endodontie", ["feilen", "reciproc", "mtwo", "profile"]),
-    ("G-011", "CAD/CAM Blöcke und Zirkon", "Praxislabor", ["zirconia", "zircad", "emax", "block"]),
-    ("G-012", "Bohrer / Fräser", "Praxislabor", ["bohrer", "bur ", "fräser", "pmma", "zro2"]),
-    ("G-013", "Abform- und Bissmaterial", "Prothetik", ["impregum", "omnibite", "abform", "biss"]),
-    ("G-014", "Bonding / Adhäsive", "Füllung", ["bond", "panavia"]),
+CATEGORY_RULES = [
+    ("Verbrauchsmaterial", ["kanül", "kanu", "nadel", "septoject", "orbiject", "sopira", "absaug", "speichelsauger"]),
+    ("Hygiene", ["handtuch", "handtücher", "tork", "sterifolie", "sterireel", "desinf", "sept", "clean"]),
+    ("Füllung", ["komposit", "composite", "filtek", "tetric", "clip spritze", "easy match", "bond", "panavia"]),
+    ("Prophylaxe", ["prophy", "polierpaste", "flairesse"]),
+    ("Prothetik", ["mischkan", "penta misch", "anmisch", "impregum", "omnibite", "abform", "biss"]),
+    ("Endodontie", ["feilen", "reciproc", "mtwo", "profile"]),
+    ("Praxislabor", ["zirconia", "zircad", "emax", "block", "bohrer", "bur ", "fräser", "pmma", "zro2"]),
 ]
 
 
@@ -63,7 +56,7 @@ def normalize_text(value: str) -> str:
 
 def category_for(description: str) -> str:
     normalized = normalize_text(description)
-    for _product_id, _name, category, terms in MATCH_RULES:
+    for category, terms in CATEGORY_RULES:
         if any(term in normalized for term in terms):
             return category
     if any(term in normalized for term in ["handschuh", "becher", "tuch", "maske"]):
@@ -73,14 +66,20 @@ def category_for(description: str) -> str:
     return "Material"
 
 
+def catalog_key(description: str) -> str:
+    text = description.casefold()
+    text = text.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("ß", "ss")
+    text = text.replace("stck", "st").replace("stk", "st").replace("stück", "st")
+    text = re.sub(r"([a-z])[-_/](?=[a-z0-9])", r"\1 ", text)
+    text = re.sub(r"(?<=\d),(?=\d)", ".", text)
+    text = re.sub(r"[^a-z0-9.]+", " ", text)
+    tokens = [token for token in text.split() if token not in {"pa", "pack", "packung", "fl", "refill"}]
+    return " ".join(tokens[:10]) or re.sub(r"\W+", "", description.casefold()) or "artikel"
+
+
 def match_key(item: dict) -> tuple[str, str, str, float]:
-    normalized = normalize_text(item["description"])
-    for product_id, name, category, terms in MATCH_RULES:
-        if any(term in normalized for term in terms):
-            return product_id, name, category, 0.92
-    tokens = [token for token in normalized.split() if len(token) > 3][:4]
-    slug = "-".join(tokens) or re.sub(r"\W+", "", item["article_no"]) or "artikel"
-    stable_id = int(hashlib.sha1(slug.encode("utf-8")).hexdigest()[:8], 16) % 90000 + 10000
+    key = catalog_key(item["description"])
+    stable_id = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12].upper()
     return f"P-{stable_id}", item["description"][:64], category_for(item["description"]), 0.78
 
 
