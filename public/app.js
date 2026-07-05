@@ -83,9 +83,12 @@ let locations = [];
 let suppliers = [];
 let products = [];
 let supplierPriceIndex = {};
+let supplierPriceByProduct = {};
 let invoices = [];
 let invoiceItems = [];
 let suppressHashNavigation = false;
+let derivedCache = {};
+let filterRenderTimer = 0;
 const historicalPriceFactors = {};
 const historicalVolumes = {};
 
@@ -136,6 +139,10 @@ function importRowFromDb(row) {
     warnings: Array.isArray(row.warnings) ? row.warnings : [],
     sample_items: Array.isArray(row.sample_items) ? row.sample_items : [],
   };
+}
+
+function invalidateDerivedData() {
+  derivedCache = {};
 }
 
 async function loadSupabaseData() {
@@ -203,9 +210,18 @@ async function loadSupabaseData() {
     });
     return index;
   }, {});
+  supplierPriceByProduct = priceRows.reduce((index, row) => {
+    const productId = row.product_id;
+    const price = Number(row.price || 0);
+    if (!price) return index;
+    if (!index[productId]) index[productId] = [];
+    index[productId].push([row.supplier_name, price]);
+    return index;
+  }, {});
   state.sampleImports = importRows.map(importRowFromDb);
   state.dataLoaded = true;
   state.dataError = "";
+  invalidateDerivedData();
   return true;
 }
 
@@ -257,6 +273,7 @@ async function uploadInvoiceFiles(fileList) {
   } catch (error) {
     state.uploadStatus = error.message || "Upload fehlgeschlagen.";
   }
+  invalidateDerivedData();
   render();
 }
 
@@ -281,18 +298,59 @@ function calcItem(item) {
   return { ...item, inv, product, base, effectiveNet, comparisonPrice, invoiceDiscount, skonto, freight, surcharge };
 }
 
-const calculatedItems = () => invoiceItems.map(calcItem).filter(Boolean);
+function calculatedItems() {
+  if (derivedCache.calculatedItems) return derivedCache.calculatedItems;
+  const invoiceById = new Map(invoices.map(invoice => [invoice.id, invoice]));
+  const productById = new Map(products.map(product => [product.id, product]));
+  const supplierByName = new Map(suppliers.map(supplier => [supplier.name, supplier]));
+  const invoiceBaseById = invoiceItems.reduce((index, item) => {
+    index[item.invoiceId] = (index[item.invoiceId] || 0) + item.qty * item.listPrice * (1 - item.itemDiscount);
+    return index;
+  }, {});
+
+  derivedCache.calculatedItems = invoiceItems.map(item => {
+    const inv = invoiceById.get(item.invoiceId);
+    const product = productById.get(item.productId);
+    if (!inv || !product) return null;
+    const base = item.qty * item.listPrice;
+    const afterItemDiscount = base * (1 - item.itemDiscount);
+    const invoiceBase = invoiceBaseById[inv.id] || 1;
+    const share = afterItemDiscount / invoiceBase;
+    const invoiceDiscount = inv.discount * share;
+    const skonto = inv.skontoUsed ? afterItemDiscount * (supplierByName.get(inv.supplier)?.skonto || 0) : 0;
+    const freight = inv.freight * share;
+    const surcharge = inv.surcharge * share;
+    const effectiveNet = afterItemDiscount - invoiceDiscount - skonto + freight + surcharge;
+    const comparisonPrice = effectiveNet / (item.qty * product.pack);
+    return { ...item, inv, product, base, effectiveNet, comparisonPrice, invoiceDiscount, skonto, freight, surcharge };
+  }).filter(Boolean);
+
+  return derivedCache.calculatedItems;
+}
+
+function productPriceStats() {
+  if (derivedCache.productPriceStats) return derivedCache.productPriceStats;
+  const grouped = calculatedItems().reduce((index, row) => {
+    if (!index[row.productId]) index[row.productId] = { min: Infinity, sum: 0, count: 0 };
+    const current = index[row.productId];
+    current.min = Math.min(current.min, row.comparisonPrice);
+    current.sum += row.comparisonPrice;
+    current.count += 1;
+    return index;
+  }, {});
+  derivedCache.productPriceStats = Object.fromEntries(Object.entries(grouped).map(([productId, row]) => [
+    productId,
+    { best: row.min === Infinity ? 0 : row.min, average: row.count ? row.sum / row.count : 0 },
+  ]));
+  return derivedCache.productPriceStats;
+}
 
 function bestPrice(productId) {
-  const prices = calculatedItems().filter(i => i.productId === productId).map(i => i.comparisonPrice);
-  if (!prices.length) return 0;
-  return Math.min(...prices);
+  return productPriceStats()[productId]?.best || 0;
 }
 
 function groupAverage(productId) {
-  const prices = calculatedItems().filter(i => i.productId === productId).map(i => i.comparisonPrice);
-  if (!prices.length) return 0;
-  return prices.reduce((a, b) => a + b, 0) / prices.length;
+  return productPriceStats()[productId]?.average || 0;
 }
 
 function locationScopeRows(rows) {
@@ -334,7 +392,8 @@ function kpis() {
 }
 
 function recommendations() {
-  return calculatedItems().map(row => {
+  if (derivedCache.recommendations) return derivedCache.recommendations;
+  derivedCache.recommendations = calculatedItems().map(row => {
     const best = bestPrice(row.productId);
     const average = groupAverage(row.productId);
     const saving = Math.max(0, row.comparisonPrice - best) * row.qty * row.product.pack;
@@ -344,23 +403,23 @@ function recommendations() {
     const recommendedLabel = recommendedSupplier === row.inv.supplier ? `${recommendedSupplier} Rahmenpreis` : recommendedSupplier;
     return { ...row, best, saving, deviation, className, recommendedSupplier, recommendedLabel };
   }).filter(r => r.saving > 1).sort((a, b) => b.saving - a.saving);
+  return derivedCache.recommendations;
 }
 
 function cheapestSupplier(productId) {
-  const productIndex = products.findIndex(p => p.id === productId);
-  const ranked = Object.entries(supplierPriceIndex)
-    .map(([supplier, prices]) => [supplier, Number(prices?.[productIndex] || 0)])
-    .filter(([, price]) => price > 0)
-    .sort((a, b) => a[1] - b[1]);
+  const ranked = (supplierPriceByProduct[productId] || []).slice().sort((a, b) => a[1] - b[1]);
   return ranked[0]?.[0] || "offen";
 }
 
 function supplierStats() {
-  return suppliers.map(supplier => {
+  if (derivedCache.supplierStats) return derivedCache.supplierStats;
+  const allRows = calculatedItems();
+  const allRecommendations = recommendations();
+  derivedCache.supplierStats = suppliers.map(supplier => {
     const supplierInvoices = invoices.filter(i => i.supplier === supplier.name);
-    const rows = calculatedItems().filter(i => i.inv.supplier === supplier.name);
+    const rows = allRows.filter(i => i.inv.supplier === supplier.name);
     const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
-    const potential = recommendations().filter(r => r.inv.supplier === supplier.name).reduce((sum, r) => sum + r.saving, 0);
+    const potential = allRecommendations.filter(r => r.inv.supplier === supplier.name).reduce((sum, r) => sum + r.saving, 0);
     const freight = supplierInvoices.reduce((sum, i) => sum + i.freight, 0);
     return {
       ...supplier,
@@ -376,12 +435,16 @@ function supplierStats() {
       stability: Math.max(0, 82 - potential / 8),
     };
   });
+  return derivedCache.supplierStats;
 }
 
 function locationStats() {
-  return locations.map(location => {
+  if (derivedCache.locationStats) return derivedCache.locationStats;
+  const allRows = calculatedItems();
+  const allRecommendations = recommendations();
+  derivedCache.locationStats = locations.map(location => {
     const locInvoices = invoices.filter(i => i.location === location.name);
-    const rows = calculatedItems().filter(i => i.inv.location === location.name);
+    const rows = allRows.filter(i => i.inv.location === location.name);
     const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
     return {
       ...location,
@@ -391,13 +454,15 @@ function locationStats() {
       smallOrders: locInvoices.filter(i => i.net < 650).length,
       freightRate: locInvoices.reduce((s, i) => s + i.freight + i.surcharge, 0) / Math.max(1, locInvoices.reduce((s, i) => s + i.net, 0)),
       skonto: locInvoices.filter(i => i.skontoUsed).length / Math.max(1, locInvoices.length),
-      potential: recommendations().filter(r => r.inv.location === location.name).reduce((sum, r) => sum + r.saving, 0),
+      potential: allRecommendations.filter(r => r.inv.location === location.name).reduce((sum, r) => sum + r.saving, 0),
     };
   });
+  return derivedCache.locationStats;
 }
 
 function yearlyPriceRows() {
-  return products.filter(product => historicalPriceFactors[product.id] && historicalVolumes[product.id]).map(product => {
+  if (derivedCache.yearlyPriceRows) return derivedCache.yearlyPriceRows;
+  derivedCache.yearlyPriceRows = products.filter(product => historicalPriceFactors[product.id] && historicalVolumes[product.id]).map(product => {
     const current = groupAverage(product.id);
     const factors = historicalPriceFactors[product.id];
     if (!current) return null;
@@ -412,19 +477,22 @@ function yearlyPriceRows() {
     const mainSupplier = cheapestSupplier(product.id);
     return { product, price2024, price2025, price2026, yoy, since2024, volume2026, annualImpact, status, mainSupplier };
   }).filter(Boolean).sort((a, b) => b.annualImpact - a.annualImpact);
+  return derivedCache.yearlyPriceRows;
 }
 
 function yearlySummary() {
+  if (derivedCache.yearlySummary) return derivedCache.yearlySummary;
   const rows = yearlyPriceRows();
   const weighted2025 = rows.reduce((sum, row) => sum + row.price2025 * row.volume2026, 0);
   const weighted2026 = rows.reduce((sum, row) => sum + row.price2026 * row.volume2026, 0);
   const annualImpact = rows.reduce((sum, row) => sum + row.annualImpact, 0);
-  return {
+  derivedCache.yearlySummary = {
     avgIncrease: weighted2025 ? weighted2026 / weighted2025 - 1 : 0,
     annualImpact,
     aCases: rows.filter(row => row.status === "A-Fall").length,
     strongest: rows[0],
   };
+  return derivedCache.yearlySummary;
 }
 
 function invoiceYears() {
@@ -436,12 +504,15 @@ function invoiceYears() {
 }
 
 function basketComparison(locationName = state.role === "location" ? activeLocationName() : null) {
+  const cacheKey = `basket:${locationName || "all"}`;
+  if (derivedCache[cacheKey]) return derivedCache[cacheKey];
   const rows = calculatedItems().filter(i => !locationName || i.inv.location === locationName);
   if (!rows.length) return [];
-  return suppliers.map(supplier => {
+  const productIndexById = new Map(products.map((product, index) => [product.id, index]));
+  derivedCache[cacheKey] = suppliers.map(supplier => {
     let missing = 0;
     const productCost = rows.reduce((sum, row) => {
-      const productIndex = products.findIndex(p => p.id === row.productId);
+      const productIndex = productIndexById.get(row.productId);
       const supplierPrice = supplierPriceIndex[supplier.name]?.[productIndex] || 0;
       if (!supplierPrice) missing += 1;
       return sum + (supplierPrice || row.listPrice) * row.qty * (1 - row.itemDiscount);
@@ -450,6 +521,7 @@ function basketComparison(locationName = state.role === "location" ? activeLocat
     const skonto = productCost * supplier.skonto;
     return { supplier: supplier.name, productCost, freight, skonto, total: productCost + freight - skonto, missing };
   }).sort((a, b) => a.total - b.total);
+  return derivedCache[cacheKey];
 }
 
 function render() {
@@ -1373,7 +1445,8 @@ function bindViewEvents() {
   document.querySelectorAll("#search, #locationFilter, #supplierFilter").forEach(el => {
     el.addEventListener("input", event => {
       state[event.target.id] = event.target.value;
-      render();
+      window.clearTimeout(filterRenderTimer);
+      filterRenderTimer = window.setTimeout(render, event.target.id === "search" ? 120 : 0);
     });
   });
   document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
