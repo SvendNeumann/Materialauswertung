@@ -947,23 +947,52 @@ function supplierStats() {
 function locationStats() {
   if (derivedCache.locationStats) return derivedCache.locationStats;
   const allRows = calculatedItems();
+  const allComparableRows = comparableItems();
   const allRecommendations = recommendations();
   derivedCache.locationStats = locations.map(location => {
-    const locInvoices = invoices.filter(i => i.location === location.name);
-    const rows = allRows.filter(i => i.inv.location === location.name);
+    const locInvoices = invoices.filter(i => locationMatches(i.location, location.name));
+    const rows = allRows.filter(i => locationMatches(i.inv.location, location.name));
+    const comparableRows = allComparableRows.filter(i => locationMatches(i.inv.location, location.name));
     const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
+    const benchmark = locationBenchmark(comparableRows);
     return {
       ...location,
       volume,
+      comparableCount: comparableRows.length,
       supplierMix: new Set(locInvoices.map(i => i.supplier)).size,
       avgOrder: locInvoices.reduce((s, i) => s + i.net, 0) / Math.max(1, locInvoices.length),
       smallOrders: locInvoices.filter(i => i.net < 650).length,
       freightRate: locInvoices.reduce((s, i) => s + i.freight + i.surcharge, 0) / Math.max(1, locInvoices.reduce((s, i) => s + i.net, 0)),
       skonto: locInvoices.filter(i => i.skontoUsed).length / Math.max(1, locInvoices.length),
-      potential: allRecommendations.filter(r => r.inv.location === location.name).reduce((sum, r) => sum + r.saving, 0),
+      potential: allRecommendations.filter(r => locationMatches(r.inv.location, location.name)).reduce((sum, r) => sum + r.saving, 0),
+      moreCost: benchmark.moreCost,
+      advantage: benchmark.advantage,
+      netEffect: benchmark.netEffect,
+      weightedDeviation: benchmark.weightedDeviation,
     };
   });
   return derivedCache.locationStats;
+}
+
+function locationBenchmark(rows) {
+  const result = rows.reduce((acc, row) => {
+    const average = groupAverage(row.productId);
+    const qty = row.qty * row.product.pack;
+    const baseValue = row.comparisonPrice * qty;
+    if (!average || !qty) return acc;
+    const diff = (row.comparisonPrice - average) * qty;
+    if (diff > 0) acc.moreCost += diff;
+    if (diff < 0) acc.advantage += Math.abs(diff);
+    acc.netEffect += diff;
+    acc.weightedDiff += diff;
+    acc.weightedBase += baseValue;
+    acc.count += 1;
+    return acc;
+  }, { moreCost: 0, advantage: 0, netEffect: 0, weightedDiff: 0, weightedBase: 0, count: 0 });
+  return {
+    ...result,
+    weightedDeviation: result.weightedBase ? result.weightedDiff / result.weightedBase : 0,
+  };
 }
 
 function yearlyPriceRows() {
@@ -1719,20 +1748,30 @@ function yearlyView() {
 function locationsView() {
   const stats = locationStats();
   const imports = locationImportStats();
+  const comparableRows = locationScopeRows(comparableItems());
+  const benchmarkRows = stats.filter(row => row.comparableCount);
+  const totalMoreCost = stats.reduce((sum, row) => sum + row.moreCost, 0);
+  const totalAdvantage = stats.reduce((sum, row) => sum + row.advantage, 0);
+  const totalNet = totalMoreCost - totalAdvantage;
+  const weightedDeviation = comparableRows.length ? locationBenchmark(comparableRows).weightedDeviation : 0;
   return tabShell({
     metrics: [
       { label: "Aktive Standorte", value: locations.length, sub: "aus Rechnungsdaten" },
-      { label: "Importvolumen", value: eur.format(sumImportGross()), sub: "über alle Standorte" },
-      { label: "Positionen", value: sumImportItems().toLocaleString("de-DE"), sub: "aus PDF-Auslesung" },
-      { label: "Ø Rechnung", value: eur.format(state.sampleImports.length ? sumImportGross() / state.sampleImports.length : 0), sub: "brutto je PDF" },
+      { label: "Mehrkosten vs. Gruppe", value: eur.format(totalMoreCost), sub: "teurer eingekauft" },
+      { label: "Vorteil vs. Gruppe", value: eur.format(totalAdvantage), sub: "günstiger eingekauft" },
+      { label: "Netto-Effekt", value: eur.format(totalNet), sub: totalNet >= 0 ? "Mehrkosten gesamt" : "Vorteil gesamt" },
+      { label: "Ø Abweichung", value: pct.format(weightedDeviation), sub: "mengen-gewichtet" },
+      { label: "Vergleichspositionen", value: comparableRows.length, sub: "freigegebene Artikel" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Die Standortanalyse nutzt die aus den Rechnungsanschriften erkannten Standorte. Als Admin bleibt die Sicht über alle Standorte konsolidiert.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Die Standortanalyse zeigt nicht nur Einsparpotenziale zum Bestpreis, sondern auch den Benchmark gegen den gewichteten Gruppenschnitt je Artikel. Mehrkosten bedeuten: Der Standort kauft das vorhandene Material teurer als die Gruppe. Vorteil bedeutet: Der Standort kauft günstiger als die Gruppe.</p>`),
     charts: [
+      panel("Mehrkosten je Standort", barChart(benchmarkRows, "name", "moreCost", 1)),
+      panel("Vorteil je Standort", barChart(benchmarkRows, "name", "advantage", 1)),
       panel("Importvolumen je Standort", barChart(imports, "name", "gross", 1)),
       panel("Positionen je Standort", barChartCount(imports, "name", "items")),
     ],
     tableTitle: "Standort-Benchmark",
-    table: locationTable(stats),
+    table: `<div class="bounded-table">${locationTable(stats)}</div>`,
   });
 }
 
@@ -1942,6 +1981,8 @@ function reportRowsFor(type) {
 function mobileView() {
   normalizeLocationState();
   const selectedRows = selectedPotentialRows();
+  const selectedBenchmarkRows = locationScopeRows(comparableItems()).filter(row => locationMatches(row.inv.location, state.locationFilter));
+  const benchmark = locationBenchmark(selectedBenchmarkRows);
   const activeScope = state.locationFilter === "Alle" ? scopeLabel() : normalizedLocationName(state.locationFilter);
   const locationRows = potentialLocationRows(selectedRows);
   const info = periodInfo(selectedRows);
@@ -1956,6 +1997,8 @@ function mobileView() {
     metrics: [
       { label: "Potenzial Bestellungen", value: eur.format(totalMonth), sub: "aus eingelesener Ware" },
       { label: "Hochrechnung / Jahr", value: eur.format(totalYear), sub: `${info.monthCount} Monat(e): ${info.label}` },
+      { label: "Mehrkosten vs. Gruppe", value: eur.format(benchmark.moreCost), sub: "teurer als Schnitt" },
+      { label: "Vorteil vs. Gruppe", value: eur.format(benchmark.advantage), sub: "günstiger als Schnitt" },
       { label: "Standorte mit Potenzial", value: locationRows.length, sub: "mit Abweichungen" },
       { label: "Top-Standort", value: topLocation?.name || "offen", sub: topLocation ? eur.format(topLocation.monthly) : "kein Potenzial" },
       { label: "A-Fälle", value: selectedRows.filter(row => row.className === "A-Fall").length, sub: "höchste Priorität" },
@@ -2437,8 +2480,15 @@ function supplierTable(rows) {
 
 function locationTable(rows) {
   const factor = periodInfo(locationScopeRows(recommendations())).factor;
-  return table(["Standort", "Volumen", "Lieferanten", "Ø Bestellwert", "Kleinstbestellungen", "Skonto", "Versandquote", "Potenzial/Jahr"], rows.map(l => [
-    l.name, eur.format(l.volume), l.supplierMix, eur.format(l.avgOrder), l.smallOrders, pct.format(l.skonto), pct.format(l.freightRate), eur.format(l.potential * factor)
+  return table(["Standort", "Vergleichspositionen", "Volumen", "Mehrkosten vs. Gruppe", "Vorteil vs. Gruppe", "Netto-Effekt", "Ø Abweichung", "Bestpreis-Potenzial/Jahr"], rows.map(l => [
+    l.name,
+    l.comparableCount,
+    eur.format(l.volume),
+    eur.format(l.moreCost),
+    eur.format(l.advantage),
+    eur.format(l.netEffect),
+    pct.format(l.weightedDeviation),
+    eur.format(l.potential * factor),
   ]));
 }
 
