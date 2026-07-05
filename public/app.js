@@ -1168,7 +1168,7 @@ function recommendationsView() {
       { label: "Potenzial / Jahr", value: eur.format(rows.reduce((sum, row) => sum + row.saving * 12, 0)), sub: "hochgerechnet" },
       { label: "Betroffene Artikel", value: new Set(rows.map(row => row.productId)).size, sub: "Gruppenartikel" },
     ],
-    analysis: panel("Auswertung", `<p class="muted">Empfehlungen entstehen aus den gematchten Rechnungspositionen. Die Reihenfolge folgt Potenzial, Abweichung und Priorität.</p>`),
+    analysis: panel("Auswertung", `<p class="muted">Diese Liste zeigt nur rechnerische Auffälligkeiten aus freigegebenen Artikelvergleichen. Es muss hier nichts manuell übernommen werden; die Werte dienen als Grundlage für Preisprüfung, Rahmenpreisgespräch oder Standortvergleich.</p>`),
     charts: [
       panel("Potenzial nach Standort", barChart(locationStats(), "name", "potential", 1)),
       panel("Priorität nach Klasse", barChartCount(importGroups(rows, row => row.className), "name", "count")),
@@ -1382,8 +1382,8 @@ function yearTrendBox(row) {
 }
 
 function recommendationTable(rows) {
-  return table(["Priorität", "Artikel", "Standort", "Aktuell", "Empfohlen", "Abweichung", "Ersparnis/Jahr", "Aktion"], filtered(rows).map(r => [
-    `<span class="tag ${r.className === "A-Fall" ? "red" : r.className === "B-Fall" ? "amber" : "blue"}">${r.className}</span>`, r.product.name, r.inv.location, r.inv.supplier, r.recommendedLabel, pct.format(r.deviation), eur.format(r.saving * 12), `<button class="btn small">Übernehmen</button>`
+  return table(["Priorität", "Artikel", "Standort", "Aktueller Lieferant", "Günstigste Quelle", "Abweichung", "Potenzial/Jahr"], filtered(rows).map(r => [
+    `<span class="tag ${r.className === "A-Fall" ? "red" : r.className === "B-Fall" ? "amber" : "blue"}">${r.className}</span>`, r.product.name, r.inv.location, r.inv.supplier, r.recommendedLabel, pct.format(r.deviation), eur.format(r.saving * 12)
   ]));
 }
 
