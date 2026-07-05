@@ -992,34 +992,25 @@ function invoicesView() {
 }
 
 function reviewView() {
-  const inv = invoices[2];
   const reviewRows = matchingReviewRows();
-  if (!inv) {
+  const reviewInvoices = invoices.filter(inv => calculatedItems().some(item => item.invoiceId === inv.id && (item.match < 0.9 || !item.product.approved)));
+  if (!invoices.length) {
     return `<section class="panel"><h2>Prüfcenter</h2><p class="muted">Noch keine vollständig ausgelesene Rechnung mit Positionsdaten vorhanden. Die importierten PDFs liegen im Rechnungsupload bereit.</p></section>
     <section class="panel tab-section"><div class="toolbar"><h2>Prüfliste</h2><span class="tag blue">${state.sampleImports.length || 0} PDFs</span></div>${sampleImportTable(state.sampleImports)}</section>`;
   }
-  const rows = calculatedItems().filter(i => i.invoiceId === inv.id);
   return `
-    <div class="split">
-      <section class="pdf-preview" aria-label="PDF-Vorschau">
-        <h3>${inv.supplier}</h3><p class="muted">Rechnung ${inv.no} · ${inv.date}</p>
-        ${Array.from({ length: 22 }, (_, i) => `<div class="pdf-line ${i % 5 === 0 ? "short" : i % 3 === 0 ? "mid" : ""}"></div>`).join("")}
-      </section>
-      <section class="panel">
-        <h2>Strukturierte Auslesung</h2>
-        <div class="form-grid">
-          <label>Lieferant<input value="${inv.supplier}"></label>
-          <label>Standort<input value="${inv.location}"></label>
-          <label>Rechnungsnummer<input value="${inv.no}"></label>
-          <label>Skonto<input value="${inv.skontoUsed ? "genutzt" : "nicht genutzt"}"></label>
-          <label>Versandkosten<input value="${eur.format(inv.freight)}"></label>
-          <label>Mindermengenzuschlag<input value="${eur.format(inv.surcharge)}"></label>
-        </div>
-        <h2 style="margin-top:18px">Erkannte Positionen</h2>
-        ${itemsTable(rows)}
-        <div class="toolbar" style="margin-top:14px"><button class="btn">Position hinzufügen</button><button class="btn primary">Rechnung freigeben</button></div>
-      </section>
+    <div class="grid cols-3">
+      ${metric("Importierte Rechnungen", invoices.length, "aus Supabase")}
+      ${metric("Zurückgestellt", reviewRows.length, "Einheit/Variante unklar")}
+      ${metric("Betroffene Rechnungen", reviewInvoices.length, "mit Rückstellungen")}
     </div>
+    <section class="panel tab-section">
+      <div class="toolbar">
+        <h2>Betroffene Rechnungen</h2>
+        <span class="tag blue">${reviewInvoices.length} Rechnungen</span>
+      </div>
+      ${reviewInvoiceTable(reviewInvoices)}
+    </section>
     <section class="panel tab-section">
       <div class="toolbar">
         <h2>Einheit / Variante nicht automatisch sicher</h2>
@@ -1323,6 +1314,16 @@ function matchingReviewTable(rows) {
       matchTag(row.match),
       `<span class="muted">${matchReviewReason(row)}</span>`,
   ]));
+}
+
+function reviewInvoiceTable(rows) {
+  if (!rows.length) {
+    return `<p class="muted">Keine Rechnung mit zurückgestellten Positionen vorhanden.</p>`;
+  }
+  return table(["Rechnung", "Datum", "Standort", "Lieferant", "Netto", "Zurückgestellt"], rows.map(inv => {
+    const count = calculatedItems().filter(item => item.invoiceId === inv.id && (item.match < 0.9 || !item.product.approved)).length;
+    return [inv.no, inv.date, inv.location, inv.supplier, eur.format(inv.net), count];
+  }));
 }
 
 function itemsTable(rows) {
