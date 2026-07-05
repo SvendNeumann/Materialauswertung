@@ -192,6 +192,12 @@ body.sidebar-collapsed .role-card::before {
 }
 .top-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .mobile-header-brand { display: none; }
+.mobile-header-brand {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
 .mobile-menu-btn {
   display: none; width: 42px; height: 42px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); font-size: 20px; font-weight: 900;
 }

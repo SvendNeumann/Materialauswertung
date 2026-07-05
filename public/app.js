@@ -1189,6 +1189,10 @@ function goToView(viewId) {
   render();
 }
 
+function goToPotentialAnalysis() {
+  goToView("mobile");
+}
+
 function activateNavTarget(target) {
   const viewButton = target.closest?.("[data-view]");
   if (viewButton) {
@@ -1232,8 +1236,8 @@ function syncShellState() {
   if (overlay) overlay.hidden = !state.mobileNavOpen;
   const sidebarToggle = document.getElementById("sidebarToggle");
   if (sidebarToggle) {
-    sidebarToggle.setAttribute("aria-label", state.sidebarCollapsed ? "Menü ausklappen" : "Menü einklappen");
-    sidebarToggle.setAttribute("title", state.sidebarCollapsed ? "Menü ausklappen" : "Menü einklappen");
+    sidebarToggle.setAttribute("aria-label", "Zur Potenzialanalyse");
+    sidebarToggle.setAttribute("title", "Zur Potenzialanalyse");
   }
 }
 
@@ -2737,6 +2741,7 @@ function bindViewEvents() {
 
 function init() {
   const sidebarToggle = document.getElementById("sidebarToggle");
+  const mobileLogoHome = document.getElementById("mobileLogoHome");
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const sidebarClose = document.getElementById("sidebarClose");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
@@ -2752,7 +2757,8 @@ function init() {
     state.openNavSection = sectionForView(reloadView)?.id || state.openNavSection;
   }
   sessionStorage.removeItem(reloadViewStorageKey);
-  sidebarToggle.addEventListener("click", toggleSidebar);
+  sidebarToggle.addEventListener("click", goToPotentialAnalysis);
+  mobileLogoHome.addEventListener("click", goToPotentialAnalysis);
   mobileMenuBtn.addEventListener("click", openMobileNav);
   sidebarClose.addEventListener("click", closeMobileNav);
   sidebarOverlay.addEventListener("click", closeMobileNav);
