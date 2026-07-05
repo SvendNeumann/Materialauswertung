@@ -467,7 +467,7 @@ function render() {
     view.innerHTML = `<section class="panel"><h2>Datenverbindung prüfen</h2><p class="muted">${state.dataError}</p></section>`;
     return;
   }
-  view.innerHTML = routes[state.view]();
+  view.innerHTML = `${pageIntro(state.view)}${routes[state.view]()}`;
   bindViewEvents();
 }
 
@@ -612,6 +612,65 @@ function titleFor(id) {
     settings: "Zugänge & Rechte",
     mobile: "Mobile Standortleiter-Ansicht",
   })[id];
+}
+
+function pageIntro(id) {
+  const copy = {
+    dashboard: [
+      "Management",
+      "Gesamtüberblick über Importvolumen, Rechnungsstatus, Standorte und die wichtigsten Potenziale aus der Materialauswertung.",
+    ],
+    invoices: [
+      "Rechnungen & Upload",
+      "Hier werden neue PDF-Rechnungen hochgeladen, Lieferant und Standort zugeordnet und der Importstatus bis zur Freigabe verfolgt.",
+    ],
+    review: [
+      "Prüfcenter",
+      "Hier landen nur Positionen, bei denen Artikelnummer, Packungsgröße, Anwendung oder Material nicht sicher genug automatisch gematcht werden konnten.",
+    ],
+    products: [
+      "Artikelstamm & Matching",
+      "Dieser Bereich bündelt gleichartige Rechnungspositionen zu Gruppenartikeln und zeigt, welche Artikel freigegeben oder noch prüfpflichtig sind.",
+    ],
+    suppliers: [
+      "Lieferantenbewertung",
+      "Hier werden Lieferanten nach Importvolumen, Artikelanzahl, Preisabweichungen, Nebenkosten und rechnerischem Potenzial verglichen.",
+    ],
+    prices: [
+      "Artikelpreisvergleich",
+      "Dieser Tab vergleicht normalisierte Artikelpreise über Lieferanten und Standorte, inklusive Packungsinhalten und Bestpreis-Abweichungen.",
+    ],
+    yearly: [
+      "Jahresvergleich",
+      "Hier werden Rechnungen und Artikelpreise nach Jahren ausgewertet, um Preissteigerungen, Mehrkosten und Trends sichtbar zu machen.",
+    ],
+    locations: [
+      "Standortanalyse",
+      "Dieser Bereich zeigt die Materialauswertung je Standort auf Basis der Rechnungsanschriften und macht Unterschiede im Bestellverhalten sichtbar.",
+    ],
+    basket: [
+      "Warenkorb",
+      "Hier wird simuliert, was derselbe Artikelkorb bei verschiedenen Lieferanten kosten würde, inklusive fehlender Artikel und Nebenkosten.",
+    ],
+    recommendations: [
+      "Empfehlungen",
+      "Dieser Tab priorisiert Auffälligkeiten und Einkaufsmaßnahmen nach Potenzial, Abweichung und Dringlichkeit.",
+    ],
+    reports: [
+      "Reports",
+      "Hier werden die späteren Management-, Lieferanten-, Standort- und Warenkorbberichte für Druck und Export gebündelt.",
+    ],
+    settings: [
+      "Administration",
+      "Dieser Bereich zeigt Rollen, Rechte und Zugänge für die Materialauswertung.",
+    ],
+    mobile: [
+      "Standortleiter",
+      "Reduzierte mobile Ansicht für standortbezogene Maßnahmen ohne unnötige Detailtiefe aus der Gesamtadministration.",
+    ],
+  };
+  const [title, description] = copy[id] || [titleFor(id) || "Auswertung", "Dieser Bereich zeigt die relevante Auswertung für den gewählten Arbeitsbereich."];
+  return `<section class="page-intro"><h2>${title}</h2><p>${description}</p></section>`;
 }
 
 function escapeHtml(value) {

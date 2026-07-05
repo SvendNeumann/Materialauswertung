@@ -566,6 +566,32 @@ h3 {
   z-index: 1;
 }
 
+.page-intro {
+  margin: 0 0 14px;
+  padding: 16px 18px;
+  border: 1px solid rgba(178, 226, 229, 0.2);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(48, 213, 200, 0.08), rgba(7, 27, 41, 0.72)),
+    rgba(12, 34, 49, 0.72);
+  color: #eefbfb;
+  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.12);
+}
+
+.page-intro h2 {
+  margin: 0 0 6px;
+  font-size: 21px;
+  line-height: 1.16;
+}
+
+.page-intro p {
+  max-width: 980px;
+  margin: 0;
+  color: #b5cbd1;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .panel {
   border-color: rgba(178, 226, 229, 0.26);
   background:
@@ -1038,6 +1064,21 @@ h3 {
   .panel {
     padding: 13px;
     border-radius: 8px;
+  }
+
+  .page-intro {
+    margin-bottom: 10px;
+    padding: 12px 13px;
+  }
+
+  .page-intro h2 {
+    margin-bottom: 5px;
+    font-size: 17px;
+  }
+
+  .page-intro p {
+    font-size: 12.5px;
+    line-height: 1.38;
   }
 
   .tab-section {
