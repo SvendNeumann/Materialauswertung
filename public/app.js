@@ -6,7 +6,7 @@ const reloadViewStorageKey = "orisus-material-reload-view";
 const state = {
   view: "dashboard",
   role: "admin",
-  location: "Kehl",
+  location: "",
   query: "",
   supplierFilter: "Alle",
   locationFilter: "Alle",
@@ -194,7 +194,15 @@ function groupAverage(productId) {
 }
 
 function locationScopeRows(rows) {
-  return state.role === "location" ? rows.filter(row => (row.inv?.location || row.location) === state.location) : rows;
+  return state.role === "location" ? rows.filter(row => (row.inv?.location || row.location) === activeLocationName()) : rows;
+}
+
+function activeLocationName() {
+  return state.location || locations[0].name;
+}
+
+function scopeLabel() {
+  return state.role === "location" ? activeLocationName() : "Alle Standorte";
 }
 
 function kpis() {
@@ -202,7 +210,7 @@ function kpis() {
   const volume = rows.reduce((sum, row) => sum + row.effectiveNet, 0);
   const potential = rows.reduce((sum, row) => sum + Math.max(0, row.comparisonPrice - bestPrice(row.productId)) * row.qty * row.product.pack, 0);
   const avgDeviation = rows.reduce((sum, row) => sum + ((row.comparisonPrice / groupAverage(row.productId)) - 1), 0) / rows.length;
-  const scopedInvoices = state.role === "location" ? invoices.filter(i => i.location === state.location) : invoices;
+  const scopedInvoices = state.role === "location" ? invoices.filter(i => i.location === activeLocationName()) : invoices;
   return {
     invoices: scopedInvoices.length,
     products: products.length,
@@ -310,8 +318,8 @@ function invoiceYears() {
   return Array.from(years).sort();
 }
 
-function basketSimulation(locationName = state.location) {
-  const rows = calculatedItems().filter(i => i.inv.location === locationName);
+function basketSimulation(locationName = state.role === "location" ? activeLocationName() : null) {
+  const rows = calculatedItems().filter(i => !locationName || i.inv.location === locationName);
   return suppliers.map(supplier => {
     let missing = 0;
     const productCost = rows.reduce((sum, row) => {
@@ -331,7 +339,7 @@ function render() {
   renderNav();
   renderBottomNav();
   document.getElementById("viewTitle").textContent = titleFor(state.view);
-  document.getElementById("viewEyebrow").textContent = state.role === "location" ? `Standort ${state.location}` : "Materialpreis-Controlling";
+  document.getElementById("viewEyebrow").textContent = state.role === "location" ? `Standort ${activeLocationName()}` : "Materialpreis-Controlling";
   const view = document.getElementById("view");
   view.innerHTML = routes[state.view]();
   bindViewEvents();
@@ -589,8 +597,9 @@ function locationsView() {
 }
 
 function basketView() {
-  const sim = basketSimulation();
-  return `<div class="grid cols-2"><section class="panel"><h2>Warenkorb ${state.location}</h2><p class="muted">Simulation: Was hätte derselbe Artikelkorb bei Lieferant A, B, C gekostet?</p>${basketTable(sim)}</section><section class="panel"><h2>Realistische Empfehlung</h2><div class="calc-box">${sim.map((s, i) => `<div class="calc-row ${i === 0 ? "total" : ""}"><span>${s.supplier}${i === 0 ? " · bevorzugt" : ""}</span><strong>${eur.format(s.total)}</strong></div>`).join("")}</div><p class="muted">Fehlende Artikel, Mindestbestellwerte, Skonto und Versandkosten sind in der Simulation markiert.</p></section></div>`;
+  const locationName = state.role === "location" ? activeLocationName() : null;
+  const sim = basketSimulation(locationName);
+  return `<div class="grid cols-2"><section class="panel"><h2>Warenkorb ${scopeLabel()}</h2><p class="muted">Simulation: Was hätte derselbe Artikelkorb bei Lieferant A, B, C gekostet?</p>${basketTable(sim)}</section><section class="panel"><h2>Realistische Empfehlung</h2><div class="calc-box">${sim.map((s, i) => `<div class="calc-row ${i === 0 ? "total" : ""}"><span>${s.supplier}${i === 0 ? " · bevorzugt" : ""}</span><strong>${eur.format(s.total)}</strong></div>`).join("")}</div><p class="muted">Fehlende Artikel, Mindestbestellwerte, Skonto und Versandkosten sind in der Simulation markiert.</p></section></div>`;
 }
 
 function recommendationsView() {
@@ -614,7 +623,7 @@ function settingsView() {
 
 function mobileView() {
   const rows = locationScopeRows(recommendations()).slice(0, 6);
-  return `<div class="grid"><section class="panel"><h2>${state.location}: Maßnahmen</h2><p class="muted">Mobile, reduzierte Standortleiter-Sicht ohne fremde Rechnungsdetails.</p></section>${rows.map(r => `<article class="mobile-card"><strong>${r.product.name}</strong><div class="price-row"><span>Aktuell: ${r.inv.supplier}</span><strong>${eur.format(r.comparisonPrice)} / ${r.product.unit}</strong></div><div class="price-row"><span>Empfohlen: ${r.recommendedLabel}</span><strong>${eur.format(r.best)} / ${r.product.unit}</strong></div><span class="tag ${r.className === "A-Fall" ? "red" : "amber"}">${r.className} · ${eur.format(r.saving * 12)} jährlich</span><div><button class="btn primary small">Übernehmen</button> <button class="btn small">Ignorieren</button> <button class="btn small">Begründen</button></div></article>`).join("")}</div>`;
+  return `<div class="grid"><section class="panel"><h2>${scopeLabel()}: Maßnahmen</h2><p class="muted">Mobile, reduzierte Standortleiter-Sicht ohne fremde Rechnungsdetails.</p></section>${rows.map(r => `<article class="mobile-card"><strong>${r.product.name}</strong><div class="price-row"><span>Standort: ${r.inv.location}</span><strong>${r.inv.supplier}</strong></div><div class="price-row"><span>Aktuell</span><strong>${eur.format(r.comparisonPrice)} / ${r.product.unit}</strong></div><div class="price-row"><span>Empfohlen: ${r.recommendedLabel}</span><strong>${eur.format(r.best)} / ${r.product.unit}</strong></div><span class="tag ${r.className === "A-Fall" ? "red" : "amber"}">${r.className} · ${eur.format(r.saving * 12)} jährlich</span><div><button class="btn primary small">Übernehmen</button> <button class="btn small">Ignorieren</button> <button class="btn small">Begründen</button></div></article>`).join("")}</div>`;
 }
 
 const routes = { dashboard, invoices: invoicesView, review: reviewView, products: productsView, suppliers: suppliersView, prices: pricesView, yearly: yearlyView, locations: locationsView, basket: basketView, recommendations: recommendationsView, reports: reportsView, settings: settingsView, mobile: mobileView };
