@@ -108,6 +108,23 @@ async function supabaseInsert(table, payload) {
   return response.json();
 }
 
+async function supabaseRpc(fn, payload) {
+  const response = await fetch(`${supabaseUrl}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`${fn}: ${response.status} ${text}`);
+  }
+  return text ? JSON.parse(text) : {};
+}
+
 function storageObjectUrl(path) {
   return `${supabaseUrl}/storage/v1/object/${invoiceBucket}/${path.split("/").map(encodeURIComponent).join("/")}`;
 }
@@ -220,7 +237,7 @@ async function uploadInvoiceFiles(fileList) {
   }
   const locationName = document.getElementById("uploadLocation")?.value || locations[0]?.name || "";
   const supplierName = document.getElementById("uploadSupplier")?.value || suppliers[0]?.name || "";
-  state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} werden hochgeladen...`;
+  state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} werden hochgeladen und analysiert...`;
   render();
 
   try {
@@ -241,8 +258,9 @@ async function uploadInvoiceFiles(fileList) {
       if (!uploadResponse.ok) {
         throw new Error(`${file.name}: Upload fehlgeschlagen (${uploadResponse.status})`);
       }
+      const importFileKey = path;
       const [created] = await supabaseInsert("sample_imports", {
-        file: file.name,
+        file: importFileKey,
         document_type: "PDF",
         supplier: supplierName,
         location_name: locationName,
@@ -253,14 +271,410 @@ async function uploadInvoiceFiles(fileList) {
         warnings: ["Hochgeladen, Auslesung ausstehend"],
         sample_items: [],
       });
-      state.sampleImports = [importRowFromDb(created), ...state.sampleImports.filter(row => row.file !== file.name)];
+      state.sampleImports = [importRowFromDb(created), ...state.sampleImports.filter(row => row.file !== importFileKey)];
+      state.uploadStatus = `${file.name}: PDF gespeichert, Auslesung läuft...`;
+      render();
+      const payload = await buildLiveInvoicePayload(file, { supplierName, locationName });
+      payload.file = importFileKey;
+      payload.invoice.source_file = importFileKey;
+      await supabaseRpc("ingest_invoice_analysis", { p_payload: payload });
+      state.uploadStatus = `${file.name}: ${payload.invoice_items.length} Positionen analysiert und in die Potenzialanalyse übernommen.`;
+      await loadSupabaseData();
+      render();
     }
-    state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} erfolgreich hochgeladen.`;
+    state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} erfolgreich hochgeladen, ausgelesen und analysiert.`;
   } catch (error) {
     state.uploadStatus = error.message || "Upload fehlgeschlagen.";
   }
   invalidateDerivedData();
   render();
+}
+
+function parseAmount(value) {
+  if (value == null) return null;
+  const raw = String(value).trim();
+  const negative = raw.endsWith("-") || raw.startsWith("-");
+  const cleaned = raw.replace(/[€\s-]/g, "").replace(/\./g, "").replace(",", ".");
+  const parsed = Number(cleaned);
+  if (!Number.isFinite(parsed)) return null;
+  return negative ? -parsed : parsed;
+}
+
+function parseQuantity(value) {
+  const parsed = Number(String(value || "").trim().replace(",", ".").replace(/-$/, ""));
+  if (!Number.isFinite(parsed)) return 0;
+  return String(value || "").trim().endsWith("-") ? -parsed : parsed;
+}
+
+function firstMatch(text, pattern) {
+  const match = text.match(pattern);
+  return match ? match[1] : "";
+}
+
+function lastAmount(text, pattern) {
+  const matches = Array.from(text.matchAll(pattern));
+  return matches.length ? parseAmount(matches[matches.length - 1][1]) : null;
+}
+
+function supplierForText(text, fallback) {
+  if (text.includes("Henry Schein Dental Deutschland")) return "Henry Schein";
+  if (text.includes("Plandent GmbH")) return "Plandent";
+  if (text.includes("Monatsrechnung Blatt") && text.includes("Kundennummer 312075")) return "GERL";
+  return fallback || "Henry Schein";
+}
+
+function locationForText(text, fallback) {
+  const rules = [
+    ["Kehl", [/77694\s+Kehl/i, /Rheinstr\.\s*46/i]],
+    ["Kirchberg", [/08107\s+Kirchberg/i, /Auerbacher\s+Str\.\s*13/i]],
+    ["Essen Zollverein", [/45327\s+Essen/i, /Viktoriastra(?:ße|sse)\s+41a/i, /Zeche\s+Zollverein/i]],
+    ["Hüttenberg", [/35625\s+H[üu]ttenberg/i, /Langg[öo]nser\s+Str\.\s*29/i]],
+  ];
+  return rules.find(([, patterns]) => patterns.some(pattern => pattern.test(text)))?.[0] || fallback || locations[0]?.name || "";
+}
+
+function documentTypeForText(text, supplier) {
+  if (supplier === "Plandent" && text.includes("Gutschrift")) return "Gutschrift";
+  if (supplier === "GERL") return "Monatsrechnung";
+  return "Rechnung";
+}
+
+function invoiceHeaderFromText(text, supplier) {
+  if (supplier === "Henry Schein") {
+    return {
+      invoiceNo: firstMatch(text, /Rechnung\s+(\d{6,})/i),
+      invoiceDate: firstMatch(text, /Datum:\s*(\d{2}\.\d{2}\.\d{4})/i),
+    };
+  }
+  if (supplier === "Plandent") {
+    return {
+      invoiceNo: firstMatch(text, /(?:Rechnungs|Gutschrifts)-Nr\.:\s*(\d+)/i),
+      invoiceDate: firstMatch(text, /Datum:\s*(\d{2}\.\d{2}\.\d{4})/i),
+    };
+  }
+  if (supplier === "GERL") {
+    return {
+      invoiceNo: firstMatch(text, /Nummer\s+(\d{8,})/i),
+      invoiceDate: firstMatch(text, /Datum\s+(\d{2}\.\d{2}\.\d{4})/i),
+    };
+  }
+  return { invoiceNo: "", invoiceDate: "" };
+}
+
+function totalsFromText(text, supplier) {
+  if (supplier === "Plandent") {
+    return {
+      net: lastAmount(text, /Zwischensumme\s+(-?[\d.]+,\d{2})/gi),
+      gross: lastAmount(text, /Gesamtsumme\s+(-?[\d.]+,\d{2})/gi),
+      freight: 0,
+      surcharge: lastAmount(text, /Mindermenge\s+Inland\s+(-?[\d.]+,\d{2})/gi) || 0,
+    };
+  }
+  if (supplier === "Henry Schein") {
+    return {
+      net: lastAmount(text, /Summe\s+Positionen\s+(-?[\d.]+,\d{2})/gi),
+      gross: lastAmount(text, /Endbetrag\s+(-?[\d.]+,\d{2})/gi),
+      freight: lastAmount(text, /Versandkosten\s+\d*\s*(-?[\d.]+,\d{2})/gi) || 0,
+      surcharge: 0,
+    };
+  }
+  if (supplier === "GERL") {
+    const matches = Array.from(text.matchAll(/Ne-Warenwert\s+MS\s+MwSt\s+%\s+MwSt\s+Re-Betrag\s+EUR\s+(-?[\d.]+,\d{2})\s+\d+\s+19,00\s+(-?[\d.]+,\d{2})\s+(-?[\d.]+,\d{2})/gi));
+    if (matches.length) {
+      const last = matches[matches.length - 1];
+      return { net: parseAmount(last[1]), gross: parseAmount(last[3]), freight: 0, surcharge: 0 };
+    }
+  }
+  return { net: null, gross: null, freight: 0, surcharge: 0 };
+}
+
+function extractItemsFromText(text, supplier) {
+  const items = [];
+  let pattern = null;
+  if (supplier === "Plandent") {
+    pattern = /^\s*\d+\s+(\d{5,})\s+(.+?)\s+(-?\d+(?:,\d+)?)\s+([\d.]+,\d{2})\*?\s+([\d.]+,\d{2})\*?\s+(-?[\d.]+,\d{2})/gim;
+  } else if (supplier === "Henry Schein") {
+    pattern = /^\s*(\d{5,})\s+(-?\d+)\s+(.+?)\s+\d(?:,\s*\d)*(?:,\s*\d)?\s+([\d.]+,\d{2})\s+(-?[\d.]+,\d{2})/gim;
+  } else if (supplier === "GERL") {
+    pattern = /^\s*(\d{4,})\s+(.+?)\s+(\d+-?)\s+([\d.]+,\d{2})\s+(-?[\d.]+,\d{2}-?)\s+[A-Z]\s+\d/gim;
+  }
+  if (!pattern) return items;
+  for (const match of text.matchAll(pattern)) {
+    let articleNo, description, qty, unitPrice, total;
+    if (supplier === "Plandent") {
+      [, articleNo, description, qty, , unitPrice, total] = match;
+    } else if (supplier === "Henry Schein") {
+      [, articleNo, qty, description, unitPrice, total] = match;
+    } else {
+      [, articleNo, description, qty, unitPrice, total] = match;
+    }
+    items.push({
+      article_no: articleNo,
+      description: description.replace(/\s+/g, " ").trim(),
+      quantity: parseQuantity(qty),
+      unit_price: parseAmount(unitPrice) || 0,
+      line_total: parseAmount(total) || 0,
+    });
+  }
+  return items;
+}
+
+async function pdfText(file) {
+  if (!window.pdfjsLib) throw new Error("PDF-Auslesung konnte nicht geladen werden.");
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const data = await file.arrayBuffer();
+  const pdf = await window.pdfjsLib.getDocument({ data }).promise;
+  const pages = [];
+  for (let pageNo = 1; pageNo <= pdf.numPages; pageNo += 1) {
+    const page = await pdf.getPage(pageNo);
+    const content = await page.getTextContent();
+    const rows = new Map();
+    content.items.forEach(item => {
+      const y = Math.round(item.transform[5] / 3) * 3;
+      const x = item.transform[4];
+      const row = rows.get(y) || [];
+      row.push({ x, text: item.str });
+      rows.set(y, row);
+    });
+    const lines = Array.from(rows.entries())
+      .sort((a, b) => b[0] - a[0])
+      .map(([, row]) => row.sort((a, b) => a.x - b.x).map(part => part.text).join(" ").replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+    pages.push(lines.join("\n"));
+  }
+  return pages.join("\n");
+}
+
+function normalizedRuleText(value) {
+  return value.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/®/g, "").replace(/\s+/g, " ").trim();
+}
+
+function categoryFor(description) {
+  const text = normalizedRuleText(description);
+  const rules = [
+    ["Verbrauchsmaterial", ["kanuel", "kanu", "nadel", "septoject", "orbiject", "sopira", "absaug", "speichelsauger"]],
+    ["Hygiene", ["handtuch", "tork", "sterifolie", "sterireel", "desinf", "sept", "clean"]],
+    ["Füllung", ["komposit", "composite", "filtek", "tetric", "clip spritze", "easy match", "bond", "panavia"]],
+    ["Prophylaxe", ["prophy", "polierpaste", "flairesse"]],
+    ["Prothetik", ["mischkan", "penta misch", "anmisch", "impregum", "omnibite", "abform", "biss"]],
+    ["Endodontie", ["feilen", "reciproc", "mtwo", "profile"]],
+    ["Praxislabor", ["zirconia", "zircad", "emax", "block", "bohrer", "bur ", "fraeser", "pmma", "zro2"]],
+  ];
+  return rules.find(([, terms]) => terms.some(term => text.includes(term)))?.[0] || "Material";
+}
+
+function autoRule(description) {
+  const original = description.toLowerCase().replace(/®/g, "");
+  const normalized = normalizedRuleText(description);
+  const rules = [
+    ["ledermix-paste-5g", "Ledermix Paste Tube 5 g", "Endodontie", /\bledermix\b.*\bpaste\b.*\b(?:tube\b)?.*\b5\s*g\b/i],
+    ["penta-mischkanuelen-50", "Penta Mischkanülen 50 St", "Prothetik", /\bpenta\b.*\bmischkan[üu]len\b.*(?:50|pack\s*50)/i],
+    ["optragate-2-small", "OptraGate 2 Small", "Verbrauchsmaterial", /\boptragate\b.*\b2\b.*\bsmall\b/i],
+    ["eddy-irrigation-tip-10", "EDDY Irrigation Tips 10 St", "Endodontie", /\beddy\b.*(?:irrigation|sp[üu]lkan[üu]len).*(?:10|5\s*x\s*2)/i],
+    ["activator-universal-plus-paste-60ml", "Activator Universal Plus Paste 60 ml", "Prothetik", /\bactivator\b.*\buniversal\b.*\bplus\b.*\bpaste\b/i],
+  ];
+  const hit = rules.find(([, , , pattern]) => pattern.test(original) || pattern.test(normalized));
+  return hit ? { key: hit[0], name: hit[1], category: hit[2] } : null;
+}
+
+function catalogKey(description) {
+  const text = normalizedRuleText(description)
+    .replace(/stck/g, "st")
+    .replace(/stk/g, "st")
+    .replace(/stück/g, "st")
+    .replace(/([a-z])[-_/](?=[a-z0-9])/g, "$1 ")
+    .replace(/(?<=\d),(?=\d)/g, ".")
+    .replace(/[^a-z0-9.]+/g, " ");
+  return text.split(/\s+/).filter(token => token && !["pa", "pack", "packung", "fl", "refill"].includes(token)).slice(0, 10).join(" ") || "artikel";
+}
+
+function packBasis(description) {
+  const text = normalizedRuleText(description).replace(/stck/g, "st").replace(/stk/g, "st").replace(/stück/g, "st");
+  let match = text.match(/(\d+)\s*x\s*(\d+(?:[,.]\d+)?)\s*(ml|g|kg|l|st)\b/i);
+  if (match) {
+    const count = Number(match[1]);
+    const amount = parseAmount(match[2]) || 0;
+    const unit = match[3];
+    const factor = count * amount;
+    if (unit === "kg") return [factor * 1000, "g", `${count} x ${amount} kg`];
+    if (unit === "l") return [factor * 1000, "ml", `${count} x ${amount} l`];
+    return [Math.max(factor, 1), unit === "st" ? "Stück" : unit, `${count} x ${amount} ${unit}`];
+  }
+  match = text.match(/(?:pa|p|pack|packung)\s*\.?\s*(\d+)\s*(?:st)?\b/i) || text.match(/\b(\d+)\s*st\b/i);
+  if (match && Number(match[1]) > 1) return [Number(match[1]), "Stück", `${Number(match[1])} St`];
+  match = text.match(/\b(\d+(?:[,.]\d+)?)\s*(ml|g|kg|l)\b/i);
+  if (match) {
+    const amount = parseAmount(match[1]) || 0;
+    const unit = match[2];
+    if (unit === "kg") return [amount * 1000, "g", `${amount} kg`];
+    if (unit === "l") return [amount * 1000, "ml", `${amount} l`];
+    if (amount > 0) return [amount, unit, `${amount} ${unit}`];
+  }
+  return [1, "Einheit", "1 Einheit"];
+}
+
+function catalogPackOverride(item, pack) {
+  const verified = {
+    "9884844": [500, "ml", "500 ml (Katalogbasis)"],
+    "9884845": [1000, "ml", "1 l (Katalogbasis)"],
+  }[item.article_no];
+  if (verified) return verified;
+  if (pack[0] !== 1 || pack[1] !== "Einheit") return pack;
+  const rule = autoRule(item.description);
+  if (rule?.key === "optragate-2-small") return [80, "Stück", "80 St (Katalogbasis)"];
+  if (rule?.key === "activator-universal-plus-paste-60ml") return [60, "ml", "60 ml (Katalogbasis)"];
+  return pack;
+}
+
+function needsReview(description) {
+  const text = normalizedRuleText(description);
+  return /\bketac\b.*\b(?:cem|univ|universal|aplicap)\b/i.test(text)
+    || /\bmiraject\b.*\bluer\b/i.test(text)
+    || /\btemp\s*bond\b.*\bautomix\b/i.test(text)
+    || /\btetric\b.*\b(?:evoflow|evoceram)\b/i.test(text);
+}
+
+async function shaId(prefix, key) {
+  const bytes = new TextEncoder().encode(key);
+  const hash = await crypto.subtle.digest("SHA-1", bytes);
+  return `${prefix}-${Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, "0")).join("").slice(0, 12).toUpperCase()}`;
+}
+
+function isoDateFromGerman(value) {
+  const match = String(value || "").match(/(\d{2})\.(\d{2})\.(\d{4})/);
+  if (!match) return new Date().toISOString().slice(0, 10);
+  return `${match[3]}-${match[2]}-${match[1]}`;
+}
+
+function itemDiscount(item) {
+  const gross = item.quantity * item.unit_price;
+  if (!gross) return 0;
+  return Math.max(0, Math.min(0.65, 1 - item.line_total / gross));
+}
+
+async function buildLiveInvoicePayload(file, fallback) {
+  const text = await pdfText(file);
+  const supplier = supplierForText(text, fallback.supplierName);
+  const locationName = locationForText(text, fallback.locationName);
+  const header = invoiceHeaderFromText(text, supplier);
+  const totals = totalsFromText(text, supplier);
+  const rawItems = extractItemsFromText(text, supplier);
+  if (!rawItems.length) throw new Error(`${file.name}: keine Positionszeilen erkannt.`);
+  const invoiceNo = header.invoiceNo || file.name.replace(/\.[^.]+$/, "");
+  const invoiceDate = isoDateFromGerman(header.invoiceDate);
+  const invoiceId = `INV-${invoiceNo.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+  const detailByKey = new Map();
+  rawItems.forEach(item => {
+    if (autoRule(item.description)) return;
+    const basis = catalogPackOverride(item, packBasis(item.description));
+    const key = catalogKey(item.description);
+    if (!detailByKey.has(key)) detailByKey.set(key, new Map());
+    const articleMap = detailByKey.get(key);
+    if (!articleMap.has(item.article_no)) articleMap.set(item.article_no, new Set());
+    articleMap.get(item.article_no).add(`${basis[0]}|${basis[1]}`);
+  });
+  const ambiguous = new Set();
+  detailByKey.forEach((articleMap, key) => {
+    const bases = new Set(Array.from(articleMap.values()).flatMap(set => Array.from(set)));
+    const onlyBasis = Array.from(bases)[0] || "";
+    if (articleMap.size > 1 && !(bases.size === 1 && !onlyBasis.endsWith("|Einheit"))) ambiguous.add(key);
+  });
+
+  const productsById = new Map();
+  const invoiceItems = [];
+  const priceBuckets = new Map();
+  for (const item of rawItems) {
+    let productKey = catalogKey(item.description);
+    let productName = item.description.slice(0, 64);
+    let category = categoryFor(item.description);
+    let score = needsReview(item.description) ? 0.82 : 0.94;
+    let prefix = "P";
+    const verified = {
+      "9884844": ["hs-eurosept-xtra-e-handdesinfektion", "HS-EuroSept Xtra E Händedesinfektion", "Hygiene"],
+      "9884845": ["hs-eurosept-xtra-e-handdesinfektion", "HS-EuroSept Xtra E Händedesinfektion", "Hygiene"],
+    }[item.article_no];
+    const rule = autoRule(item.description);
+    if (verified) {
+      [productKey, productName, category] = verified;
+      score = 0.97;
+      prefix = "G";
+    } else if (rule) {
+      productKey = rule.key;
+      productName = rule.name;
+      category = rule.category;
+      score = 0.97;
+      prefix = "G";
+    } else if (ambiguous.has(productKey)) {
+      productKey = `${productKey} artnr ${item.article_no}`;
+      productName = `${item.description.slice(0, 52)} · ArtNr ${item.article_no}`;
+      score = 0.82;
+    }
+    const productId = await shaId(prefix, productKey);
+    const basis = catalogPackOverride(item, packBasis(item.description));
+    const normalizedQty = item.quantity * basis[0];
+    const normalizedUnitPrice = basis[0] ? item.unit_price / basis[0] : item.unit_price;
+    productsById.set(productId, {
+      id: productId,
+      name: productName,
+      category,
+      unit: basis[1],
+      pack: 1,
+      standard: prefix === "G",
+      critical: ["Füllung", "Endodontie", "Prothetik", "Implantologie"].includes(category),
+      approved: score >= 0.9,
+    });
+    invoiceItems.push({
+      product_id: productId,
+      qty: normalizedQty,
+      list_price: normalizedUnitPrice,
+      item_discount: itemDiscount(item),
+      supplier_item_name: `${supplier} ArtNr ${item.article_no}: ${item.description} · Basis: ${basis[2]}`,
+      match_score: score,
+    });
+    const priceKey = `${supplier}|||${productId}`;
+    const bucket = priceBuckets.get(priceKey) || { supplier_name: supplier, product_id: productId, values: [] };
+    bucket.values.push(Math.abs(normalizedUnitPrice));
+    priceBuckets.set(priceKey, bucket);
+  }
+  const warnings = [];
+  if (!header.invoiceNo) warnings.push("Rechnungsnummer aus Dateiname abgeleitet");
+  if (!header.invoiceDate) warnings.push("Rechnungsdatum nicht sicher erkannt");
+  const sampleItems = rawItems.slice(0, 8).map(item => ({
+    article_no: item.article_no,
+    description: item.description,
+    quantity: item.quantity,
+    unit_price: item.unit_price,
+    line_total: item.line_total,
+  }));
+  return {
+    file: file.name,
+    document_type: documentTypeForText(text, supplier),
+    invoice_date_display: header.invoiceDate || "",
+    gross_total: totals.gross || totals.net || 0,
+    warnings,
+    sample_items: sampleItems,
+    invoice: {
+      id: invoiceId,
+      invoice_no: invoiceNo,
+      invoice_date: invoiceDate,
+      supplier_name: supplier,
+      location_name: locationName,
+      status: "Freigegeben",
+      net: totals.net || totals.gross || 0,
+      freight: totals.freight || 0,
+      surcharge: totals.surcharge || 0,
+      discount: 0,
+      skonto_used: false,
+      source_file: file.name,
+    },
+    products: Array.from(productsById.values()),
+    invoice_items: invoiceItems,
+    supplier_prices: Array.from(priceBuckets.values()).map(row => ({
+      supplier_name: row.supplier_name,
+      product_id: row.product_id,
+      price: row.values.reduce((sum, value) => sum + value, 0) / row.values.length,
+    })),
+  };
 }
 
 function invoiceTotalBeforeAdjustments(invoiceId) {
