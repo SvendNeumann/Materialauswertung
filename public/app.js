@@ -799,6 +799,10 @@ function supplierArticleFingerprint(row) {
   return `${row.inv.supplier}|${row.productId}|${row.product.name}|${row.product.unit}`.toLowerCase();
 }
 
+function supplierArticleNo(row) {
+  return String(row.supplierName || "").match(/ArtNr\s+([^:]+):/i)?.[1]?.trim() || "";
+}
+
 function supplierArticleStats() {
   if (!derivedCache.supplierArticleStats) {
     const stats = new Map();
@@ -817,6 +821,7 @@ function supplierArticleStats() {
 }
 
 function variantArticleComparable(row) {
+  if (supplierArticleNo(row)) return true;
   const stat = supplierArticleStats().get(supplierArticleFingerprint(row));
   if (!stat) return false;
   return stat.count >= 2 || stat.locations.size >= 2 || stat.invoices.size >= 2;
@@ -1593,7 +1598,7 @@ function reviewView() {
         <h2>Einheit / Variante nicht automatisch sicher</h2>
         <span class="tag amber">${reviewRows.length} zurückgestellt</span>
       </div>
-      <p class="muted panel-sub">Varianten werden als eigene Artikel geführt, sobald gleiche Artikelnummer/Beschreibung oder eine wiederkehrende Basis erkennbar ist. In dieser Liste bleiben nur Positionen, die noch nicht konsistent genug für einen automatischen Vergleich vorkommen.</p>
+      <p class="muted panel-sub">Artikel mit Artikelnummer werden als eigene Variantenartikel geführt und auf ihre Basismenge normalisiert. In dieser Liste bleiben nur Positionen ohne ausreichend erkennbare Artikel- oder Mengenbasis.</p>
       ${reviewReasonStats(reviewRows)}
       ${matchingReviewTable(reviewRows)}
     </section>`;
@@ -1977,7 +1982,7 @@ function isSafePotential(row) {
 function potentialReason(row) {
   const comparisons = potentialComparisonRows(row.productId);
   const basis = `${(row.qty * row.product.pack).toLocaleString("de-DE", { maximumFractionDigits: 2 })} ${row.product.unit}`;
-  const matchText = variantArticleComparable(row) && row.match < 0.9 ? "eigener Variantenartikel aus gleicher ArtNr/Beschreibung" : `${Math.round(row.match * 100)}% Match`;
+  const matchText = variantArticleComparable(row) && row.match < 0.9 ? "eigener Variantenartikel aus Artikelnummer/Beschreibung" : `${Math.round(row.match * 100)}% Match`;
   const supplierText = row.recommendedSupplier === row.inv.supplier
     ? "beste Kondition beim gleichen Lieferanten"
     : `günstigste Quelle: ${row.recommendedSupplier}`;
