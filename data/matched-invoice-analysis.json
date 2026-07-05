@@ -5953,6 +5953,16 @@
       "approved": true
     },
     {
+      "id": "P-5A4A1D16D6FF",
+      "name": "Night Cleaner 800ml",
+      "category": "Hygiene",
+      "unit": "ml",
+      "pack": 1,
+      "standard": false,
+      "critical": false,
+      "approved": true
+    },
+    {
       "id": "P-5AE6B10D4D59",
       "name": "Rundmagnete Splitcast 100 St.",
       "category": "Implantologie",
@@ -7123,16 +7133,6 @@
       "approved": true
     },
     {
-      "id": "P-B1BFD88912DC",
-      "name": "Night Cleaner 800ml · ArtNr 825514",
-      "category": "Hygiene",
-      "unit": "ml",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": false
-    },
-    {
       "id": "P-B2A93FE82C5C",
       "name": "HS-Papier Pe Servietten grün,",
       "category": "Material",
@@ -8001,16 +8001,6 @@
       "standard": false,
       "critical": false,
       "approved": true
-    },
-    {
-      "id": "P-F610C93F6400",
-      "name": "Night Cleaner 800ml · ArtNr 8255141",
-      "category": "Hygiene",
-      "unit": "ml",
-      "pack": 1,
-      "standard": false,
-      "critical": false,
-      "approved": false
     },
     {
       "id": "P-F612D6C6FEDB",
@@ -9283,12 +9273,12 @@
     },
     {
       "invoice_id": "INV-231053610",
-      "product_id": "P-F610C93F6400",
+      "product_id": "P-5A4A1D16D6FF",
       "qty": 1600.0,
       "list_price": 0.0191875,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 8255141: Night Cleaner 800ml · Basis: 800 ml",
-      "match_score": 0.82
+      "match_score": 0.94
     },
     {
       "invoice_id": "INV-231053610",
@@ -10399,12 +10389,12 @@
     },
     {
       "invoice_id": "INV-231082265",
-      "product_id": "P-B1BFD88912DC",
+      "product_id": "P-5A4A1D16D6FF",
       "qty": 1600.0,
       "list_price": 0.0191875,
       "item_discount": 0.0,
       "supplier_item_name": "Henry Schein ArtNr 825514: Night Cleaner 800ml · Basis: 800 ml",
-      "match_score": 0.82
+      "match_score": 0.94
     },
     {
       "invoice_id": "INV-231082265",
@@ -13342,6 +13332,11 @@
     },
     {
       "supplier_name": "Henry Schein",
+      "product_id": "P-5A4A1D16D6FF",
+      "price": 0.0192
+    },
+    {
+      "supplier_name": "Henry Schein",
       "product_id": "P-5B00EDD767EA",
       "price": 15.8
     },
@@ -13762,11 +13757,6 @@
     },
     {
       "supplier_name": "Henry Schein",
-      "product_id": "P-B1BFD88912DC",
-      "price": 0.0192
-    },
-    {
-      "supplier_name": "Henry Schein",
       "product_id": "P-B2A93FE82C5C",
       "price": 33.2
     },
@@ -14049,11 +14039,6 @@
       "supplier_name": "Henry Schein",
       "product_id": "P-F606EE6388F2",
       "price": 55.95
-    },
-    {
-      "supplier_name": "Henry Schein",
-      "product_id": "P-F610C93F6400",
-      "price": 0.0192
     },
     {
       "supplier_name": "Henry Schein",

@@ -306,13 +306,21 @@ def item_discount(item: dict) -> float:
 
 def build_payload(input_dir: Path) -> dict:
     summaries = [asdict(extractor.summarize(path)) for path in extractor.invoice_paths(input_dir)]
-    article_numbers_by_key: dict[str, set[str]] = defaultdict(set)
+    article_details_by_key: dict[str, dict[str, set[tuple[float, str]]]] = defaultdict(lambda: defaultdict(set))
     for summary in summaries:
         for item in summary["items"]:
             if item["article_no"] not in VERIFIED_ARTICLE_MATCHES and not auto_match_rule(item["description"]):
-                article_numbers_by_key[catalog_key(item["description"])].add(item["article_no"])
+                pack_factor, unit, pack_note = pack_basis(item["description"])
+                pack_factor, unit, pack_note = catalog_pack_override(item, pack_factor, unit, pack_note)
+                article_details_by_key[catalog_key(item["description"])][item["article_no"]].add((round(pack_factor, 4), unit))
     ambiguous_article_keys = {
-        key for key, article_numbers in article_numbers_by_key.items() if len(article_numbers) > 1
+        key
+        for key, article_details in article_details_by_key.items()
+        if len(article_details) > 1
+        and not (
+            len({basis for bases in article_details.values() for basis in bases}) == 1
+            and next(iter(next(iter(article_details.values()))))[1] != "Einheit"
+        )
     }
 
     products_by_id: dict[str, dict] = {}
