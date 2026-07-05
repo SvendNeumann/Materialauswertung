@@ -4,6 +4,7 @@ const sidebarStorageKey = "orisus-material-sidebar-collapsed";
 const reloadViewStorageKey = "orisus-material-reload-view";
 const supabaseUrl = "https://rxiboswudbunvjqgpnyc.supabase.co";
 const supabaseKey = "sb_publishable__KobDxUjq-p0hIBzG62Fbw_OlGngnvY";
+const invoiceBucket = "material-invoices";
 
 const state = {
   view: "dashboard",
@@ -14,6 +15,7 @@ const state = {
   locationFilter: "Alle",
   categoryFilter: "Alle",
   sampleImports: [],
+  uploadStatus: "",
   openNavSection: "overview",
   sidebarCollapsed: localStorage.getItem(sidebarStorageKey) === "true",
   mobileNavOpen: false,
@@ -176,14 +178,51 @@ async function supabaseTable(table, query = "select=*") {
   return response.json();
 }
 
+async function supabaseInsert(table, payload) {
+  const response = await fetch(`${supabaseUrl}/rest/v1/${table}`, {
+    method: "POST",
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(`${table}: ${response.status}`);
+  }
+  return response.json();
+}
+
+function storageObjectUrl(path) {
+  return `${supabaseUrl}/storage/v1/object/${invoiceBucket}/${path.split("/").map(encodeURIComponent).join("/")}`;
+}
+
+function importRowFromDb(row) {
+  return {
+    file: row.file,
+    document_type: row.document_type || "PDF",
+    supplier: row.supplier || "offen",
+    location_name: row.location_name || "",
+    invoice_no: row.invoice_no || "",
+    invoice_date: row.invoice_date || "",
+    gross_total: row.gross_total == null ? null : Number(row.gross_total),
+    extracted_items: row.extracted_items || 0,
+    warnings: Array.isArray(row.warnings) ? row.warnings : [],
+    sample_items: Array.isArray(row.sample_items) ? row.sample_items : [],
+  };
+}
+
 async function loadSupabaseData() {
-  const [locationRows, supplierRows, productRows, priceRows, invoiceRows, itemRows] = await Promise.all([
+  const [locationRows, supplierRows, productRows, priceRows, invoiceRows, itemRows, importRows] = await Promise.all([
     supabaseTable("locations", "select=id,name,manager,address&order=name.asc"),
     supabaseTable("suppliers", "select=name,skonto,freight_free,terms,contact&order=name.asc"),
     supabaseTable("products", "select=id,name,category,unit,pack,standard,critical,approved&order=id.asc"),
     supabaseTable("supplier_prices", "select=supplier_name,product_id,price"),
     supabaseTable("invoices", "select=id,invoice_no,invoice_date,supplier_name,location_name,status,net,freight,surcharge,discount,skonto_used&order=invoice_date.desc"),
     supabaseTable("invoice_items", "select=invoice_id,product_id,qty,list_price,item_discount,supplier_item_name,match_score&order=id.asc"),
+    supabaseTable("sample_imports", "select=file,document_type,supplier,location_name,invoice_no,invoice_date,gross_total,extracted_items,warnings,sample_items&order=created_at.desc"),
   ]);
 
   if (!locationRows.length || !supplierRows.length || !productRows.length) return false;
@@ -240,7 +279,59 @@ async function loadSupabaseData() {
     });
     return index;
   }, {});
+  state.sampleImports = importRows.map(importRowFromDb);
   return true;
+}
+
+async function uploadInvoiceFiles(fileList) {
+  const files = Array.from(fileList || []).filter(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
+  if (!files.length) {
+    state.uploadStatus = "Bitte PDF-Dateien auswählen.";
+    render();
+    return;
+  }
+  const locationName = document.getElementById("uploadLocation")?.value || locations[0]?.name || "";
+  const supplierName = document.getElementById("uploadSupplier")?.value || suppliers[0]?.name || "";
+  state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} werden hochgeladen...`;
+  render();
+
+  try {
+    for (const file of files) {
+      const safeName = file.name.replace(/[^\w. -]+/g, "_");
+      const uploadId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const path = `uploads/${new Date().toISOString().slice(0, 10)}/${uploadId}-${safeName}`;
+      const uploadResponse = await fetch(storageObjectUrl(path), {
+        method: "POST",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": file.type || "application/pdf",
+          "x-upsert": "false",
+        },
+        body: file,
+      });
+      if (!uploadResponse.ok) {
+        throw new Error(`${file.name}: Upload fehlgeschlagen (${uploadResponse.status})`);
+      }
+      const [created] = await supabaseInsert("sample_imports", {
+        file: file.name,
+        document_type: "PDF",
+        supplier: supplierName,
+        location_name: locationName,
+        invoice_no: null,
+        invoice_date: null,
+        gross_total: null,
+        extracted_items: 0,
+        warnings: ["Hochgeladen, Auslesung ausstehend"],
+        sample_items: [],
+      });
+      state.sampleImports = [importRowFromDb(created), ...state.sampleImports.filter(row => row.file !== file.name)];
+    }
+    state.uploadStatus = `${files.length} PDF${files.length === 1 ? "" : "s"} erfolgreich hochgeladen.`;
+  } catch (error) {
+    state.uploadStatus = error.message || "Upload fehlgeschlagen.";
+  }
+  render();
 }
 
 function invoiceTotalBeforeAdjustments(invoiceId) {
@@ -586,19 +677,25 @@ function invoicesView() {
       <section class="panel">
         <h2>Rechnungsupload Zentrale</h2>
         <div class="dropzone" id="dropzone">
-          <div><strong>PDFs hier ablegen</strong><span class="muted">Mehrfachupload, OCR-Simulation und Dublettenprüfung vorbereitet</span></div>
+          <div>
+            <strong>PDFs hier ablegen</strong>
+            <span class="muted">Dateien werden in Supabase gespeichert und dem Import zugeordnet.</span>
+            <button class="btn primary" id="chooseInvoiceFiles" type="button">PDF auswählen</button>
+            <input id="invoiceFileInput" type="file" accept="application/pdf,.pdf" multiple hidden>
+          </div>
         </div>
+        ${state.uploadStatus ? `<p class="upload-status">${state.uploadStatus}</p>` : ""}
         <div class="form-grid" style="margin-top:14px">
-          <label>Standort<select>${locations.map(l => `<option>${l.name}</option>`)}</select></label>
-          <label>Lieferant<select>${suppliers.map(s => `<option>${s.name}</option>`)}</select></label>
+          <label>Standort<select id="uploadLocation">${locations.map(l => `<option>${l.name}</option>`)}</select></label>
+          <label>Lieferant<select id="uploadSupplier">${suppliers.map(s => `<option>${s.name}</option>`)}</select></label>
         </div>
       </section>
       <section class="panel"><h2>Statusworkflow</h2><div class="workflow">${["Neu", "Ausgelesen", "In Prüfung", "Freigegeben", "Fehlerhaft", "Dublette"].map((s, i) => `<span class="${i < 4 ? "active" : ""}">${s}</span>`).join("")}</div></section>
     </div>
     <section class="panel" style="margin-top:16px">
       <div class="toolbar">
-        <h2>Erkannte Beispielimporte</h2>
-        <span class="tag blue">${state.sampleImports.length || 0} PDFs analysiert</span>
+        <h2>Importierte PDFs</h2>
+        <span class="tag blue">${state.sampleImports.length || 0} PDFs im Import</span>
       </div>
       ${sampleImportTable(state.sampleImports)}
     </section>
@@ -732,7 +829,7 @@ function invoiceTable(rows) {
 
 function sampleImportTable(rows) {
   if (!rows.length) {
-    return `<p class="muted">Beispielimporte werden geladen.</p>`;
+    return `<p class="muted">Noch keine PDFs importiert.</p>`;
   }
   const normalizedRows = rows.map(row => ({
     ...row,
@@ -746,7 +843,7 @@ function sampleImportTable(rows) {
     row.invoice_no || "offen",
     row.invoice_date || "offen",
     row.gross_total == null ? "offen" : eur.format(row.gross_total),
-    row.extracted_items,
+    row.extracted_items || "offen",
     row.warnings?.length ? `<span class="tag amber">${row.warnings.length} Hinweis</span>` : `<span class="tag green">ausgelesen</span>`,
   ]));
 }
@@ -875,6 +972,23 @@ function bindViewEvents() {
     });
   });
   document.querySelectorAll(".export-action").forEach(btn => btn.addEventListener("click", () => alert("Report wurde als Exportpaket vorgemerkt.")));
+  const fileInput = document.getElementById("invoiceFileInput");
+  const chooseFiles = document.getElementById("chooseInvoiceFiles");
+  const dropzone = document.getElementById("dropzone");
+  if (fileInput && chooseFiles && dropzone) {
+    chooseFiles.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", event => uploadInvoiceFiles(event.target.files));
+    dropzone.addEventListener("dragover", event => {
+      event.preventDefault();
+      dropzone.classList.add("dragging");
+    });
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragging"));
+    dropzone.addEventListener("drop", event => {
+      event.preventDefault();
+      dropzone.classList.remove("dragging");
+      uploadInvoiceFiles(event.dataTransfer.files);
+    });
+  }
 }
 
 function init() {
@@ -909,15 +1023,6 @@ function init() {
     })
     .catch(error => {
       console.warn("Supabase-Daten konnten nicht geladen werden.", error);
-    });
-  fetch("./sample-invoice-imports.json")
-    .then(response => response.ok ? response.json() : [])
-    .then(imports => {
-      state.sampleImports = imports;
-      render();
-    })
-    .catch(() => {
-      state.sampleImports = [];
     });
 }
 

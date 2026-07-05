@@ -237,6 +237,16 @@ tr:last-child td { border-bottom: 0; }
   display: grid; place-items: center; min-height: 220px; border: 2px dashed #9fb0c7; border-radius: 8px; background: #f8fbff; text-align: center;
 }
 .dropzone strong { display: block; font-size: 19px; margin-bottom: 8px; }
+.dropzone .btn { margin-top: 14px; }
+.dropzone.dragging {
+  border-color: var(--blue);
+  background: rgba(48, 213, 200, 0.12);
+}
+.upload-status {
+  margin: 12px 0 0;
+  color: #dffafa;
+  font-weight: 750;
+}
 .calc-box { display: grid; gap: 8px; }
 .calc-row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
 .calc-row.total { font-size: 18px; font-weight: 900; border-bottom: 0; color: var(--blue); }
